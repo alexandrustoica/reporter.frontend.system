@@ -1,5 +1,8 @@
 {
-  "expo": {
-    "sdkVersion": "22.0.0"
+  "expo" : {
+    "name" : "Taskly",
+    "slug" : "Taskly",
+    "sdkVersion" : "22.0.0",
+    "privacy" : "public"
   }
 }

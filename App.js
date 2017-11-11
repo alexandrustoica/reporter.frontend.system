@@ -1,21 +1,33 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Login from "./component/screen/Login";
+import TabNavigator from "./node_modules/react-navigation/lib-rn/navigators/TabNavigator";
+import SignUp from "./component/screen/SignUp";
+import {StyleSheet} from 'react-native';
+
+const style = StyleSheet.create({
+	navigationBar: {
+		borderTopWidth: 24,
+		backgroundColor: 'black',
+	},
+	indicator: {
+		backgroundColor: '#97CBF1',
+		width: 30,
+		marginLeft: '15%',
+	}
+})
+
+const Nav = TabNavigator({
+		Login: {screen: Login},
+		SignUp: {screen: SignUp}
+	},
+	{
+		tabBarOptions: {
+			style: style.navigationBar,
+			indicatorStyle: style.indicator
+		}
+	})
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Start Here!</Text>
-      </View>
-    );
-  }
+	render = () => <Nav/>
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
