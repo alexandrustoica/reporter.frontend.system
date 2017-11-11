@@ -10,9 +10,7 @@ export class TextField extends React.Component {
 				style={style.field}
 				secureTextEntry={this.props.password}
 				underlineColorAndroid={'transparent'}
-				onChangeText={(text) => {
-					console.log(text)
-				}}/>
+				onChangeText={(text) => {console.log(text)}}/>
 			<Image source={this.props.image} style={{width: 20, height: 20}}/>
 		</View>
 }

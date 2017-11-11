@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-export class FullBottomButton extends React.Component {
+export class BottomButton extends React.Component {
 	render = () =>
 		<TouchableOpacity
 			onPress={this.props.action}

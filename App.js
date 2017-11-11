@@ -1,45 +1,33 @@
 import React from 'react';
-import {Image, KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native';
-import {TextField} from "./component/domain/TextField";
-import {FullBottomButton} from "./component/domain/FullBottomButton";
-
-export default class App extends React.Component {
-	render = () =>
-		<View>
-			<Image style={style.backgroundImage} source={require("./images/login_background.png")}/>
-			<KeyboardAvoidingView
-				behavior="padding"
-				style={style.container}>
-				<FullBottomButton
-					action={() => console.log("Press")}
-					name="LOGIN"/>
-				<TextField input="Password"
-				           image={require('./images/password_icon.png')}
-				           password={true}/>
-				<TextField input="Username" image={require('./images/profile_icon.png')}/>
-				<Text style={style.logo}>taskly</Text>
-			</KeyboardAvoidingView>
-		</View>
-}
+import Login from "./component/screen/Login";
+import TabNavigator from "./node_modules/react-navigation/lib-rn/navigators/TabNavigator";
+import SignUp from "./component/screen/SignUp";
+import {StyleSheet} from 'react-native';
 
 const style = StyleSheet.create({
-	container: {
-		width: '100%',
-		height: '100%',
-		flexDirection: 'column-reverse',
+	navigationBar: {
+		borderTopWidth: 24,
+		backgroundColor: 'black',
 	},
-	backgroundImage: {
-		width: '100%',
-		height: '100%',
-		position: 'absolute',
-		flex: 1
-	},
-	logo: {
-
-		fontFamily: 'Montserrat',
-		height: 200,
-		fontSize: 35,
-		color: 'white',
-		alignSelf: 'center',
+	indicator: {
+		backgroundColor: '#97CBF1',
+		width: 30,
+		marginLeft: '15%',
 	}
-});
+})
+
+const Nav = TabNavigator({
+		Login: {screen: Login},
+		SignUp: {screen: SignUp}
+	},
+	{
+		tabBarOptions: {
+			style: style.navigationBar,
+			indicatorStyle: style.indicator
+		}
+	})
+
+export default class App extends React.Component {
+	render = () => <Nav/>
+}
+
