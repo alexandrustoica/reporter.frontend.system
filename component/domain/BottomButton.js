@@ -1,23 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 
 export class BottomButton extends React.Component {
-	render = () =>
-		<TouchableOpacity
-			onPress={this.props.action}
-			style={style.button}><Text style={style.text}>{this.props.name}</Text></TouchableOpacity>
+    render = () =>
+        <TouchableOpacity
+            onPress={this.props.action}
+            style={this.props.buttonStyle}>
+            <Text style={this.props.textStyle}>{this.props.text}</Text>
+        </TouchableOpacity>
 }
-
-const style = StyleSheet.create({
-	button: {
-		height: 70,
-		width: '100%',
-		backgroundColor: '#97CBF1',
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	text: { }
-});
-
-
