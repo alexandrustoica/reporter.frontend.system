@@ -24,6 +24,11 @@ export default class FlexBuilder {
         return this
     };
 
+    withSelfAlignment = (value) => {
+        this.accumulator.push({alignSelf: value});
+        return this
+    };
+
     withJustifyContent = (value) => {
         this.accumulator.push({justifyContent: value});
         return this

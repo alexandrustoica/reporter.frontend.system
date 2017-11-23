@@ -1,7 +1,7 @@
 import React from "react";
 import {TextField} from "../domain/TextField";
 import {BottomButton} from "../domain/BottomButton";
-import {AsyncStorage, KeyboardAvoidingView, StyleSheet, View} from "react-native";
+import {AsyncStorage, KeyboardAvoidingView, View} from "react-native";
 import Intro from "./Intro";
 import FlexBuilder from "../styles/FlexBuilder";
 import {FullButtonStyle, withBackgroundColor, withTextColor} from "../styles/Styles";
@@ -24,7 +24,7 @@ class LoginForm extends React.Component {
         })
     }).then((response) => response.headers.get("authorization"))
         .then((token) => AsyncStorage.setItem('authorization', token))
-        .then(() => this.props.navigation.navigate('SignUp'))
+        .then(() => this.props.navigation.navigate('Tasks'));
 
     render = () =>
         <KeyboardAvoidingView
@@ -42,7 +42,7 @@ class LoginForm extends React.Component {
                     buttonStyle={[FullButtonStyle.button, withBackgroundColor(COLOR_BLUE)]}
                     textStyle={withTextColor('white')}
                     text='Login'
-                    action={() => console.log(this.login(this.state.username, this.state.password))}/>
+                    action={() => this.login(this.state.username, this.state.password)}/>
             </View>
         </KeyboardAvoidingView>
 }
@@ -50,5 +50,5 @@ class LoginForm extends React.Component {
 
 export default class Login extends React.Component {
     static navigationOptions = {header: null};
-    render = () => <Intro content={<LoginForm navigation={this.props.navigation} />}/>
+    render = () => <Intro content={<LoginForm navigation={this.props.navigation}/>}/>
 }
