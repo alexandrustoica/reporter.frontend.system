@@ -21,6 +21,18 @@ export const FullButtonStyle = StyleSheet.create({
 	}
 });
 
+export const ActionButtonStyle = StyleSheet.create({
+	button: {
+		elevation: 10,
+		width: 70,
+		height: 70,
+		position: 'absolute',
+		borderRadius: 35,
+		right: 20,
+		bottom: 20
+	}
+});
+
 export const BackgroundImageStyle = StyleSheet.create({
 	backgroundImage: {
 		flex: 1,

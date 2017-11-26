@@ -34,5 +34,10 @@ export default class FlexBuilder {
         return this
     };
 
+    withSelfJustify = (value) => {
+        this.accumulator.push({justifySelf: value})
+        return this;
+    }
+
     build = () => this.accumulator
 }
