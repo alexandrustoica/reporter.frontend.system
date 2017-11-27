@@ -3,41 +3,19 @@ import {TextField} from "../domain/complex/TextField";
 import {BottomButton} from "../domain/button/BottomButton";
 import {KeyboardAvoidingView, View} from "react-native";
 import Intro from "./Intro";
-import {
-	FullButtonStyle,
-	withBackgroundColor,
-	withTextColor
-} from "../styles/Styles";
+import {FullButtonStyle, withBackgroundColor, withTextColor} from "../styles/Styles";
 import {COLOR_BLUE} from "../styles/Colors";
 import FlexBuilder from "../styles/FlexBuilder";
 import {IconType} from "../domain/shape/Icon";
 import NavigationBar from "../domain/complex/NavigationBar";
-import {LoginService} from "../service/LoginService";
+import {SignUpService} from "../service/SignUpService";
 
 class SignUpForm extends React.Component {
-
-	static REGISTER_ENDPOINT = "http://192.168.0.32:8090/user/register";
 
 	constructor(props) {
 		super(props)
 		this.state = {username: '', password: '', confirmPassword: '', email: ''}
 	}
-
-	signUp = (username, password, confirmPassword, email) =>
-		password !== confirmPassword ?
-			console.log("Not Same Password") :
-			fetch(SignUpForm.REGISTER_ENDPOINT, {
-				method: 'POST',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',},
-				body: JSON.stringify({
-					username: username,
-					password: password,
-					email: email,
-				})})
-				.catch((error) => console.log(error))
-				.then((response) => new LoginService(this.props.navigation).login(username, password))
 
 	render = () =>
 		<KeyboardAvoidingView
@@ -67,8 +45,8 @@ class SignUpForm extends React.Component {
 					buttonStyle={[FullButtonStyle.button, withBackgroundColor(COLOR_BLUE)]}
 					textStyle={withTextColor('white')}
 					text='Sign Up'
-					action={() => this.signUp(this.state.username, this.state.password,
-						this.state.confirmPassword, this.state.email)}/>
+					action={() => new SignUpService(this.props.navigation).signUp(this.state.username,
+						this.state.password, this.state.confirmPassword, this.state.email)}/>
 			</View>
 		</KeyboardAvoidingView>;
 }
