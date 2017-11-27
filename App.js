@@ -1,15 +1,16 @@
 import React from "react";
-import Login from "./component/screen/Login";
-import SignUp from "./component/screen/SignUp";
-import Welcome from "./component/screen/Welcome";
+import Login from "./src/component/screen/Login";
+import SignUp from "./src/component/screen/SignUp";
+import Welcome from "./src/component/screen/Welcome";
 import StackNavigator from "react-navigation/lib-rn/navigators/StackNavigator";
-import Tasks from "./component/screen/Tasks";
+import Tasks from "./src/component/screen/Tasks";
 
 const Nav = StackNavigator({
-        Tasks: {screen: Tasks},
         Welcome: {screen: Welcome},
         Login: {screen: Login},
-        SignUp: {screen: SignUp}},
+        SignUp: {screen: SignUp},
+        Tasks: {screen: Tasks},
+    },
     {
         headerMode: 'screen'
     });
