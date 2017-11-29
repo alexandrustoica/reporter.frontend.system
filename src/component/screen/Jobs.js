@@ -1,14 +1,13 @@
-import {FlatList, StatusBar, Text} from "react-native";
 import React from "react";
 import {IconType} from "../domain/shape/Icon";
 import TopBarNavigation from "../domain/complex/NavigationBar";
-import {COLOR_BLUE} from "../styles/Colors";
+import {Colors} from "../styles/Colors";
 import {EmptyListDisplayed} from "../domain/list/EmptyListDisplayer";
 import {ActionButton} from "../domain/button/ActionButton";
 import {Screen} from "../domain/decorators/Screen";
-import {Header} from "react-navigation";
 
-export default class Tasks extends React.Component {
+
+export default class Jobs extends React.Component {
 	static navigationOptions = {
 		header: null,
 	};
@@ -17,14 +16,13 @@ export default class Tasks extends React.Component {
 			<TopBarNavigation
 				leftIcon={IconType.PROFILE_DARK}
 				rightIcon={IconType.SEARCH_DARK}
-				text={"Tasks"}/>
+				text={"Jobs"}/>
 			<EmptyListDisplayed
-				cause={'You don\'t have any tasks to work on.'}
-				solution={'Please add a task to get started.'}/>
-			{/*<FlatList data={[]}*/}
-			          {/*renderItem={({item}) => <Text>{item.key}</Text>}/>*/}
+				cause={'You don\'t have any jobs published.'}
+				solution={'Please add a job to get started.'}/>
 			<ActionButton icon={IconType.PLUS_LIGHT}
-			              color={COLOR_BLUE}/>
+			              color={Colors.BLUE}
+			              onPress={() => this.props.navigation.navigate('AddJob')}/>
 		</Screen>
 }
 

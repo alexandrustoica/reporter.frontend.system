@@ -15,7 +15,7 @@ export const withTextColor = (color) => {
 export const FullButtonStyle = StyleSheet.create({
 	button: {
 		height: 70,
-		flexGrow: 1,
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
 	}

@@ -1,7 +1,7 @@
 import React from "react";
 import {TextField} from "../domain/complex/TextField";
 import {BottomButton} from "../domain/button/BottomButton";
-import {AsyncStorage, KeyboardAvoidingView, View} from "react-native";
+import {AsyncStorage, KeyboardAvoidingView, Text, View} from "react-native";
 import Intro from "./Intro";
 import FlexBuilder from "../styles/FlexBuilder";
 import {
@@ -9,7 +9,7 @@ import {
 	withBackgroundColor,
 	withTextColor
 } from "../styles/Styles";
-import {COLOR_BLUE} from "../styles/Colors";
+import {COLOR_BLUE, Colors} from "../styles/Colors";
 import {IconType} from "../domain/shape/Icon";
 import NavigationBar from "../domain/complex/NavigationBar";
 import {LoginService} from "../service/LoginService";
@@ -17,12 +17,16 @@ import {LoginService} from "../service/LoginService";
 
 class LoginForm extends React.Component {
 
-	state = {username: '', password: ''}
+	constructor(props) {
+		super(props)
+		this.state = {username: '', password: '', errorMessage: ''}
+	}
 
     render = () =>
         <KeyboardAvoidingView
             behavior="padding"
             style={new FlexBuilder().withColumnFlex().withJustifyContent('center').withItemAlignment('center').build()}>
+	        <Text>{this.state.errorMessage}</Text>
             <NavigationBar
                 text={""}
                 leftIcon={IconType.BACK_LIGHT}
@@ -36,11 +40,10 @@ class LoginForm extends React.Component {
                        image={IconType.PASSWORD_DARK}
                        password={true}/>
             <View style={new FlexBuilder().withRowFlex().build()}>
-                <BottomButton
-                    buttonStyle={[FullButtonStyle.button, withBackgroundColor(COLOR_BLUE)]}
-                    textStyle={withTextColor('white')}
-                    text='Login'
-                    action={() => new LoginService(this.props.navigation).login(this.state.username, this.state.password)}/>
+	            <BottomButton
+		            backgroundColor={Colors.BLUE} height={70}
+		            color={Colors.WHITE} fontSize={16} text='Login'
+		            action={() => new LoginService(this.props.navigation).login(this.state.username, this.state.password)}/>
             </View>
         </KeyboardAvoidingView>
 }
