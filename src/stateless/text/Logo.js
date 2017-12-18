@@ -2,7 +2,7 @@ import {Text} from "react-native";
 import {TextColor} from "./TextColor";
 import {TextSize} from "./TextSize";
 import * as React from "react";
-import {Colors} from "../../styles/Colors";
+import {Colors} from "../color/Colors";
 
 export const Logo = () =>
 	<Text>

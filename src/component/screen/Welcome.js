@@ -1,7 +1,7 @@
 import React from "react";
 import {View} from "react-native";
-import {BottomButton} from "../domain/button/BottomButton";
-import {Colors,} from "../styles/Colors";
+import {BottomButton} from "../../stateless/button/BottomButton";
+import {Colors,} from "../../stateless/color/Colors";
 import FlexBuilder from "../styles/FlexBuilder";
 import Intro from "./Intro";
 

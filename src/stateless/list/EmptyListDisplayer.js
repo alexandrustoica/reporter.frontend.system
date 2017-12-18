@@ -1,4 +1,4 @@
-import {COLOR_LIGHT_BLUE} from "../../styles/Colors";
+import {Colors} from "../color/Colors";
 import {Icon, IconType} from "../shape/Icon";
 import {Screen} from "../decorators/Screen";
 import {CenterContainer} from "../container/CenterContainer";
@@ -9,7 +9,7 @@ import {SystemInformationText} from "../text/SystemInformationText";
 import {Circle} from "../shape/Circle";
 
 
-export const EmptyListDisplayed = ({cause, solution, color = COLOR_LIGHT_BLUE, icon = IconType.DONE_ICON_HUGE}) =>
+export const EmptyListDisplayed = ({cause, solution, color = Colors.LIGHT_BLUE, icon = IconType.DONE_ICON_HUGE}) =>
 	<Screen>
 		<CenterContainer>
 			<CenterObject>

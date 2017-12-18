@@ -1,4 +1,4 @@
-import FlexBuilder from "../../styles/FlexBuilder";
+import FlexBuilder from "../../component/styles/FlexBuilder";
 import {IconType} from "../shape/Icon";
 import * as React from "react";
 import {View} from "react-native";
@@ -7,12 +7,10 @@ import {NavigationBarText} from "../text/NavigationBarText";
 
 export default class NavigationBar extends React.Component {
 
-	flexBuilder = new FlexBuilder();
-
 	static defaultProps = {
-		leftIcon: IconType.PROFILE_DARK,
+		leftIcon: null,
 		leftAction: () => console.log("Left Button Pressed"),
-		rightIcon: IconType.PROFILE_DARK,
+		rightIcon: null,
 		rightAction: () => console.log("Right Button Pressed"),
 		color: 'transparent',
 		text: 'Text',
@@ -22,7 +20,7 @@ export default class NavigationBar extends React.Component {
 
 	render = () =>
 		<View style={[{paddingTop: 22, backgroundColor: this.props.color},
-			this.flexBuilder.withItemAlignment("center").withRowFlex().build()]}>
+			new FlexBuilder().withItemAlignment("center").withRowFlex().build()]}>
 			<SystemIcon url={this.props.leftIcon}
 			            onPress={this.props.leftAction}/>
 			<NavigationBarText color={this.props.textColor}

@@ -1,20 +1,17 @@
-import {Logo} from "../domain/text/Logo";
-import {View} from "react-native";
+import {Logo} from "../../stateless/text/Logo";
 import * as React from "react";
-import {BackgroundScreen} from "../domain/other/BackgroundScreen";
-import FlexBuilder from "../styles/FlexBuilder";
+import {BackgroundScreen} from "../../stateless/other/BackgroundScreen";
+import {CenterContainer} from "../../stateless/container/CenterContainer";
 
 
 export default class Intro extends React.Component {
 
-    flexBuilder = new FlexBuilder().withFlexValue(1).withColumnFlex().withItemAlignment("center");
-
-    render = () =>
-        <View style={this.flexBuilder.withJustifyContent("space-between").build()}>
-            <BackgroundScreen/>
-            <View style={this.flexBuilder.withJustifyContent("center").build()}>
-                <Logo/>
-            </View>
-            {this.props.content}
-        </View>
+	render = () =>
+		<CenterContainer>
+			<BackgroundScreen/>
+			<CenterContainer>
+				<Logo/>
+			</CenterContainer>
+			{this.props.content}
+		</CenterContainer>
 }

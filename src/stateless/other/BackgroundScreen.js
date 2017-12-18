@@ -5,6 +5,6 @@ import {Screen} from "../decorators/Screen";
 
 export const BackgroundScreen = () =>
 	<AbsoluteContainer><Screen>
-		<Image source={require("../../../../images/login_background.png")}/>
+		<Image source={require("../../../images/login_background.png")}/>
 	</Screen></AbsoluteContainer>
 

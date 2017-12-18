@@ -1,7 +1,14 @@
 import React from 'react';
 import {Image, StyleSheet, TextInput, View} from 'react-native';
+import {SystemIcon} from "../shape/Icon";
 
 export class TextField extends React.Component {
+    defaultProps = {
+        password: false,
+        input: 'Text',
+        onChangeText: (text) => console.log(text),
+        image: null
+    }
     render = () =>
         <View style={style.container}>
             <TextInput
@@ -11,7 +18,7 @@ export class TextField extends React.Component {
                 secureTextEntry={this.props.password}
                 underlineColorAndroid={'transparent'}
                 onChangeText={this.props.onChangeText}/>
-            <Image source={this.props.image} style={{width: 20, height: 20}}/>
+            <SystemIcon source={this.props.image}/>
         </View>
 }
 

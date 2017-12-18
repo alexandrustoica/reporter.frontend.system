@@ -1,13 +1,13 @@
 import React from "react";
-import {TextField} from "../domain/complex/TextField";
-import {BottomButton} from "../domain/button/BottomButton";
+import {TextField} from "../../stateless/complex/TextField";
+import {BottomButton} from "../../stateless/button/BottomButton";
 import {KeyboardAvoidingView, View} from "react-native";
 import Intro from "./Intro";
-import {Colors} from "../styles/Colors";
+import {Colors} from "../../stateless/color/Colors";
 import FlexBuilder from "../styles/FlexBuilder";
-import {IconType} from "../domain/shape/Icon";
-import NavigationBar from "../domain/complex/NavigationBar";
-import {RegisterService} from "../service/RegisterService";
+import {IconType} from "../../stateless/shape/Icon";
+import NavigationBar from "../../stateless/complex/NavigationBar";
+import {RegisterService} from "../../service/RegisterService";
 
 class RegisterForm extends React.Component {
 
