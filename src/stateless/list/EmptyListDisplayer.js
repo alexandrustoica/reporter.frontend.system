@@ -6,7 +6,7 @@ import {CenterObject} from "../decorators/CenterObject";
 import * as React from "react";
 import {SpaceProvider} from "../other/SpaceProvider";
 import {SystemInformationText} from "../text/SystemInformationText";
-import {Circle} from "../shape/Circle";
+import {Circle} from "../../icon/Circle";
 
 
 export const EmptyListDisplayed = ({cause, solution, color = Colors.LIGHT_BLUE, icon = IconType.DONE_ICON_HUGE}) =>

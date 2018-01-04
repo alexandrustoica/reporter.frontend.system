@@ -1,78 +1,14 @@
 import React from "react";
-import {FlatList, Text, TouchableOpacity} from "react-native"
+import {FlatList} from "react-native"
 import {ReportService} from "./ReportService";
 import {Box} from "../box/Box";
 import * as R from "ramda";
 import createStore from "redux/es/createStore";
-import {HBox} from "../box/HBox";
-import MapView from "react-native-maps"
-import {Colors} from "../stateless/color/Colors";
-import moment from "moment";
-
-
-
-const ItemReport = (props) =>
-	<TouchableOpacity
-		style={{
-			marginTop: 10,
-			marginBottom: 10,
-			marginLeft: 20,
-			marginRight: 20,
-			backgroundColor: Colors.WHITE,
-			borderRadius: 5,
-		}}>
-		<MapView
-			style={{
-				flex: 1,
-				height: 200,
-				padding: 10,
-				borderRadius: 10
-			}}
-			scrollEnabled={false}
-			zoomEnabled={false}
-			initialRegion={{
-				longitude: props.report.location.longitude,
-				latitude: props.report.location.longitude,
-				latitudeDelta: 1,
-				longitudeDelta: 1,
-			}}>
-			<MapView.Marker
-				coordinate={{
-					longitude: props.report.location.longitude,
-					latitude: props.report.location.longitude
-				}}/>
-		</MapView>
-		<Box flexDirection={'column'}>
-			<Text style={{
-				marginTop: 10,
-				marginLeft: 20,
-				fontSize: 24,
-				fontWeight: 'bold'
-			}}>
-				{props.report.text}
-			</Text>
-			<Text style={{
-				marginTop: 5,
-				marginLeft: 20,
-				marginBottom: 20,
-			}}>
-				{moment(props.report.date).fromNow()}
-			</Text>
-		</Box>
-	</TouchableOpacity>
-
-ItemReport.defaultProps = {
-	mapHeight: 200,
-	report: {
-		date: 'Report Date',
-		text: 'Report Text',
-		id: 1,
-		location: {
-			latitude: 10.0,
-			longitude: 10.0
-		}
-	}
-}
+import NavigationBar from "../stateless/complex/NavigationBar";
+import {IconType} from "../icon/Icon";
+import {Screen} from "../stateless/decorators/Screen";
+import {ActionButton} from "../components/ActionButton";
+import {ItemReport} from "./ItemReport";
 
 export default class Reports extends React.Component {
 
@@ -117,8 +53,23 @@ export default class Reports extends React.Component {
 			          <ItemReport report={item}/>}/>
 
 	render = () =>
-		<Box>
+		<Screen backgroundColor={'white'}>
+			<NavigationBar
+				text={"Reports"}
+				leftIcon={IconType.PROFILE_DARK}
+				leftAction={() => this.props.navigation.navigate('Welcome')}
+				rightIcon={IconType.TIME_DARK}/>
 			{this.__showNewReportsToUserInList(this.state.reports)}
-		</Box>
+			<Box justifyContent={'flex-end'}
+			     alignItems={'flex-end'}
+			     style={{
+				     position: 'absolute',
+				     margin: -20,
+				     width: '100%',
+				     height: '100%'
+			     }}>
+				<ActionButton onPress={() => console.log("Click")}/>
+			</Box>
+		</Screen>
 }
 
