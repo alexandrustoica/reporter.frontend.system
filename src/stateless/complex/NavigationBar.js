@@ -1,8 +1,8 @@
 import FlexBuilder from "../../component/styles/FlexBuilder";
-import {IconType} from "../shape/Icon";
+import {IconType} from "../../icon/Icon";
 import * as React from "react";
 import {View} from "react-native";
-import {SystemIcon} from "../shape/Icon";
+import {SystemIcon} from "../../icon/SystemIcon";
 import {NavigationBarText} from "../text/NavigationBarText";
 
 export default class NavigationBar extends React.Component {

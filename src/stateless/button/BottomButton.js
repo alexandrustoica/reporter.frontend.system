@@ -1,7 +1,8 @@
 import {Text, TouchableOpacity} from 'react-native';
 import * as React from "react";
 import {CenterContainer} from "../container/CenterContainer";
-import {IconType, SystemIcon} from "../shape/Icon";
+import {IconType} from "../../icon/Icon";
+import {SystemIcon} from "../../icon/SystemIcon";
 
 export class BottomButton extends React.Component {
 	render = () =>

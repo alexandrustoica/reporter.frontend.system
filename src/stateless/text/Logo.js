@@ -6,10 +6,14 @@ import {Colors} from "../color/Colors";
 
 export const Logo = () =>
 	<Text>
-		<TextColor color={Colors.WHITE}><TextSize size={35}>
-			<Text>meeseeks</Text>
-		</TextSize></TextColor>
-		<TextColor color={Colors.BLUE}><TextSize size={35}>
-			<Text>box</Text>
-		</TextSize></TextColor>
+		<TextColor color={Colors.WHITE}>
+			<TextSize size={35}>
+				<Text>report</Text>
+			</TextSize>
+		</TextColor>
+		<TextColor color={Colors.BLUE}>
+			<TextSize size={35}>
+				<Text>er</Text>
+			</TextSize>
+		</TextColor>
 	</Text>

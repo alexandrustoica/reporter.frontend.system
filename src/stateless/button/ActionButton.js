@@ -1,5 +1,5 @@
 import {MarginContainer} from "../container/MarginContainer";
-import {SystemIcon} from "../shape/Icon";
+import {SystemIcon} from "../../icon/SystemIcon";
 import * as React from "react";
 import {AbsoluteContainer} from "../container/AbsoluteContainer";
 import {Circle} from "../shape/Circle";

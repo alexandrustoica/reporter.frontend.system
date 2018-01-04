@@ -1,11 +1,11 @@
 import React from "react";
-import {Screen} from "../../stateless/decorators/Screen";
-import NavigationBar from "../../stateless/complex/NavigationBar";
-import {IconType} from "../../stateless/shape/Icon";
-import {BottomButton} from "../../stateless/button/BottomButton";
-import {Colors} from "../../stateless/color/Colors";
-import {TextField} from "../../../lib/component/domain/complex/TextField";
-import {ReportService} from "../../service/ReportService";
+import {Screen} from "../stateless/decorators/Screen";
+import NavigationBar from "../stateless/complex/NavigationBar";
+import {IconType} from "../icon/Icon";
+import {BottomButton} from "../stateless/button/BottomButton";
+import {Colors} from "../stateless/color/Colors";
+import {ReportService} from "./ReportService";
+import {TextField} from "../stateless/complex/TextField";
 
 export default class AddReport extends React.Component {
 

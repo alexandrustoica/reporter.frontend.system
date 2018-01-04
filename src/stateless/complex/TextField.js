@@ -1,16 +1,21 @@
 import React from 'react';
-import {Image, StyleSheet, TextInput, View} from 'react-native';
-import {SystemIcon} from "../shape/Icon";
+import {StyleSheet, TextInput, View} from 'react-native';
+import {SystemIcon} from "../../icon/SystemIcon";
+import {Box} from "../../box/Box";
+
+
 
 export class TextField extends React.Component {
+
     defaultProps = {
         password: false,
         input: 'Text',
         onChangeText: (text) => console.log(text),
         image: null
     }
+
     render = () =>
-        <View style={style.container}>
+	    <Box>
             <TextInput
                 placeholder={this.props.input}
                 placeholderTextColor='#A2A2A2'
@@ -19,7 +24,7 @@ export class TextField extends React.Component {
                 underlineColorAndroid={'transparent'}
                 onChangeText={this.props.onChangeText}/>
             <SystemIcon source={this.props.image}/>
-        </View>
+	    </Box>
 }
 
 
