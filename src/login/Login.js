@@ -1,6 +1,6 @@
 import React from "react";
 import Intro from "../intro/Intro";
-import {Colors} from "../stateless/color/Colors";
+import {Colors} from "../color/Colors";
 import {IconType} from "../icon/Icon";
 import NavigationBar from "../stateless/complex/NavigationBar";
 import {EditText} from "../components/EditText";

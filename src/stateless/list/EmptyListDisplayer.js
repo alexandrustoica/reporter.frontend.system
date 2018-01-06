@@ -1,4 +1,4 @@
-import {Colors} from "../color/Colors";
+import {Colors} from "../../color/Colors";
 import {Icon, IconType} from "../../icon/Icon";
 import {Screen} from "../decorators/Screen";
 import {CenterContainer} from "../container/CenterContainer";

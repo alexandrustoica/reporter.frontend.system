@@ -1,7 +1,7 @@
 import React from "react";
 import Intro from "../intro/Intro";
 import {Box} from "../box/Box";
-import {Colors} from "../stateless/color/Colors";
+import {Colors} from "../color/Colors";
 import {HBox} from "../box/HBox";
 import {Button} from "../components/Button";
 

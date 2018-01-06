@@ -2,7 +2,7 @@ import {HBox} from "../box/HBox";
 import * as React from "react";
 import {TextInput} from "react-native";
 import {SystemIcon} from "../icon/SystemIcon";
-import {Colors} from "../stateless/color/Colors";
+import {Colors} from "../color/Colors";
 import {IconType} from "../icon/Icon";
 
 export const EditText = (props) =>
@@ -12,11 +12,13 @@ export const EditText = (props) =>
 		<TextInput
 			placeholder={props.text}
 			placeholderTextColor={props.textColor}
+            multiline={props.multiline}
 			style={{
 				flex: props.flex,
 				height: props.height,
 				padding: props.padding,
-				backgroundColor: props.backgroundColor
+				backgroundColor: props.backgroundColor,
+				fontSize: props.fontSize,
 			}}
 			secureTextEntry={props.password}
 			underlineColorAndroid={'transparent'}
@@ -26,6 +28,8 @@ export const EditText = (props) =>
 
 EditText.defaultProps = {
 	text: 'Text',
+	fontSize: 14,
+    multiline: false,
 	textColor: Colors.BLACK,
 	backgroundColor: Colors.WHITE,
 	password: false,

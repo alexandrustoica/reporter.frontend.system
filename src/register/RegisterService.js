@@ -1,5 +1,5 @@
 import {LoginService} from "../login/LoginService";
-import {Endpoint} from "./Endpoint";
+import {Endpoint} from "../service/Endpoint";
 import {Alert} from "react-native";
 
 export class RegisterService {

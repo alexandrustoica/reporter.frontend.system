@@ -10,8 +10,6 @@ export const Icon = ({url=null, size, margin, onPress}) =>
 		}}/>
 	</TouchableOpacity>
 
-
-
 export const IconType = {
 	PLUS_LIGHT: require('../../images/plus_icon_white.png'),
 	PLUS_DARK: require('../../images/plus_icon_black.png'),
@@ -30,5 +28,5 @@ export const IconType = {
 	BACK_DARK: require('../../images/back_icon_black.png'),
 	BACK_LIGHT: require('../../images/back_icon_white.png'),
 	DONE_ICON_HUGE: require('../../images/done_icon_huge.png'),
-	EMPTY: '',
+	EMPTY: null,
 }

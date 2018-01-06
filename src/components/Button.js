@@ -2,7 +2,7 @@ import {Text, TouchableOpacity} from "react-native";
 import {CenterBox} from "../box/CenterBox";
 import * as React from "react";
 import {SystemIcon} from "../icon/SystemIcon";
-import {Colors} from "../stateless/color/Colors";
+import {Colors} from "../color/Colors";
 import {IconType} from "../icon/Icon";
 
 export const Button = (props) =>

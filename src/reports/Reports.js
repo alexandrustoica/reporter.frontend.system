@@ -12,64 +12,72 @@ import {ItemReport} from "./ItemReport";
 
 export default class Reports extends React.Component {
 
-	static navigationOptions = {header: null};
+    static navigationOptions = {header: null};
 
-	constructor(props) {
-		super(props)
-		this.state = {
-			service: new ReportService(),
-			reports: [],
-			store: createStore(this.__updateReportsFromServer)
-		}
-		this.state.store.subscribe(this.render)
-	}
+    constructor(props) {
+        super(props)
+        this.state = {
+            service: new ReportService(),
+            reports: [],
+            store: createStore(this.__updateReportsFromServer)
+        }
+        this.state.store.subscribe(this.render)
+    }
 
-	componentWillMount = async () => {
-		await this.setState({
-			reports: R.forEach(console.log, await this.state.service.reports())
-		})
-	}
+    componentWillMount = async () =>
+        await this.setState({reports: await this.state.service.reports()})
 
-	__updateReportsFromServer = async (state = this.state, action) => {
-		const handler = {
-			"UPDATE_REPORTS": async () => await this.setState((lastState) => {
-				return {reports: R.concat(lastState.reports, R.forEach(console.log, action.data))}
-			})
-		}
-		return handler[action.type](action.data)
-	}
 
-	__signalNeedToUpdateReports = async () =>
-		this.state.store.dispatch({
-			type: "UPDATE_REPORTS",
-			data: await this.state.service.reports()
-		})
+    componentWillUnmount = async () => {
+        await this.setState({reports: []})
+    }
 
-	__showNewReportsToUserInList = (items) =>
-		<FlatList data={items}
-		          onEndReached={() => this.__signalNeedToUpdateReports()}
-		          keyExtractor={(item, id) => id}
-		          renderItem={({item}) =>
-			          <ItemReport report={item}/>}/>
+    __update_report_action = async (data) =>
+        await this.setState((lastState) => {
+            return {
+                reports: R.concat(lastState.reports,
+                    R.forEach(console.log, data))
+            }
+        })
 
-	render = () =>
-		<Screen backgroundColor={'white'}>
-			<NavigationBar
-				text={"Reports"}
-				leftIcon={IconType.PROFILE_DARK}
-				leftAction={() => this.props.navigation.navigate('Welcome')}
-				rightIcon={IconType.TIME_DARK}/>
-			{this.__showNewReportsToUserInList(this.state.reports)}
-			<Box justifyContent={'flex-end'}
-			     alignItems={'flex-end'}
-			     style={{
-				     position: 'absolute',
-				     margin: -20,
-				     width: '100%',
-				     height: '100%'
-			     }}>
-				<ActionButton onPress={() => console.log("Click")}/>
-			</Box>
-		</Screen>
+    __updateReportsFromServer = async (state = this.state, action) => {
+        return (action.type === "UPDATE_REPORTS") ?
+            this.__update_report_action(action.data) : null
+    }
+
+    __signalNeedToUpdateReports = async () =>
+        this.state.store.dispatch({
+            type: "UPDATE_REPORTS",
+            data: await this.state.service.reports()
+        })
+
+    __showNewReportsToUserInList = (items) =>
+        <FlatList data={items}
+                  onEndReached={() => this.__signalNeedToUpdateReports()}
+                  keyExtractor={(item, id) => id}
+                  renderItem={({item}) =>
+                      <ItemReport {...this.props} report={item}/>}/>
+
+    render = () =>
+        <Screen backgroundColor={'white'}>
+            <NavigationBar
+                text={"Reports"}
+                leftIcon={IconType.PROFILE_DARK}
+                leftAction={() => this.props.navigation.navigate('Welcome')}
+                rightIcon={IconType.TIME_DARK}
+                rightAction={() => this.props.navigation.navigate('Graph')}/>
+            {this.__showNewReportsToUserInList(this.state.reports)}
+            <Box justifyContent={'flex-end'}
+                 alignItems={'flex-end'}
+                 style={{
+                     position: 'absolute',
+                     margin: -20,
+                     width: '100%',
+                     height: '100%'
+                 }}>
+                <ActionButton onPress={() =>
+                    this.props.navigation.navigate('AddReport')}/>
+            </Box>
+        </Screen>
 }
 

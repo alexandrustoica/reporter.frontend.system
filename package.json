@@ -37,6 +37,7 @@
     "react-native-button-component": "^0.1.25",
     "react-native-elevated-view": "0.0.5",
     "react-native-maps": "^0.19.0",
+    "react-native-pathjs-charts": "0.0.33",
     "react-native-shadow": "^1.2.1",
     "react-native-shadow-view": "0.0.1",
     "react-native-svg": "^5.4.1",
