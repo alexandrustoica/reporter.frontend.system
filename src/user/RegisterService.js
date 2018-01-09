@@ -1,4 +1,4 @@
-import {LoginService} from "../login/LoginService";
+import {LoginService} from "./LoginService";
 import {Endpoint} from "../service/Endpoint";
 import {Alert} from "react-native";
 

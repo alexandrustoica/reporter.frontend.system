@@ -4,11 +4,12 @@ import {ReportService} from "./ReportService";
 import {Box} from "../box/Box";
 import * as R from "ramda";
 import createStore from "redux/es/createStore";
-import NavigationBar from "../stateless/complex/NavigationBar";
+import NavigationBar from "../stateless/NavigationBar";
 import {IconType} from "../icon/Icon";
 import {Screen} from "../stateless/decorators/Screen";
 import {ActionButton} from "../components/ActionButton";
 import {ItemReport} from "./ItemReport";
+import {UserLocalRepository} from "../user/UserLocalRepository";
 
 export default class Reports extends React.Component {
 
@@ -26,7 +27,6 @@ export default class Reports extends React.Component {
 
     componentWillMount = async () =>
         await this.setState({reports: await this.state.service.reports()})
-
 
     componentWillUnmount = async () => {
         await this.setState({reports: []})
@@ -58,12 +58,17 @@ export default class Reports extends React.Component {
                   renderItem={({item}) =>
                       <ItemReport {...this.props} report={item}/>}/>
 
+    __logoutUserFromCurrentSession = () => {
+        new UserLocalRepository().logout()
+        this.props.navigation.navigate('Welcome')
+    }
+
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
                 text={"Reports"}
                 leftIcon={IconType.PROFILE_DARK}
-                leftAction={() => this.props.navigation.navigate('Welcome')}
+                leftAction={() => this.__logoutUserFromCurrentSession()}
                 rightIcon={IconType.TIME_DARK}
                 rightAction={() => this.props.navigation.navigate('Graph')}/>
             {this.__showNewReportsToUserInList(this.state.reports)}

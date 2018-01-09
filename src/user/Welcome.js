@@ -1,9 +1,10 @@
 import React from "react";
-import Intro from "../intro/Intro";
+import Intro from "./Intro";
 import {Box} from "../box/Box";
 import {Colors} from "../color/Colors";
 import {HBox} from "../box/HBox";
 import {Button} from "../components/Button";
+import {UserLocalRepository} from "./UserLocalRepository";
 
 
 const AccessButtons = (props) =>
@@ -22,5 +23,12 @@ const AccessButtons = (props) =>
 
 export default class Welcome extends React.Component {
 	static navigationOptions = {header: null};
+
+	componentWillMount = async() => {
+		status = await new UserLocalRepository().getToken()
+        if(await new UserLocalRepository().getToken() != null)
+            this.props.navigation.navigate('Reports')
+	}
+
 	render = () => <Intro content={<AccessButtons {...this.props}/>}/>
 }

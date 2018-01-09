@@ -1,8 +1,8 @@
 import React from "react";
-import Intro from "../intro/Intro";
+import Intro from "./Intro";
 import {Colors} from "../color/Colors";
 import {IconType} from "../icon/Icon";
-import NavigationBar from "../stateless/complex/NavigationBar";
+import NavigationBar from "../stateless/NavigationBar";
 import {EditText} from "../components/EditText";
 import R from 'ramda';
 import {Button} from "../components/Button";
@@ -53,7 +53,6 @@ class LoginForm extends React.Component {
 				text='Login'/>
 		</KeyboardAvoidingView>
 }
-
 
 export default class Login extends React.Component {
 	static navigationOptions = {header: null};

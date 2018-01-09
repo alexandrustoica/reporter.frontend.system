@@ -1,6 +1,6 @@
 import React from "react";
 import {Screen} from "../stateless/decorators/Screen";
-import NavigationBar from "../stateless/complex/NavigationBar";
+import NavigationBar from "../stateless/NavigationBar";
 import {IconType} from "../icon/Icon";
 import {ReportService} from "./ReportService";
 import {EditText} from "../components/EditText";
