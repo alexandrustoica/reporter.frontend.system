@@ -3,29 +3,31 @@ import * as React from "react";
 import {View} from "react-native";
 import {SystemIcon} from "../icon/SystemIcon";
 import {NavigationBarText} from "./text/NavigationBarText";
+import {IconType} from "../icon/Icon";
 
-export default class NavigationBar extends React.Component {
+export const NavigationBar = (props) =>
+    <View style={[{paddingTop: 22, backgroundColor: props.color},
+        new FlexBuilder().withItemAlignment("center").withRowFlex().build()]}>
+        <SystemIcon
+            url={props.leftIcon}
+            onPress={props.leftAction}/>
+        <NavigationBarText
+            color={props.textColor}
+            align={props.align}>
+            {props.text}
+        </NavigationBarText>
+        <SystemIcon
+            url={props.rightIcon}
+            onPress={props.rightAction}/>
+    </View>
 
-	static defaultProps = {
-		leftIcon: null,
-		leftAction: () => console.log("Left Button Pressed"),
-		rightIcon: null,
-		rightAction: () => console.log("Right Button Pressed"),
-		color: 'transparent',
-		text: 'Text',
-		textColor: 'black',
-		textAlign: 'left'
-	}
-
-	render = () =>
-		<View style={[{paddingTop: 22, backgroundColor: this.props.color},
-			new FlexBuilder().withItemAlignment("center").withRowFlex().build()]}>
-			<SystemIcon url={this.props.leftIcon}
-			            onPress={this.props.leftAction}/>
-			<NavigationBarText color={this.props.textColor}
-			                   align={this.props.align}>
-				{this.props.text}</NavigationBarText>
-			<SystemIcon url={this.props.rightIcon}
-			            onPress={this.props.rightAction}/>
-		</View>
+NavigationBar.defaultProps = {
+    leftIcon: IconType.EMPTY,
+    leftAction: () => console.log("Left Button Pressed"),
+    rightIcon: IconType.EMPTY,
+    rightAction: () => console.log("Right Button Pressed"),
+    color: 'transparent',
+    text: 'Text',
+    textColor: 'black',
+    textAlign: 'left'
 }

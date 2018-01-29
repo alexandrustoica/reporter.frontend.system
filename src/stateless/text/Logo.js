@@ -5,7 +5,7 @@ import * as React from "react";
 import {Colors} from "../../color/Colors";
 
 export const Logo = () =>
-	<Text>
+	<Text style={{backgroundColor: Colors.TRANSPARENT}}>
 		<TextColor color={Colors.WHITE}>
 			<TextSize size={35}>
 				<Text>report</Text>

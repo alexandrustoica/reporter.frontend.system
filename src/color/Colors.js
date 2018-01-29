@@ -5,5 +5,6 @@ export const Colors = {
 	LIGHT_BLUE: '#F1F4FE',
 	SUMMER_BLUE: '#78B1FF',
 	WINTER_BLUE: '#3F5BC0',
-	WHITE: 'white'
+	WHITE: 'white',
+    TRANSPARENT: 'rgba(0,0,0,0)'
 }

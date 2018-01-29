@@ -1,7 +1,6 @@
 import React from "react";
 import {ReportService} from "./ReportService";
 import {Box} from "../box/Box";
-import NavigationBar from "../stateless/NavigationBar";
 import {IconType} from "../icon/Icon";
 import {Screen} from "../stateless/decorators/Screen";
 import {Text} from "react-native";
@@ -9,6 +8,7 @@ import {Bar} from "react-native-pathjs-charts";
 import * as R from "ramda";
 import moment from "moment/moment";
 import {Colors} from "../color/Colors";
+import {NavigationBar} from "../stateless/NavigationBar";
 
 export default class Graph extends React.Component {
 

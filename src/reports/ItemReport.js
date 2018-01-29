@@ -8,12 +8,18 @@ import {AnimatedViewComingFromRight} from "../animations/AnimatedViewComingFromR
 import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
 
 const CardStyle = {
-    elevation: 3,
     marginTop: 10,
     marginBottom: 10,
     marginLeft: 20,
     marginRight: 20,
-    borderRadius: 5,
+    shadowColor: Colors.BLUE,
+    shadowOffset: {
+        width: 0,
+        height: 10
+    },
+    shadowRadius: 40,
+    shadowOpacity: 0.1,
+    borderRadius: 10,
     backgroundColor: Colors.WHITE,
 }
 

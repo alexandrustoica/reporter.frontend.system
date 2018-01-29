@@ -2,7 +2,7 @@ import * as React from "react";
 import {View} from "react-native";
 
 export const Box = (props) =>
-	<View style={[{
+	<View pointerEvents={props.pointerEvents} style={[{
 		flex: props.flex,
 		width: props.width,
 		height: props.height,
@@ -16,6 +16,7 @@ export const Box = (props) =>
 
 Box.defaultProps = {
 	flex: 1,
+    pointerEvents: 'auto',
 	flexDirection: null,
 	justifyContent: null,
 	alignItems: null,

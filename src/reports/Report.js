@@ -1,7 +1,6 @@
 import React from "react";
 import {ReportService} from "./ReportService";
 import {Box} from "../box/Box";
-import NavigationBar from "../stateless/NavigationBar";
 import {IconType} from "../icon/Icon";
 import {Screen} from "../stateless/decorators/Screen";
 import {ActionButton} from "../components/ActionButton";
@@ -10,6 +9,7 @@ import MapView from "react-native-maps";
 import {Text} from "react-native";
 import {Colors} from "../color/Colors";
 import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
+import {NavigationBar} from "../stateless/NavigationBar";
 
 export default class Report extends React.Component {
 
@@ -54,14 +54,15 @@ export default class Report extends React.Component {
             </AnimatedViewFadeIn>
             <Box justifyContent={'flex-end'}
                  alignItems={'flex-end'}
+                 pointerEvents={'box-none'}
                  style={{
                      position: 'absolute',
                      margin: -20,
                      width: '100%',
-                     height: '54%'
+                     height: '56%'
                  }}>
                 <ActionButton
-                    icon={IconType.DONE_DARK}
+                icon={IconType.DELETE_LIGHT}
                     backgroundColor={Colors.LIGHT_BLUE}
                     onPress={async () => {
                     await this.state.service.remove(this.state.report.id)

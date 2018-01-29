@@ -16,7 +16,7 @@ export const Button = (props) =>
 		}}>
 		<CenterBox>
 			<SystemIcon url={props.icon}/>
-			<Text style={{color: props.textColor, fontSize: props.textSize}}>
+			<Text style={{color: props.textColor, fontSize: props.textSize, textAlign: 'center', alignSelf: 'center'}}>
 				{props.text}
 			</Text>
 		</CenterBox>

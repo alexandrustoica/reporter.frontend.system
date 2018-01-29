@@ -42,7 +42,10 @@
     "react-native-shadow": "^1.2.1",
     "react-native-shadow-view": "0.0.1",
     "react-native-svg": "^5.4.1",
+    "react-native-video": "^2.0.0",
     "react-navigation": "^1.0.0-beta.19",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "sockjs-client": "^1.1.4",
+    "webstomp-client": "^1.2.0"
   }
 }

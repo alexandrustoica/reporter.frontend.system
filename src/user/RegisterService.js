@@ -1,6 +1,6 @@
 import {LoginService} from "./LoginService";
 import {Endpoint} from "../service/Endpoint";
-import {Alert} from "react-native";
+import {Alert, Keyboard} from "react-native";
 
 export class RegisterService {
 

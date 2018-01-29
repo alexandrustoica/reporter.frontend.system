@@ -15,9 +15,10 @@ export const EditText = (props) =>
             multiline={props.multiline}
 			style={{
 				flex: props.flex,
+                flexShrink: -1,
 				height: props.height,
 				padding: props.padding,
-				backgroundColor: props.backgroundColor,
+				backgroundColor: Colors.TRANSPARENT,
 				fontSize: props.fontSize,
 			}}
 			secureTextEntry={props.password}
