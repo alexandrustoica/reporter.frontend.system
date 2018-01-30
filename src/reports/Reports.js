@@ -1,5 +1,5 @@
 import React from "react";
-import {FlatList, StatusBar, Text} from "react-native"
+import {FlatList, StatusBar} from "react-native"
 import {ReportService} from "./ReportService";
 import {Box} from "../box/Box";
 import * as R from "ramda";
@@ -10,13 +10,15 @@ import {ActionButton} from "../components/ActionButton";
 import {ItemReport} from "./ItemReport";
 import {UserLocalRepository} from "../user/UserLocalRepository";
 import {NavigationBar} from "../stateless/NavigationBar";
-import * as webstomp from "webstomp-client";
-
+import {SystemIcon} from "../icon/SystemIcon";
 
 export default class Reports extends React.Component {
 
     static navigationOptions = {
         header: null,
+        drawerIcon: ({ tintColor }) => (
+            <SystemIcon url={IconType.REPORTS_ICON}/>
+        )
     };
 
     constructor(props) {
@@ -75,7 +77,7 @@ export default class Reports extends React.Component {
                 rightIcon={IconType.STATS_ICON}
                 rightAction={() => this.props.navigation.navigate('Graph')}
                 leftIcon={IconType.MENU_ICON}
-                leftAction={() => this.__logoutUserFromCurrentSession()}/>
+                leftAction={() => this.props.navigation.navigate('DrawerOpen')}/>
             <StatusBar
                 backgroundColor="transparent"
                 barStyle="dark-content"/>

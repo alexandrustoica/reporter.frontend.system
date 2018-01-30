@@ -3,16 +3,17 @@ import StackNavigator from "react-navigation/lib-rn/navigators/StackNavigator";
 import Welcome from "./src/user/Welcome";
 import Register from "./src/user/Register";
 import Login from "./src/user/Login";
-import Reports from "./src/reports/Reports";
+import Logout from "./src/user/Logout";
 import AddReport from "./src/reports/AddReport";
 import Report from "./src/reports/Report";
 import Graph from "./src/reports/Graph";
 import {DrawerNavigator} from "react-navigation";
+import Reports from "./src/reports/Reports";
 
 const ReportsWithDrawer = DrawerNavigator({
     Reports: {screen: Reports},
-    Logout: {screen: Welcome},
-    Stats: {screen: Graph}
+    Logout: {screen: Logout},
+    Stats: {screen: Graph},
 });
 
 const Nav = StackNavigator({

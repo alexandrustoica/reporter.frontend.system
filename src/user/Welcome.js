@@ -5,6 +5,8 @@ import {Colors} from "../color/Colors";
 import {HBox} from "../box/HBox";
 import {Button} from "../components/Button";
 import {UserLocalRepository} from "./UserLocalRepository";
+import {IconType} from "../icon/Icon";
+import {SystemIcon} from "../icon/SystemIcon";
 
 
 const AccessButtons = (props) =>
@@ -22,7 +24,7 @@ const AccessButtons = (props) =>
 
 
 export default class Welcome extends React.Component {
-	static navigationOptions = {header: null};
+	static navigationOptions = { header: null };
 
 	componentWillMount = async() => {
 		status = await new UserLocalRepository().getToken()

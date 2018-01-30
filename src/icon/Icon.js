@@ -41,5 +41,7 @@ export const IconType = {
     MENU_ICON: require('../../images/menu_icon.png'),
     DELETE_LIGHT: require('../../images/delete_icon.png'),
     STATS_ICON: require('../../images/stats_icon.png'),
+    REPORTS_ICON: require('../../images/reports_icon.png'),
+    LOGOUT_ICON: require('../../images/logout_icon.png'),
     EMPTY: null,
 }

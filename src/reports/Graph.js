@@ -9,10 +9,16 @@ import * as R from "ramda";
 import moment from "moment/moment";
 import {Colors} from "../color/Colors";
 import {NavigationBar} from "../stateless/NavigationBar";
+import {SystemIcon} from "../icon/SystemIcon";
 
 export default class Graph extends React.Component {
 
-    static navigationOptions = {header: null};
+    static navigationOptions = {
+        header: null,
+        drawerIcon: ({ tintColor }) => (
+            <SystemIcon url={IconType.STATS_ICON}/>
+        )
+    };
 
     constructor(props) {
         super(props)
