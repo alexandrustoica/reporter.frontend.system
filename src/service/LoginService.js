@@ -1,4 +1,4 @@
-import {Endpoint} from "../service/Endpoint";
+import {Endpoint} from "./Endpoint";
 import {Alert} from "react-native";
 
 export class LoginService {
@@ -17,5 +17,5 @@ export class LoginService {
 		},
 		body: JSON.stringify({username: username, password: password,})
 	}).then((response) => response.headers.get("authorization"))
-		.catch((error) => alert(error.message))
+		.catch((error) => this.alert(error.message))
 }

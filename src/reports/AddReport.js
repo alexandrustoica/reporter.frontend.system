@@ -1,13 +1,13 @@
 import React from "react";
-import {Screen} from "../stateless/decorators/Screen";
-import {IconType} from "../icon/Icon";
-import {ReportService} from "./ReportService";
+import {IconType} from "../icon/IconType";
 import {EditText} from "../components/EditText";
 import MapView from "react-native-maps";
 import {Button} from "../components/Button";
 import {Colors} from "../color/Colors";
 import * as R from "ramda";
-import {NavigationBar} from "../stateless/NavigationBar";
+import {NavigationBar} from "../components/NavigationBar";
+import {Screen} from "../screen/Screen";
+import {ReportService} from "../service/ReportService";
 
 
 class Location {

@@ -1,11 +1,11 @@
 import React from "react";
 import Intro from "./Intro";
 import {Colors} from "../color/Colors";
-import {IconType} from "../icon/Icon";
+import {IconType} from "../icon/IconType";
 import {Button} from "../components/Button";
 import {EditText} from "../components/EditText";
 import {Keyboard, KeyboardAvoidingView, ScrollView} from "react-native";
-import {NavigationBar} from "../stateless/NavigationBar";
+import {NavigationBar} from "../components/NavigationBar";
 
 
 class RegisterForm extends React.Component {

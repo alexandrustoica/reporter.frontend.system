@@ -1,6 +1,6 @@
 import React from "react";
-import {UserLocalRepository} from "./UserLocalRepository";
-import {IconType} from "../icon/Icon";
+import {UserLocalRepository} from "../repository/UserLocalRepository";
+import {IconType} from "../icon/IconType";
 import {SystemIcon} from "../icon/SystemIcon";
 import {Text, View} from "react-native";
 

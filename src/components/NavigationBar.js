@@ -1,13 +1,14 @@
-import FlexBuilder from "../component/styles/FlexBuilder";
 import * as React from "react";
-import {View} from "react-native";
 import {SystemIcon} from "../icon/SystemIcon";
-import {NavigationBarText} from "./text/NavigationBarText";
-import {IconType} from "../icon/Icon";
+import {NavigationBarText} from "../text/NavigationBarText";
+import {IconType} from "../icon/IconType";
+import {HBox} from "../box/HBox";
 
 export const NavigationBar = (props) =>
-    <View style={[{paddingTop: 22, backgroundColor: props.color},
-        new FlexBuilder().withItemAlignment("center").withRowFlex().build()]}>
+    <HBox
+        alignItems={'center'}
+        flex={0}
+        style={{paddingTop: 22, backgroundColor: props.color}}>
         <SystemIcon
             url={props.leftIcon}
             onPress={props.leftAction}/>
@@ -19,7 +20,7 @@ export const NavigationBar = (props) =>
         <SystemIcon
             url={props.rightIcon}
             onPress={props.rightAction}/>
-    </View>
+    </HBox>
 
 NavigationBar.defaultProps = {
     leftIcon: IconType.EMPTY,

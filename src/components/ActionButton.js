@@ -2,7 +2,7 @@ import {SystemIcon} from "../icon/SystemIcon";
 import * as React from "react";
 import {Circle} from "../icon/Circle";
 import {Colors} from "../color/Colors";
-import {IconType} from "../icon/Icon";
+import {IconType} from "../icon/IconType";
 import {View} from "react-native";
 
 export const ActionButton = (props) =>

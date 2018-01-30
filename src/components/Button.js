@@ -3,7 +3,7 @@ import {CenterBox} from "../box/CenterBox";
 import * as React from "react";
 import {SystemIcon} from "../icon/SystemIcon";
 import {Colors} from "../color/Colors";
-import {IconType} from "../icon/Icon";
+import {IconType} from "../icon/IconType";
 
 export const Button = (props) =>
 	<TouchableOpacity

@@ -12,8 +12,8 @@ import Reports from "./src/reports/Reports";
 
 const ReportsWithDrawer = DrawerNavigator({
     Reports: {screen: Reports},
-    Logout: {screen: Logout},
     Stats: {screen: Graph},
+    Logout: {screen: Logout},
 });
 
 const Nav = StackNavigator({

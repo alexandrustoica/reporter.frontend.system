@@ -3,7 +3,7 @@ import * as React from "react";
 import {TextInput} from "react-native";
 import {SystemIcon} from "../icon/SystemIcon";
 import {Colors} from "../color/Colors";
-import {IconType} from "../icon/Icon";
+import {IconType} from "../icon/IconType";
 
 export const EditText = (props) =>
 	<HBox height={props.height}

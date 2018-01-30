@@ -1,15 +1,15 @@
 import React from "react";
-import {ReportService} from "./ReportService";
+import {ReportService} from "../service/ReportService";
 import {Box} from "../box/Box";
-import {IconType} from "../icon/Icon";
-import {Screen} from "../stateless/decorators/Screen";
+import {IconType} from "../icon/IconType";
+import {Screen} from "../screen/Screen";
 import {ActionButton} from "../components/ActionButton";
 import moment from "moment/moment";
 import MapView from "react-native-maps";
 import {Text} from "react-native";
 import {Colors} from "../color/Colors";
 import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
-import {NavigationBar} from "../stateless/NavigationBar";
+import {NavigationBar} from "../components/NavigationBar";
 
 export default class Report extends React.Component {
 

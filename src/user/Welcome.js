@@ -4,10 +4,7 @@ import {Box} from "../box/Box";
 import {Colors} from "../color/Colors";
 import {HBox} from "../box/HBox";
 import {Button} from "../components/Button";
-import {UserLocalRepository} from "./UserLocalRepository";
-import {IconType} from "../icon/Icon";
-import {SystemIcon} from "../icon/SystemIcon";
-
+import {UserLocalRepository} from "../repository/UserLocalRepository";
 
 const AccessButtons = (props) =>
 	<Box justifyContent={'flex-end'} flex={0}>

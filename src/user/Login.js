@@ -1,14 +1,14 @@
 import React from "react";
 import Intro from "./Intro";
 import {Colors} from "../color/Colors";
-import {IconType} from "../icon/Icon";
+import {IconType} from "../icon/IconType";
 import {EditText} from "../components/EditText";
 import R from 'ramda';
 import {Button} from "../components/Button";
-import {KeyboardAvoidingView, View} from "react-native";
-import {LoginService} from "./LoginService";
+import {KeyboardAvoidingView} from "react-native";
 import {AsyncStorage, Keyboard} from "react-native"
-import {NavigationBar} from "../stateless/NavigationBar";
+import {NavigationBar} from "../components/NavigationBar";
+import {LoginService} from "../service/LoginService";
 
 class LoginForm extends React.Component {
 

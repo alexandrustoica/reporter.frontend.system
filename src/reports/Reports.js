@@ -1,15 +1,15 @@
 import React from "react";
 import {FlatList, StatusBar} from "react-native"
-import {ReportService} from "./ReportService";
+import {ReportService} from "../service/ReportService";
 import {Box} from "../box/Box";
 import * as R from "ramda";
 import createStore from "redux/es/createStore";
-import {IconType} from "../icon/Icon";
-import {Screen} from "../stateless/decorators/Screen";
+import {IconType} from "../icon/IconType";
+import {Screen} from "../screen/Screen";
 import {ActionButton} from "../components/ActionButton";
 import {ItemReport} from "./ItemReport";
-import {UserLocalRepository} from "../user/UserLocalRepository";
-import {NavigationBar} from "../stateless/NavigationBar";
+import {UserLocalRepository} from "../repository/UserLocalRepository";
+import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
 
 export default class Reports extends React.Component {

@@ -1,8 +1,8 @@
-import {BackgroundScreen} from "../stateless/other/BackgroundScreen";
-import {Logo} from "../stateless/text/Logo";
+import {Logo} from "../text/Logo";
 import * as React from "react";
 import {Box} from "../box/Box";
-import {KeyboardAvoidingView, StatusBar} from "react-native";
+import {StatusBar} from "react-native";
+import {BackgroundScreen} from "../screen/BackgroundScreen";
 
 export default class Intro extends React.Component {
     render = () =>

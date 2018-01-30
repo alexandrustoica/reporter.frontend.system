@@ -1,14 +1,14 @@
 import React from "react";
-import {ReportService} from "./ReportService";
+import {ReportService} from "../service/ReportService";
 import {Box} from "../box/Box";
-import {IconType} from "../icon/Icon";
-import {Screen} from "../stateless/decorators/Screen";
+import {IconType} from "../icon/IconType";
+import {Screen} from "../screen/Screen";
 import {Text} from "react-native";
 import {Bar} from "react-native-pathjs-charts";
 import * as R from "ramda";
 import moment from "moment/moment";
 import {Colors} from "../color/Colors";
-import {NavigationBar} from "../stateless/NavigationBar";
+import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
 
 export default class Graph extends React.Component {

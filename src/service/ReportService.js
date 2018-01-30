@@ -1,19 +1,8 @@
-import {Endpoint} from "../service/Endpoint";
-import {AsyncStorage} from "react-native";
+import {Endpoint} from "./Endpoint";
+import {Alert, AsyncStorage} from "react-native";
 import * as R from "ramda";
-import {Alert} from "react-native";
+import {ReportLocalRepository} from "../repository/ReportLocalRepository";
 
-
-class ReportLocalRepository {
-
-    updateLocalStorageWithReports = (reports) =>
-        AsyncStorage.setItem("reports", JSON.stringify(reports))
-            .catch(error => console.log(error))
-
-    getReportsFromLocalStorage = async () =>
-        await AsyncStorage.getItem("reports")
-
-}
 
 export class ReportService {
 
