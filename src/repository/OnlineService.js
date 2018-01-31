@@ -1,43 +1,36 @@
 import {AsyncStorage} from 'react-native'
-
+import {Response} from "./Response";
 
 export class OnlineService {
 
     constructor(endpoint) {
-        // TODO: Try To Change Mutable Data Here
         this.baseUrl = endpoint
         this.page = 0
         this.size = 10
     }
 
     __getAllWithLastPageLimit = async () => {
-        const data = await this._getResponseAsJsonFrom(
-            await this._getResponseFromServer(`?page=${this.page++}&size=${this.size}`, 'GET'))
-        data.length < this.size && this.page !== 0 ? this.page-- : this.page
-        console.log(data)
-        console.log(this.page)
+        const data = await this._getResponseFromServer(`?page=${this.page++}&size=${this.size}`, 'GET')
+        data.result.length < this.size && this.page !== 0 ? this.page-- : this.page
         return data;
     }
+
+    getAllByPage = async(page) =>
+        await this._getResponseFromServer(`?page=${page}&size=${this.size}`, 'GET')
 
     getAll = async () => await this.__getAllWithLastPageLimit()
 
     insert = async (item) =>
-        (await this._getResponseAsJsonFrom(
-            await this._getResponseFromServer(``, 'POST', item)))
+            await this._getResponseFromServer(``, 'POST', item)
 
     remove = async (id) =>
-        (await this._getResponseAsJsonFrom(
-            await this._getResponseFromServer(`/${id}`, 'DELETE')))
+          await this._getResponseFromServer(`/${id}`, 'DELETE')
 
     getById = async (id) =>
-        (await this._getResponseAsJsonFrom(
-            await this._getResponseFromServer(`/${id}`, 'GET')))
+        await this._getResponseFromServer(`/${id}`, 'GET')
 
     getAllFromPastWeek = async () =>
-        await this._getResponseAsJsonFrom(
-            await this._getResponseFromServer(`/latest`, 'GET'))
-
-    _getResponseAsJsonFrom = async (response) => await response.json()
+        await  this._getResponseFromServer(`/latest`, 'GET')
 
     _getTokenFromDatabase = async () => await AsyncStorage.getItem('token')
 
@@ -50,5 +43,6 @@ export class OnlineService {
                 'Authorization': await this._getTokenFromDatabase()
             },
             body: JSON.stringify(body)
-        }).catch((error) => console.log(error))
+        }).then(async (response) => new Response((await response.json()), null))
+            .catch((error) => new Response(null, error))
 }

@@ -7,12 +7,15 @@ import {IconType} from "../icon/IconType";
 import {Screen} from "../screen/Screen";
 import {ActionButton} from "../components/ActionButton";
 import {ItemModelAdaptor, ItemReport} from "./ItemReport";
-import {UserLocalRepository} from "../repository/UserLocalRepository";
 import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
 import {OfflineService} from "../repository/ReportLocalRepository";
 import moment from "moment/moment";
 import {Controller} from "../repository/Controller";
+import {ConnectionStatusStore} from "../repository/ConnectionStatus";
+import {BarMessage} from "../components/BarMessage";
+import {TaskController} from "../data/TaskController";
+
 
 export default class Reports extends React.Component {
 
@@ -26,57 +29,41 @@ export default class Reports extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            controller: new Controller(),
-            reports: [],
-            store: createStore(this.__updateReportsFromServer),
+            controller: new TaskController(),
+            tasks: [],
+            connection: new ConnectionStatusStore()
         }
-        console.log(this.state.controller)
-        this.state.store.subscribe(this.render)
+        this.state.controller.updateDataFromRemoteLocation()
+        this.state.controller.connectToLocalStorage(
+            this.onUpdateFromController)
     }
 
-    componentWillMount = async () => {
-        await this.setState({reports: await this.state.controller.getAll()})
-    }
-
-    componentWillUnmount = async () => {
-        await this.setState({reports: []})
-    }
-
-    __updateReportsFromStateOnlyIfNeeded = (lastReports, newReports) =>
-        R.concat(lastReports,
-            R.filter(it => !R.contains(it, lastReports), newReports))
-
-    __updateReportAction = async (data) =>
-        await this.setState((lastState) => {
-            return {
-                reports: this.__updateReportsFromStateOnlyIfNeeded(
-                    lastState.reports, data)
-            }
+    onUpdateFromController = (data) => {
+        this.setState({
+            tasks: R.filter(it => R.equals(it.status, 'active'), data)
         })
-
-    __updateReportsFromServer = async (state = this.state, action) => {
-        return (action.type === "UPDATE_REPORTS") ?
-            this.__updateReportAction(action.data) : state
     }
 
-    __signalNeedToUpdateReports = async () =>
-        this.state.store.dispatch({
-            type: "UPDATE_REPORTS",
-            data: await this.state.controller.getAll()
-        })
+    componentWillMount = async () =>
+        await this.onUpdateFromController(await this.state.controller.getAllFromLocalStorage())
+
+    componentWillUnmount = async () =>
+        await this.setState({tasks: []})
 
     __adaptToItemView = (data) =>
         new ItemModelAdaptor(data.id, data.text,
-            moment(data.date).fromNow(), data.location)
+            moment(data.updated).fromNow())
 
     __showNewReportsToUserInList = (items) =>
         <FlatList
             data={items}
-            onEndReached={() => this.__signalNeedToUpdateReports()}
+            //onEndReached={() => this.__signalNeedToUpdateReports()}
             keyExtractor={(item, id) => id}
             renderItem={({item}) =>
                 <ItemReport {...this.props}
                             item={this.__adaptToItemView(item)}/>}/>
+
+    __showOfflineBarMessage = () => <BarMessage/>
 
     render = () =>
         <Screen backgroundColor={'white'}>
@@ -89,7 +76,8 @@ export default class Reports extends React.Component {
             <StatusBar
                 backgroundColor="transparent"
                 barStyle="dark-content"/>
-            {this.__showNewReportsToUserInList(this.state.reports)}
+            {this.state.connection.isOffline() ? this.__showOfflineBarMessage() : null}
+            {this.__showNewReportsToUserInList(this.state.tasks)}
             <Box justifyContent={'flex-end'}
                  alignItems={'flex-end'}
                  pointerEvents={'box-none'}

@@ -11,8 +11,6 @@ import {IconType} from "../icon/IconType";
 const CardStyle = {
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
     shadowColor: Colors.BLUE,
     shadowOffset: {
         width: 0,
@@ -78,23 +76,21 @@ const Cover = (props) =>
     </Box>
 
 export const ItemReport = (props) =>
-    <TouchableOpacity
-        activeOpacity={1.0}
-        onLongPress={() => console.log()}
-        onPress={() =>
-            props.navigation.navigate('Report', {item: props.item})}
-        style={CardStyle}>
-        <AnimatedViewFadeIn style={MapStyle}>
+    <AnimatedViewComingFromRight marginRight={20} marginLeft={20}>
+        <TouchableOpacity
+            activeOpacity={1.0}
+            onLongPress={() => console.log()}
+            onPress={() =>
+                props.navigation.navigate('Report', {item: props.item})}
+            style={CardStyle}>
             {props.item.location !== undefined ?
                 <Map {...props}/> : <Cover {...props}/>}
-        </AnimatedViewFadeIn>
-        <AnimatedViewComingFromRight>
             <Box flexDirection={'column'}>
                 <Text style={TitleStyle}>{props.item.primaryText}</Text>
                 <Text style={DateStyle}>{props.item.secondaryText}</Text>
             </Box>
-        </AnimatedViewComingFromRight>
-    </TouchableOpacity>
+        </TouchableOpacity>
+    </AnimatedViewComingFromRight>
 
 ItemReport.defaultProps = {
     item: new ItemModelAdaptor("Test", "1 day ago"),

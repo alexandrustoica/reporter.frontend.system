@@ -4,19 +4,20 @@ export const ActionType = {
     INSERT: 'INSERT',
     DELETE: 'DELETE',
     GET_BY_ID: 'GET_BY_ID',
-    GET_ALL: 'GET_ALL'
+    GET_ALL: 'GET_ALL',
+    GET_ALL_BY_PAGE: 'GET_ALL_BY_PAGE'
 }
 
 export class ReportLocalRepository {
 
     updateLocalStorageWithReports = async (reports) => {
-        await AsyncStorage.setItem("reports", JSON.stringify(reports))
+        await AsyncStorage.setItem("tasks", JSON.stringify(reports))
             .catch(error => console.log(error))
         return this.getReportsFromLocalStorage()
     }
 
     getReportsFromLocalStorage = async () =>
-        await AsyncStorage.getItem("reports")
+        await AsyncStorage.getItem("tasks")
 }
 
 export class LocalRepository {

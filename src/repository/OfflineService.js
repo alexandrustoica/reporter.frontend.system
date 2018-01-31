@@ -1,24 +1,23 @@
-
 import {ActionType, LocalRepository} from "./ReportLocalRepository";
 import * as R from "ramda";
 
 export class OfflineService {
 
-    constructor() {
-        this.repository = new LocalRepository('items');
-        this.history = new LocalRepository('history-reports');
+    constructor(databaseKey, historyKey) {
+        this.repository = new LocalRepository(databaseKey);
+        this.history = new LocalRepository(historyKey);
         //this.__resetHistory()
         //this.__resetLocalRepository()
     }
 
     insert = async (item) => {
-        this.__insertIntoHistory({type: ActionType.INSERT, data: item})
+        await this.__insertIntoHistory({type: ActionType.INSERT, data: item})
         return await this.repository.updateLocalStorageWithData((
             await this.getAll()).concat([item]))
     }
 
     delete = async (id) => {
-        this.__insertIntoHistory({type: ActionType.DELETE, data: id})
+        await this.__insertIntoHistory({type: ActionType.DELETE, data: id})
         return await this.repository.updateLocalStorageWithData(
             R.filter(it => it.id !== id, (await this.getAll())))
     }
@@ -32,6 +31,7 @@ export class OfflineService {
         .updateLocalStorageWithData((await this.actions()).concat([action]))
 
     __resetHistory = () => this.history.updateLocalStorageWithData([])
+
     __resetLocalRepository = () => this.repository.updateLocalStorageWithData([])
 
     __syncWithAction = (action, onlineService) =>
@@ -48,4 +48,12 @@ export class OfflineService {
 
     actions = async () => await this.history.getDataFromLocalStorage()
     getAll = async () => await this.repository.getDataFromLocalStorage()
+
+    getAllByPage = async (page) =>
+        R.findLast(it => R.equals(it.pageIndex, page),
+            (await this.repository.getDataFromLocalStorage()))
+
+    savePageToLocalRepository = async (page) =>
+        R.concat(R.filter(it => !R.equals(it.pageIndex, page.pageIndex),
+            (await this.repository.getDataFromLocalStorage())), page)
 }
