@@ -43,11 +43,12 @@ const DateStyle = {
 }
 
 export class ItemModelAdaptor {
-    constructor(id, primaryText, secondaryText, location) {
+    constructor(id, primaryText, secondaryText, data, location) {
         this.id = id
         this.primaryText = primaryText;
         this.secondaryText = secondaryText;
         this.location = location;
+        this.data = data;
     }
 }
 
@@ -81,7 +82,7 @@ export const ItemReport = (props) =>
             activeOpacity={1.0}
             onLongPress={() => console.log()}
             onPress={() =>
-                props.navigation.navigate('Report', {item: props.item})}
+                props.navigation.navigate('UpdateComponent', {item: props.item})}
             style={CardStyle}>
             {props.item.location !== undefined ?
                 <Map {...props}/> : <Cover {...props}/>}

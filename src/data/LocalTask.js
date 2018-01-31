@@ -18,7 +18,7 @@ export class LocalTask {
         await this.store(R.filter(it => !R.equals(it.id, item.id), (await this.get())).concat([item]))
 
     delete = async (item) =>
-        await this.store(R.filter(it=> !R.equals(it.id, item.id), (await this.get())))
+        await this.store(R.filter(it => !R.equals(it.id, item.id), (await this.get())))
 
     store = async (data) => {
         this.onUpdateLocalStorage(data)

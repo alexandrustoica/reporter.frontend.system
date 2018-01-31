@@ -9,6 +9,7 @@ import Report from "./src/reports/Report";
 import Graph from "./src/reports/Graph";
 import {DrawerNavigator} from "react-navigation";
 import Reports from "./src/reports/Reports";
+import UpdateComponent from "./src/reports/UpdateReport";
 
 const ReportsWithDrawer = DrawerNavigator({
     Reports: {screen: Reports},
@@ -27,6 +28,7 @@ const Nav = StackNavigator({
             }
         },
         AddReport: {screen: AddReport},
+        UpdateComponent: {screen: UpdateComponent},
         Report: {screen: Report},
         Graph: {screen: Graph},
     },

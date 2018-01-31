@@ -4,7 +4,7 @@ import * as R from "ramda";
 import {LocalTask} from "./LocalTask";
 import {WebSocketTask} from "./WebSocketTask";
 
-class DataFromTaskModel {
+export class DataFromTaskModel {
     constructor(id, text, status, updated) {
         this.id = id
         this.text = text
@@ -15,6 +15,7 @@ class DataFromTaskModel {
 
 
 export class TaskController {
+
     constructor() {
         this.websocket = new WebSocketTask(this.onMessageFromRemoteServer)
         this.local = new LocalTask('data', this.notifyListenersAboutLocalChange)
@@ -34,6 +35,16 @@ export class TaskController {
         if (R.equals(message.event, "deleted")) {
             await this.local.delete(this.__adapt(message.task))
         }
+    }
+
+    updateItemToLocalLocation = async (item) =>
+        await this.local.insert(this.__adapt(item))
+
+    updateItemToRemoteLocation = async (item) =>
+        await new RemoteTask(Endpoint.UPDATE_TASK(item.id), 'PUT', item).execute()
+
+    updateItemToLocalAndRemoteLocation = async (item) => {
+        await this.updateItemToLocalLocation((await this.updateItemToRemoteLocation(item)).result)
     }
 
     updateDataFromRemoteLocation = () =>

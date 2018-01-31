@@ -52,7 +52,7 @@ export default class Reports extends React.Component {
 
     __adaptToItemView = (data) =>
         new ItemModelAdaptor(data.id, data.text,
-            moment(data.updated).fromNow())
+            moment(data.updated).fromNow(), data)
 
     __showNewReportsToUserInList = (items) =>
         <FlatList

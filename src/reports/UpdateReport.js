@@ -8,6 +8,7 @@ import * as R from "ramda";
 import {NavigationBar} from "../components/NavigationBar";
 import {Screen} from "../screen/Screen";
 import {Controller} from "../repository/Controller";
+import {DataFromTaskModel, TaskController} from "../data/TaskController";
 
 export class Location {
     constructor(latitude, longitude) {
@@ -23,40 +24,28 @@ export class Report {
     }
 }
 
-export default class AddReport extends React.Component {
+export default class UpdateComponent extends React.Component {
 
     static navigationOptions = {header: null}
 
     constructor(props) {
         super(props)
         this.state = {
-            controller: new Controller(),
+            controller: new TaskController(),
             text: '',
-            item: props.item,
-            region: {
-                latitude: 0.0,
-                longitude: 0.0,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-            }
+            item: this.props.navigation.state.params.item,
         }
     }
 
-    __saveUserLocationToInternalState = async (location) =>
-        await this.setState({
-            region: {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-            }
-        })
-
-    __getReportFromCurrentUserData = () => new Report(this.state.text,
-        new Location(this.state.region.latitude, this.state.region.longitude))
+    __getReportFromCurrentUserData = () =>
+        new DataFromTaskModel(
+            this.state.item.data.id,
+            this.state.text,
+            this.state.item.data.status,
+            this.state.item.data.updated)
 
     __sendSaveReportRequestToServer = async (report) =>
-        await this.state.controller.insert(report)
+        await this.state.controller.updateItemToLocalAndRemoteLocation(report)
 
     __goToReportsScreenWithDataReloaded = () =>
         this.props.navigation.navigate('Reports')
@@ -65,37 +54,21 @@ export default class AddReport extends React.Component {
         R.compose(this.__goToReportsScreenWithDataReloaded,
             this.__sendSaveReportRequestToServer)(report)
 
-    componentDidMount = async () => {
-        await navigator.geolocation.getCurrentPosition(
-            (location) => this.__saveUserLocationToInternalState(location),
-            (error) => console.log(error),
-            {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
-    }
 
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
                 leftIcon={IconType.BACK_DARK}
-                text={"Add Report"}
+                text={"Update"}
                 align={'left'}
                 leftAction={() => this.props.navigation.goBack()}/>
             <EditText
                 fontSize={20}
-                text={"Write a short description for your item..."}
+                text={this.state.item.primaryText}
                 onChangeText={(text) => this.setState({text: text})}/>
-            <MapView
-                style={{width: "100%", flex: 1}}
-                showsUserLocation={true}
-                region={this.state.region}>
-                <MapView.Marker coordinate={{
-                    longitude: this.state.region.longitude,
-                    latitude: this.state.region.latitude,
-                }}/>
-            </MapView>
             <Button
-                icon={IconType.PLUS_LIGHT}
                 backgroundColor={Colors.BLUE}
-                text={""}
+                text={"UPDATE"}
                 height={70}
                 flex={null}
                 onPress={() => this.__saveReportAndGoBackToReportsScreen(
