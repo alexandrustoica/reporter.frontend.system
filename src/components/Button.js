@@ -15,7 +15,7 @@ export const Button = (props) =>
 			flex: props.flex,
 		}}>
 		<CenterBox>
-			<SystemIcon url={props.icon}/>
+			<SystemIcon url={props.icon} onPress={props.onPress}/>
 			<Text style={{color: props.textColor, fontSize: props.textSize, textAlign: 'center', alignSelf: 'center'}}>
 				{props.text}
 			</Text>

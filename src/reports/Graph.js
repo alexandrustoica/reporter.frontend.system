@@ -1,5 +1,4 @@
 import React from "react";
-import {ReportService} from "../service/ReportService";
 import {Box} from "../box/Box";
 import {IconType} from "../icon/IconType";
 import {Screen} from "../screen/Screen";
@@ -10,12 +9,13 @@ import moment from "moment/moment";
 import {Colors} from "../color/Colors";
 import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
+import {Controller} from "../repository/Controller";
 
 export default class Graph extends React.Component {
 
     static navigationOptions = {
         header: null,
-        drawerIcon: ({ tintColor }) => (
+        drawerIcon: () => (
             <SystemIcon url={IconType.STATS_ICON}/>
         )
     };
@@ -23,7 +23,7 @@ export default class Graph extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            service: new ReportService(),
+            controller: new Controller(),
             graphData: [[{"v": 49}]],
         }
     }
@@ -31,7 +31,7 @@ export default class Graph extends React.Component {
     componentDidMount = async () => {
         this.setState({
             graphData: [this.__getGraphDataFromReports(
-                await this.state.service.getAllReportsFromPastWeek())]
+                await this.state.controller.getAllFromPastWeek())]
         })
     }
 
@@ -87,6 +87,7 @@ export default class Graph extends React.Component {
         <Screen backgroundColor={'white'}>
             <NavigationBar
                 text={"Reports Stats"}
+                align={'left'}
                 leftIcon={IconType.BACK_DARK}
                 leftAction={() => this.props.navigation.goBack()}/>
             <Box flexDirection={'column'} style={{margin: 20}}>

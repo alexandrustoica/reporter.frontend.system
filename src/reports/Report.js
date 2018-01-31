@@ -1,15 +1,15 @@
 import React from "react";
-import {ReportService} from "../service/ReportService";
 import {Box} from "../box/Box";
 import {IconType} from "../icon/IconType";
 import {Screen} from "../screen/Screen";
 import {ActionButton} from "../components/ActionButton";
-import moment from "moment/moment";
 import MapView from "react-native-maps";
 import {Text} from "react-native";
 import {Colors} from "../color/Colors";
 import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
 import {NavigationBar} from "../components/NavigationBar";
+import {Controller} from "../repository/Controller";
+
 
 export default class Report extends React.Component {
 
@@ -18,39 +18,44 @@ export default class Report extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            service: new ReportService(),
-            report: this.props.navigation.state.params.report
+            controller: new Controller(),
+            item: this.props.navigation.state.params.item
         }
     }
+
+    __renderMapIfRequested = () =>
+        <MapView
+            style={{width: "100%", flex: 2}}
+            initialRegion={{
+                longitude: this.state.item.location.longitude,
+                latitude: this.state.item.location.latitude,
+                latitudeDelta: 0.5,
+                longitudeDelta: 0.5,
+            }}>
+            <MapView.Marker coordinate={{
+                longitude: this.state.item.location.longitude,
+                latitude: this.state.item.location.latitude,
+            }}/>
+        </MapView>
 
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
                 text={"My Report"}
+                align={'left'}
                 leftIcon={IconType.BACK_DARK}
                 leftAction={() => this.props.navigation.goBack()}/>
             <Box flexDirection={'column'} style={{margin: 20}}>
                 <Text style={{fontSize: 45, fontWeight: 'bold'}}>
-                    {this.state.report.text}
+                    {this.state.item.primaryText}
                 </Text>
                 <Text style={{marginTop: 10, fontSize: 18}}>
-                    {moment(this.state.report.date).fromNow()}
+                    {this.state.item.secondaryText}
                 </Text>
             </Box>
             <AnimatedViewFadeIn style={{width: "100%", flex: 2}}>
-            <MapView
-                style={{width: "100%", flex: 2}}
-                initialRegion={{
-                    longitude: this.state.report.location.longitude,
-                    latitude: this.state.report.location.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }}>
-                <MapView.Marker coordinate={{
-                    longitude: this.state.report.location.longitude,
-                    latitude: this.state.report.location.longitude,
-                }}/>
-            </MapView>
+                {this.state.item.location !== undefined ?
+                    this.__renderMapIfRequested() : null}
             </AnimatedViewFadeIn>
             <Box justifyContent={'flex-end'}
                  alignItems={'flex-end'}
@@ -62,12 +67,12 @@ export default class Report extends React.Component {
                      height: '56%'
                  }}>
                 <ActionButton
-                icon={IconType.DELETE_LIGHT}
+                    icon={IconType.DELETE_LIGHT}
                     backgroundColor={Colors.LIGHT_BLUE}
                     onPress={async () => {
-                    await this.state.service.remove(this.state.report.id)
-                    this.props.navigation.navigate('Reports')
-                }}/>
+                        await this.state.controller.delete(this.state.item.id)
+                        this.props.navigation.navigate('Reports')
+                    }}/>
             </Box>
         </Screen>
 }

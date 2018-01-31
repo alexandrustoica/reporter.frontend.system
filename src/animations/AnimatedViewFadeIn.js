@@ -4,7 +4,7 @@ import {Animated} from "react-native";
 export class AnimatedViewFadeIn extends React.Component {
 
     constructor(props) {
-        super(props)
+        super()
         this.state = {
             opacity: new Animated.Value(0)
         }

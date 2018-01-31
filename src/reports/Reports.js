@@ -1,22 +1,24 @@
 import React from "react";
-import {FlatList, StatusBar} from "react-native"
-import {ReportService} from "../service/ReportService";
+import {FlatList, StatusBar} from "react-native";
 import {Box} from "../box/Box";
 import * as R from "ramda";
 import createStore from "redux/es/createStore";
 import {IconType} from "../icon/IconType";
 import {Screen} from "../screen/Screen";
 import {ActionButton} from "../components/ActionButton";
-import {ItemReport} from "./ItemReport";
+import {ItemModelAdaptor, ItemReport} from "./ItemReport";
 import {UserLocalRepository} from "../repository/UserLocalRepository";
 import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
+import {OfflineService} from "../repository/ReportLocalRepository";
+import moment from "moment/moment";
+import {Controller} from "../repository/Controller";
 
 export default class Reports extends React.Component {
 
     static navigationOptions = {
         header: null,
-        drawerIcon: ({ tintColor }) => (
+        drawerIcon: () => (
             <SystemIcon url={IconType.REPORTS_ICON}/>
         )
     };
@@ -24,58 +26,64 @@ export default class Reports extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            service: new ReportService(),
+            controller: new Controller(),
             reports: [],
-            store: createStore(this.__updateReportsFromServer)
+            store: createStore(this.__updateReportsFromServer),
         }
+        console.log(this.state.controller)
         this.state.store.subscribe(this.render)
     }
 
     componentWillMount = async () => {
-        await this.setState({reports: await this.state.service.reports()})
+        await this.setState({reports: await this.state.controller.getAll()})
     }
 
     componentWillUnmount = async () => {
         await this.setState({reports: []})
     }
 
-    __update_report_action = async (data) =>
+    __updateReportsFromStateOnlyIfNeeded = (lastReports, newReports) =>
+        R.concat(lastReports,
+            R.filter(it => !R.contains(it, lastReports), newReports))
+
+    __updateReportAction = async (data) =>
         await this.setState((lastState) => {
             return {
-                reports: R.concat(lastState.reports,
-                    R.forEach(console.log, data))
+                reports: this.__updateReportsFromStateOnlyIfNeeded(
+                    lastState.reports, data)
             }
         })
 
     __updateReportsFromServer = async (state = this.state, action) => {
         return (action.type === "UPDATE_REPORTS") ?
-            this.__update_report_action(action.data) : null
+            this.__updateReportAction(action.data) : state
     }
 
     __signalNeedToUpdateReports = async () =>
         this.state.store.dispatch({
             type: "UPDATE_REPORTS",
-            data: await this.state.service.reports()
+            data: await this.state.controller.getAll()
         })
 
-    __showNewReportsToUserInList = (items) =>
-        <FlatList data={items}
-                  onEndReached={() => this.__signalNeedToUpdateReports()}
-                  keyExtractor={(item, id) => id}
-                  renderItem={({item}) =>
-                      <ItemReport {...this.props} report={item}/>}/>
+    __adaptToItemView = (data) =>
+        new ItemModelAdaptor(data.id, data.text,
+            moment(data.date).fromNow(), data.location)
 
-    __logoutUserFromCurrentSession = () => {
-        new UserLocalRepository().logout()
-        this.props.navigation.navigate('Welcome')
-    }
+    __showNewReportsToUserInList = (items) =>
+        <FlatList
+            data={items}
+            onEndReached={() => this.__signalNeedToUpdateReports()}
+            keyExtractor={(item, id) => id}
+            renderItem={({item}) =>
+                <ItemReport {...this.props}
+                            item={this.__adaptToItemView(item)}/>}/>
 
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
                 text={"Reports"}
-                rightIcon={IconType.STATS_ICON}
-                rightAction={() => this.props.navigation.navigate('Graph')}
+                rightIcon={IconType.SEARCH_DARK}
+                rightAction={async () => console.log(await new Controller())}
                 leftIcon={IconType.MENU_ICON}
                 leftAction={() => this.props.navigation.navigate('DrawerOpen')}/>
             <StatusBar

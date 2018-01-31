@@ -7,17 +7,16 @@ import {Colors} from "../color/Colors";
 import * as R from "ramda";
 import {NavigationBar} from "../components/NavigationBar";
 import {Screen} from "../screen/Screen";
-import {ReportService} from "../service/ReportService";
+import {Controller} from "../repository/Controller";
 
-
-class Location {
+export class Location {
     constructor(latitude, longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 }
 
-class Report {
+export class Report {
     constructor(text, location) {
         this.text = text;
         this.location = location;
@@ -31,34 +30,32 @@ export default class AddReport extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            service: new ReportService(),
+            controller: new Controller(),
             text: '',
             region: {
                 latitude: 0.0,
                 longitude: 0.0,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
             }
         }
     }
 
-    __saveUserLocationToInternalState = async (location) => {
-        console.log(location)
+    __saveUserLocationToInternalState = async (location) =>
         await this.setState({
             region: {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
             }
         })
-    }
 
     __getReportFromCurrentUserData = () => new Report(this.state.text,
-            new Location(this.state.region.latitude, this.state.region.longitude))
+        new Location(this.state.region.latitude, this.state.region.longitude))
 
     __sendSaveReportRequestToServer = async (report) =>
-        await this.state.service.insert(report)
+        await this.state.controller.insert(report)
 
     __goToReportsScreenWithDataReloaded = () =>
         this.props.navigation.navigate('Reports')
@@ -79,11 +76,11 @@ export default class AddReport extends React.Component {
             <NavigationBar
                 leftIcon={IconType.BACK_DARK}
                 text={"Add Report"}
+                align={'left'}
                 leftAction={() => this.props.navigation.goBack()}/>
             <EditText
                 fontSize={20}
-                multiline={true}
-                text={"Write a short description for your report..."}
+                text={"Write a short description for your item..."}
                 onChangeText={(text) => this.setState({text: text})}/>
             <MapView
                 style={{width: "100%", flex: 1}}

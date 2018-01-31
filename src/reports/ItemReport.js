@@ -3,9 +3,10 @@ import {Text, TouchableOpacity} from "react-native";
 import {Colors} from "../color/Colors";
 import {Box} from "../box/Box";
 import MapView from "react-native-maps";
-import moment from "moment";
 import {AnimatedViewComingFromRight} from "../animations/AnimatedViewComingFromRight";
 import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
+import {SystemIcon} from "../icon/SystemIcon";
+import {IconType} from "../icon/IconType";
 
 const CardStyle = {
     marginTop: 10,
@@ -17,8 +18,8 @@ const CardStyle = {
         width: 0,
         height: 10
     },
-    shadowRadius: 40,
-    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOpacity: 0.15,
     borderRadius: 10,
     backgroundColor: Colors.WHITE,
 }
@@ -27,7 +28,7 @@ const MapStyle = {
     flex: 1,
     height: 200,
     margin: 5,
-    borderRadius: 10
+    borderRadius: 10,
 }
 
 const TitleStyle = {
@@ -43,37 +44,60 @@ const DateStyle = {
     marginBottom: 20,
 }
 
+export class ItemModelAdaptor {
+    constructor(id, primaryText, secondaryText, location) {
+        this.id = id
+        this.primaryText = primaryText;
+        this.secondaryText = secondaryText;
+        this.location = location;
+    }
+}
+
+const Map = (props) =>
+    <MapView
+        style={MapStyle}
+        scrollEnabled={false}
+        zoomEnabled={false}
+        initialRegion={{
+            longitude: props.item.location.longitude,
+            latitude: props.item.location.latitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+        }}>
+        <MapView.Marker coordinate={{
+            longitude: props.item.location.longitude,
+            latitude: props.item.location.latitude,
+        }}/>
+    </MapView>
+
+const Cover = (props) =>
+    <Box alignItems={'center'}
+         justifyContent={'center'}
+         style={[MapStyle, {backgroundColor: props.coverColor}]}>
+        <SystemIcon url={props.icon}/>
+    </Box>
+
 export const ItemReport = (props) =>
-        <TouchableOpacity
-            onPress={() =>
-                props.navigation.navigate('Report', {report: props.report})}
-            style={CardStyle}>
-            <AnimatedViewFadeIn style={MapStyle}>
-            <MapView
-                style={MapStyle}
-                scrollEnabled={false}
-                zoomEnabled={false}
-                initialRegion={{
-                    longitude: props.report.location.longitude,
-                    latitude: props.report.location.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }}>
-                <MapView.Marker coordinate={{
-                    longitude: props.report.location.longitude,
-                    latitude: props.report.location.longitude,
-                }}/>
-            </MapView>
-            </AnimatedViewFadeIn>
-            <AnimatedViewComingFromRight>
+    <TouchableOpacity
+        activeOpacity={1.0}
+        onLongPress={() => console.log()}
+        onPress={() =>
+            props.navigation.navigate('Report', {item: props.item})}
+        style={CardStyle}>
+        <AnimatedViewFadeIn style={MapStyle}>
+            {props.item.location !== undefined ?
+                <Map {...props}/> : <Cover {...props}/>}
+        </AnimatedViewFadeIn>
+        <AnimatedViewComingFromRight>
             <Box flexDirection={'column'}>
-                <Text style={TitleStyle}>{props.report.text}</Text>
-                <Text
-                    style={DateStyle}>{moment(props.report.date).fromNow()}</Text>
+                <Text style={TitleStyle}>{props.item.primaryText}</Text>
+                <Text style={DateStyle}>{props.item.secondaryText}</Text>
             </Box>
-            </AnimatedViewComingFromRight>
-        </TouchableOpacity>
+        </AnimatedViewComingFromRight>
+    </TouchableOpacity>
 
 ItemReport.defaultProps = {
-    report: {}
+    item: new ItemModelAdaptor("Test", "1 day ago"),
+    icon: IconType.REPORTS_ICON,
+    coverColor: Colors.LIGHT_BLUE
 }

@@ -6,9 +6,10 @@ import {Text, View} from "react-native";
 
 export default class Logout extends React.Component {
 
+    // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         header: null,
-        drawerIcon: ({tintColor}) => (
+        drawerIcon: () => (
             <SystemIcon url={IconType.LOGOUT_ICON}/>
         )
     };
