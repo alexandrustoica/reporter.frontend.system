@@ -9,6 +9,9 @@ import {KeyboardAvoidingView} from "react-native";
 import {AsyncStorage, Keyboard} from "react-native"
 import {NavigationBar} from "../components/NavigationBar";
 import {LoginService} from "../service/LoginService";
+import {SystemAction} from "./Actions";
+import {store} from "../utils/store";
+import * as Rx from "rxjs";
 
 class LoginForm extends React.Component {
 
@@ -17,29 +20,36 @@ class LoginForm extends React.Component {
         this.state = {username: '', password: '', flexValue: 2}
     }
 
+    __unsubscribe = store.subscribe(() => {
+        if(store.getState().systemReducer.token !== undefined) {
+            this.__unsubscribe()
+            this.__keyboardHideSubscription.unsubscribe();
+            this.__keyboardShowSubscription.unsubscribe();
+            this.props.navigation.navigate('Reports')
+        }
+    })
+
     componentWillMount() {
-        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow',
-            () => this.setState({flexValue: 10}));
-        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide',
-            () => this.setState({flexValue: 2}));
+        this.__keyboardShowSubscription = Rx.Observable
+            .fromEvent(Keyboard, 'keyboardWillShow')
+            .subscribe(() => this.setState({flexValue: 10}))
+
+        this.__keyboardHideSubscription = Rx.Observable
+            .fromEvent(Keyboard, 'keyboardWillHide')
+            .subscribe(() => this.setState({flexValue: 2}))
     }
 
     componentWillUnmount() {
-        this.keyboardWillHideSub.remove();
-        this.keyboardWillShowSub.remove();
+        this.__unsubscribe();
+        this.__keyboardHideSubscription.unsubscribe();
+        this.__keyboardShowSubscription.unsubscribe();
     }
 
-    _getTokenFromServerByLoggingIn = async () =>
-        await new LoginService().login(this.state.username, this.state.password)
-
-    _saveTokenToLocalStorage = async (token) =>
-        await AsyncStorage.setItem('token', token)
-
-    _goToReportsScreen = () => this.props.navigation.navigate('Reports')
-
     _onLoginButtonClick = async () =>
-        R.compose(this._goToReportsScreen, this._saveTokenToLocalStorage)
-        (await this._getTokenFromServerByLoggingIn())
+        store.dispatch(SystemAction.login({
+            username: this.state.username,
+            password: this.state.password
+        }))
 
     render = () =>
         <KeyboardAvoidingView

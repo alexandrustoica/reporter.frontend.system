@@ -14,8 +14,6 @@ export class OnlineService {
         const data = await this._getResponseAsJsonFrom(
             await this._getResponseFromServer(`?page=${this.page++}&size=${this.size}`, 'GET'))
         data.length < this.size && this.page !== 0 ? this.page-- : this.page
-        console.log(data)
-        console.log(this.page)
         return data;
     }
 

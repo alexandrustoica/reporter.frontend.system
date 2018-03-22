@@ -10,6 +10,7 @@ export const EditText = (props) =>
 	      alignItems={props.alignment}
 	      style={{backgroundColor: props.backgroundColor}}>
 		<TextInput
+            autoCapitalize={props.autoCapitalize}
 			placeholder={props.text}
 			placeholderTextColor={props.textColor}
             multiline={props.multiline}
@@ -40,4 +41,5 @@ EditText.defaultProps = {
 	alignment: 'center',
 	padding: 20,
 	onChangeText: null,
+    autoCapitalize: 'none',
 }

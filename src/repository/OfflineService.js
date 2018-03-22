@@ -6,7 +6,7 @@ export class OfflineService {
 
     constructor() {
         this.repository = new LocalRepository('items');
-        this.history = new LocalRepository('history-reports');
+        this.history = new LocalRepository('history-reportsReducer');
         //this.__resetHistory()
         //this.__resetLocalRepository()
     }
@@ -32,6 +32,7 @@ export class OfflineService {
         .updateLocalStorageWithData((await this.actions()).concat([action]))
 
     __resetHistory = () => this.history.updateLocalStorageWithData([])
+
     __resetLocalRepository = () => this.repository.updateLocalStorageWithData([])
 
     __syncWithAction = (action, onlineService) =>

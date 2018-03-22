@@ -7,7 +7,8 @@ import {Colors} from "../color/Colors";
 import * as R from "ramda";
 import {NavigationBar} from "../components/NavigationBar";
 import {Screen} from "../screen/Screen";
-import {Controller} from "../repository/Controller";
+import {ReportAction} from "./Actions";
+import {store} from "../utils/store";
 
 export class Location {
     constructor(latitude, longitude) {
@@ -30,7 +31,6 @@ export default class AddReport extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            controller: new Controller(),
             text: '',
             region: {
                 latitude: 0.0,
@@ -54,15 +54,17 @@ export default class AddReport extends React.Component {
     __getReportFromCurrentUserData = () => new Report(this.state.text,
         new Location(this.state.region.latitude, this.state.region.longitude))
 
-    __sendSaveReportRequestToServer = async (report) =>
-        await this.state.controller.insert(report)
+    __saveNewReport = (report) => {
+        const token = store.getState().systemReducer.token;
+        store.dispatch(new ReportAction(token).create(report))
+    }
 
-    __goToReportsScreenWithDataReloaded = () =>
+    __goToReportsScreen = () =>
         this.props.navigation.navigate('Reports')
 
     __saveReportAndGoBackToReportsScreen = (report) =>
-        R.compose(this.__goToReportsScreenWithDataReloaded,
-            this.__sendSaveReportRequestToServer)(report)
+        R.compose(this.__goToReportsScreen,
+            this.__saveNewReport)(report)
 
     componentDidMount = async () => {
         await navigator.geolocation.getCurrentPosition(

@@ -9,6 +9,8 @@ import {Colors} from "../color/Colors";
 import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
 import {NavigationBar} from "../components/NavigationBar";
 import {Controller} from "../repository/Controller";
+import {ReportAction} from "./Actions";
+import {store} from "../utils/store";
 
 
 export default class Report extends React.Component {
@@ -18,6 +20,7 @@ export default class Report extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            token: store.getState().systemReducer.token,
             controller: new Controller(),
             item: this.props.navigation.state.params.item
         }
@@ -37,6 +40,12 @@ export default class Report extends React.Component {
                 latitude: this.state.item.location.latitude,
             }}/>
         </MapView>
+
+    __onDeleteButtonClick = () => {
+        store.dispatch(new ReportAction(this.state.token)
+            .delete(this.state.item.id))
+        this.props.navigation.navigate('Reports')
+    }
 
     render = () =>
         <Screen backgroundColor={'white'}>
@@ -69,10 +78,7 @@ export default class Report extends React.Component {
                 <ActionButton
                     icon={IconType.DELETE_LIGHT}
                     backgroundColor={Colors.LIGHT_BLUE}
-                    onPress={async () => {
-                        await this.state.controller.delete(this.state.item.id)
-                        this.props.navigation.navigate('Reports')
-                    }}/>
+                    onPress={() => this.__onDeleteButtonClick()}/>
             </Box>
         </Screen>
 }

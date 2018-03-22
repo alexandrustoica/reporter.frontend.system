@@ -4,7 +4,7 @@ import {Box} from "../box/Box";
 import {Colors} from "../color/Colors";
 import {HBox} from "../box/HBox";
 import {Button} from "../components/Button";
-import {UserLocalRepository} from "../repository/UserLocalRepository";
+import * as Rx from "rxjs";
 
 const AccessButtons = (props) =>
 	<Box justifyContent={'flex-end'} flex={0}>
@@ -21,13 +21,7 @@ const AccessButtons = (props) =>
 
 
 export default class Welcome extends React.Component {
+
 	static navigationOptions = { header: null };
-
-	componentWillMount = async() => {
-		status = await new UserLocalRepository().getToken()
-        if(await new UserLocalRepository().getToken() != null)
-            this.props.navigation.navigate('Reports')
-	}
-
 	render = () => <Intro content={<AccessButtons {...this.props}/>}/>
 }

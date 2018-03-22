@@ -1,14 +1,14 @@
 import React from "react";
-import StackNavigator from "react-navigation/lib-rn/navigators/StackNavigator";
-import Welcome from "./src/user/Welcome";
-import Register from "./src/user/Register";
-import Login from "./src/user/Login";
-import Logout from "./src/user/Logout";
+import Welcome from "./src/system/Welcome";
+import Register, {LoginAfterRegister} from "./src/system/Register";
+import Login from "./src/system/Login";
+import Logout from "./src/system/Logout";
 import AddReport from "./src/reports/AddReport";
 import Report from "./src/reports/Report";
 import Graph from "./src/reports/Graph";
-import {DrawerNavigator} from "react-navigation";
+import {DrawerNavigator, StackNavigator} from "react-navigation";
 import Reports from "./src/reports/Reports";
+import {RCamera} from "./src/reports/RCamera";
 
 const ReportsWithDrawer = DrawerNavigator({
     Reports: {screen: Reports},
@@ -17,9 +17,11 @@ const ReportsWithDrawer = DrawerNavigator({
 });
 
 const Nav = StackNavigator({
+        RCamera: {screen: RCamera},
         Welcome: {screen: Welcome},
         Login: {screen: Login},
         Register: {screen: Register},
+        LoginAfterRegister: {screen: LoginAfterRegister},
         Reports: {
             screen: ReportsWithDrawer,
             navigationOptions: {

@@ -80,7 +80,6 @@ const Cover = (props) =>
 export const ItemReport = (props) =>
     <TouchableOpacity
         activeOpacity={1.0}
-        onLongPress={() => console.log()}
         onPress={() =>
             props.navigation.navigate('Report', {item: props.item})}
         style={CardStyle}>

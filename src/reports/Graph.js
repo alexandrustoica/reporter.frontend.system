@@ -92,7 +92,7 @@ export default class Graph extends React.Component {
                 leftAction={() => this.props.navigation.goBack()}/>
             <Box flexDirection={'column'} style={{margin: 20}}>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>
-                    {"Number of reports send this week ..."}
+                    {"Number of reportsReducer send this week ..."}
                 </Text>
             </Box>
             <Bar data={this.state.graphData} options={this.options} accessorKey='v'/>

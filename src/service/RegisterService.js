@@ -6,7 +6,7 @@ export class RegisterService {
 
 	constructor(navigation) {
 		this.navigation = navigation;
-		this.endpoint = Endpoint.REGISTER_CONSUMER;
+		this.endpoint = Endpoint.REGISTER;
 	}
 
 	signUp = (username, password, confirmPassword, email, name) =>

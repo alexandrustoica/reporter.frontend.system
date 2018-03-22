@@ -10,13 +10,13 @@ export const ActionType = {
 export class ReportLocalRepository {
 
     updateLocalStorageWithReports = async (reports) => {
-        await AsyncStorage.setItem("reports", JSON.stringify(reports))
+        await AsyncStorage.setItem("reportsReducer", JSON.stringify(reports))
             .catch(error => console.log(error))
         return this.getReportsFromLocalStorage()
     }
 
     getReportsFromLocalStorage = async () =>
-        await AsyncStorage.getItem("reports")
+        await AsyncStorage.getItem("reportsReducer")
 }
 
 export class LocalRepository {
