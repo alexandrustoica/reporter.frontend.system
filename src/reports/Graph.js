@@ -9,7 +9,6 @@ import moment from "moment/moment";
 import {Colors} from "../color/Colors";
 import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
-import {Controller} from "../repository/Controller";
 
 export default class Graph extends React.Component {
 
@@ -23,16 +22,16 @@ export default class Graph extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            controller: new Controller(),
+            //controller: new Controller(),
             graphData: [[{"v": 49}]],
         }
     }
 
     componentDidMount = async () => {
-        this.setState({
-            graphData: [this.__getGraphDataFromReports(
-                await this.state.controller.getAllFromPastWeek())]
-        })
+        // this.setState({
+        //     graphData: [this.__getGraphDataFromReports(
+        //         await this.state.controller.getAllFromPastWeek())]
+        // })
     }
 
     __getGraphDataFromReports = (reports) =>

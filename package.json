@@ -1,25 +1,30 @@
 {
   "name": "taskly.application",
+  "author": null,
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "babel-preset-react-native": "^4.0.0",
+    "detox": "^7.3.3",
+    "detox-expo-helpers": "^0.2.0",
     "jest-expo": "^22.0.0",
+    "mocha": "^5.0.5",
     "react-native-scripts": "1.7.0",
     "react-test-renderer": "16.0.0-beta.5"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "build": "babel src/ -d lib/",
+    "e2e": "detox test --configuration ios.sim",
     "prepublish": "npm run build",
     "start": "react-native-scripts start",
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
     "test": "node node_modules/jest/bin/jest.js --watch"
-  },
-  "jest": {
-    "preset": "jest-expo"
   },
   "rnpm": {
     "assets": [
@@ -29,6 +34,7 @@
   "dependencies": {
     "expo": "^22.0.2",
     "moment": "^2.20.1",
+    "net": "^1.0.2",
     "prop-types": "^15.6.0",
     "ramda": "latest",
     "react": "^16.0.0-beta.5",
@@ -47,6 +53,18 @@
     "redux-thunk": "^2.2.0",
     "rxjs": "^5.5.7",
     "sockjs-client": "^1.1.4",
+    "stompjs": "^2.3.3",
     "webstomp-client": "^1.2.0"
+  },
+  "detox": {
+    "test-runner": "jest",
+    "runner-config": "e2e/config.json",
+    "configurations": {
+      "ios.sim": {
+        "binaryPath": "Taskly.app",
+        "type": "ios.simulator",
+        "name": "iPhone 7"
+      }
+    }
   }
 }

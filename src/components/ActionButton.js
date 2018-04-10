@@ -3,7 +3,6 @@ import * as React from "react";
 import {Circle} from "../icon/Circle";
 import {Colors} from "../color/Colors";
 import {IconType} from "../icon/IconType";
-import {View} from "react-native";
 
 export const ActionButton = (props) =>
     <Circle radius={props.radius} color={props.color}

@@ -36,7 +36,7 @@ EditText.defaultProps = {
 	backgroundColor: Colors.WHITE,
 	password: false,
 	icon: IconType.EMPTY,
-	height: 70,
+	height: 60,
 	flex: 1,
 	alignment: 'center',
 	padding: 20,

@@ -3,15 +3,57 @@ import Intro from "./Intro";
 import {Colors} from "../color/Colors";
 import {IconType} from "../icon/IconType";
 import {EditText} from "../components/EditText";
-import R from 'ramda';
 import {Button} from "../components/Button";
 import {KeyboardAvoidingView} from "react-native";
 import {AsyncStorage, Keyboard} from "react-native"
 import {NavigationBar} from "../components/NavigationBar";
-import {LoginService} from "../service/LoginService";
 import {SystemAction} from "./Actions";
 import {store} from "../utils/store";
 import * as Rx from "rxjs";
+
+export const Optional = (object) => ({
+    isDefined: (isDefinedFunc) => ({
+        isNotDefined: (isNotDefinedFunc) => object !== undefined ?
+            isDefinedFunc(object) : isNotDefinedFunc(object)
+    })
+})
+
+
+export class DateRange {
+
+    constructor(low, high) {
+        this.low = high;
+        this.high = high;
+    }
+
+    isIncluded = (date, trueFunc, falseFunc) =>
+        this.low < date && this.high > date ?
+            trueFunc(date) : falseFunc(date)
+}
+
+export class AutomaticLogin {
+
+    constructor(store, navigation) {
+        this.store = store;
+        this.navigation = navigation;
+    }
+
+    login = () => {
+        const token = new Optional(this.store.getState().systemReducer.token)
+        const lastUpdated = this.state.getState().systemReducer.token
+        token.isDefined(() =>
+                new DateRange(lastUpdated, this.__roundDateByOneDay(lastUpdated))
+                    .isIncluded(Date.now(), this.__goToReportsScreen, this.__login))
+            .isNotDefined(() => this.navigation.navigate('Login'))
+    }
+
+    __goToReportsScreen = () => this.navigation.navigate('Reports')
+
+    __login = () => this.store.dispatch(SystemAction
+        .login(this.store.getState().systemReducer.currentUser))
+
+    __roundDateByOneDay = (date) => date.setHours(date.getHours() + 24)
+}
 
 class LoginForm extends React.Component {
 
@@ -21,7 +63,9 @@ class LoginForm extends React.Component {
     }
 
     __unsubscribe = store.subscribe(() => {
-        if(store.getState().systemReducer.token !== undefined) {
+        if (store.getState().systemReducer.token !== undefined) {
+
+            AsyncStorage.setItem('token', store.getState().systemReducer.token)
             this.__unsubscribe()
             this.__keyboardHideSubscription.unsubscribe();
             this.__keyboardShowSubscription.unsubscribe();
@@ -29,7 +73,9 @@ class LoginForm extends React.Component {
         }
     })
 
-    componentWillMount() {
+    async componentWillMount() {
+        store.dispatch(SystemAction.updateToken())
+
         this.__keyboardShowSubscription = Rx.Observable
             .fromEvent(Keyboard, 'keyboardWillShow')
             .subscribe(() => this.setState({flexValue: 10}))

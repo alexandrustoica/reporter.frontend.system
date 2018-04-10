@@ -17,7 +17,6 @@ const ReportsWithDrawer = DrawerNavigator({
 });
 
 const Nav = StackNavigator({
-        RCamera: {screen: RCamera},
         Welcome: {screen: Welcome},
         Login: {screen: Login},
         Register: {screen: Register},
@@ -29,6 +28,7 @@ const Nav = StackNavigator({
             }
         },
         AddReport: {screen: AddReport},
+        RCamera: {screen: RCamera},
         Report: {screen: Report},
         Graph: {screen: Graph},
     },

@@ -7,12 +7,22 @@ import {Button} from "../components/Button";
 import {Screen} from "../screen/Screen";
 import {NavigationBar} from "../components/NavigationBar";
 import {Box} from "../box/Box";
+import {store} from "../utils/store";
+import {ReportAction} from "./Actions";
 
 export class RCamera extends React.Component {
 
     static navigationOptions = {
         header: null,
     };
+
+    __unsubscribePhotoObserver = store.subscribe(() => {
+        const photos = store.getState().reportsReducer.photos
+        if (photos !== undefined) {
+            this.__unsubscribePhotoObserver()
+            this.props.navigation.goBack()
+        }
+    })
 
     state = {
         hasCameraPermission: null,
@@ -41,14 +51,13 @@ export class RCamera extends React.Component {
                             text={""}
                             height={70}
                             flex={null}
-                            onPress={async () => {
-                                const photo = await this.camera.takePictureAsync();
-                                console.log(photo)
+                            onPress={() => {
+                                const token = store.getState().systemReducer.token
+                                store.dispatch(new ReportAction(token)
+                                    .takePhoto(this.camera))
                             }}/>
                 </Box>
-
             </Camera>
-
         </Screen>
 
     render() {

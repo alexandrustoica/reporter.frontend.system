@@ -6,9 +6,7 @@ import {ActionButton} from "../components/ActionButton";
 import MapView from "react-native-maps";
 import {Text} from "react-native";
 import {Colors} from "../color/Colors";
-import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
 import {NavigationBar} from "../components/NavigationBar";
-import {Controller} from "../repository/Controller";
 import {ReportAction} from "./Actions";
 import {store} from "../utils/store";
 
@@ -21,7 +19,6 @@ export default class Report extends React.Component {
         super(props)
         this.state = {
             token: store.getState().systemReducer.token,
-            controller: new Controller(),
             item: this.props.navigation.state.params.item
         }
     }
@@ -62,10 +59,8 @@ export default class Report extends React.Component {
                     {this.state.item.secondaryText}
                 </Text>
             </Box>
-            <AnimatedViewFadeIn style={{width: "100%", flex: 2}}>
                 {this.state.item.location !== undefined ?
                     this.__renderMapIfRequested() : null}
-            </AnimatedViewFadeIn>
             <Box justifyContent={'flex-end'}
                  alignItems={'flex-end'}
                  pointerEvents={'box-none'}

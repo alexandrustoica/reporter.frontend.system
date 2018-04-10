@@ -3,6 +3,9 @@
     "name" : "Taskly",
     "slug" : "Taskly",
     "sdkVersion" : "22.0.0",
-    "privacy" : "public"
+    "privacy": "unlisted",
+    "ios": {
+      "bundleIdentifier": "com.taskly.application"
+    }
   }
 }

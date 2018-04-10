@@ -1,5 +1,4 @@
 import React from "react";
-import {UserLocalRepository} from "../repository/UserLocalRepository";
 import {IconType} from "../icon/IconType";
 import {SystemIcon} from "../icon/SystemIcon";
 import {Text, View} from "react-native";
@@ -19,7 +18,7 @@ export default class Logout extends React.Component {
     }
 
     __logoutUserFromCurrentSession = () => {
-        new UserLocalRepository().logout()
+        // TODO Logout
         this.props.navigation.navigate('Welcome')
     }
 

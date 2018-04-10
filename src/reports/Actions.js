@@ -6,6 +6,7 @@ export class ReportAction {
         this.token = token;
     }
 
+    takePhoto = camera => ({type: 'TAKE_PHOTO', payload: camera})
     delete = id => ({type: 'DELETE_REPORT', token: this.token, payload: id})
     getById = id => ({type: 'GET_REPORT_BY_ID', token: this.token, payload: id})
     create = report =>
@@ -16,8 +17,7 @@ export class ReportAction {
         ({type: 'GET_REPORTS', token: this.token, payload: page})
 }
 
-export const reportsReducer = (state = {reports: []}, action) => {
-    console.log(action.payload)
+export const reportsReducer = (state = {reports: [], photos: []}, action) => {
     const handlers = ({
         ['GET_REPORTS_DONE']: (state, action) => ({
             ...state,
@@ -34,7 +34,9 @@ export const reportsReducer = (state = {reports: []}, action) => {
         ['CREATE_REPORT_DONE']: (state, action) =>
             ({...state, reports: [action.payload, ...state.reports]}),
         ['UPDATE_REPORT_DONE']: (state, action) =>
-            ({...state, report: action.payload})
+            ({...state, report: action.payload}),
+        ['TAKE_PHOTO_DONE']: (state, action) =>
+            ({...state, photos: [...state.photos, action.payload]})
     })
 
     return handlers[action.type] ?

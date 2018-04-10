@@ -50,7 +50,6 @@ class RegisterForm extends React.Component {
     }
 
     __registerUnsubscribe = store.subscribe(() => {
-        console.log(store.getState())
         const currentUser = store.getState().systemReducer.currentUser
         if (currentUser !== undefined) {
             this.__registerUnsubscribe();

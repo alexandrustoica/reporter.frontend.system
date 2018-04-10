@@ -8,7 +8,6 @@ import {ItemModelAdaptor, ItemReport} from "./ItemReport";
 import {NavigationBar} from "../components/NavigationBar";
 import {SystemIcon} from "../icon/SystemIcon";
 import moment from "moment/moment";
-import {Controller} from "../repository/Controller";
 import {ReportAction} from "./Actions";
 import {store} from "../utils/store";
 
@@ -16,28 +15,19 @@ export default class Reports extends React.Component {
 
     static navigationOptions = {
         header: null,
-        drawerIcon: () => (
-            <SystemIcon url={IconType.REPORTS_ICON}/>
-        )
+        drawerIcon: () => <SystemIcon url={IconType.REPORTS_ICON}/>
     };
 
     constructor(props) {
         super(props)
-
         const token = store.getState().systemReducer.token
-
-        store.subscribe(() => {
-            console.log(store.getState())
-        })
-
-        this.state = {
-            state: store.getState().reportsReducer
-        }
+        this.state = {state: store.getState().reportsReducer}
         store.dispatch(new ReportAction(token).getAllAtPage(0))
     }
 
-    __unsubscribeReportsObserver = store.subscribe(() =>
-        this.setState({state: store.getState().reportsReducer}))
+    __unsubscribeReportsObserver = store.subscribe(() => {
+        console.log(store.getState().reportsReducer)
+        this.setState({state: store.getState().reportsReducer})})
 
     componentWillUnmount = () => this.__unsubscribeReportsObserver()
 

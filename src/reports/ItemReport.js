@@ -3,8 +3,6 @@ import {Text, TouchableOpacity} from "react-native";
 import {Colors} from "../color/Colors";
 import {Box} from "../box/Box";
 import MapView from "react-native-maps";
-import {AnimatedViewComingFromRight} from "../animations/AnimatedViewComingFromRight";
-import {AnimatedViewFadeIn} from "../animations/AnimatedViewFadeIn";
 import {SystemIcon} from "../icon/SystemIcon";
 import {IconType} from "../icon/IconType";
 
@@ -83,16 +81,12 @@ export const ItemReport = (props) =>
         onPress={() =>
             props.navigation.navigate('Report', {item: props.item})}
         style={CardStyle}>
-        <AnimatedViewFadeIn style={MapStyle}>
             {props.item.location !== undefined ?
                 <Map {...props}/> : <Cover {...props}/>}
-        </AnimatedViewFadeIn>
-        <AnimatedViewComingFromRight>
             <Box flexDirection={'column'}>
                 <Text style={TitleStyle}>{props.item.primaryText}</Text>
                 <Text style={DateStyle}>{props.item.secondaryText}</Text>
             </Box>
-        </AnimatedViewComingFromRight>
     </TouchableOpacity>
 
 ItemReport.defaultProps = {
