@@ -1,15 +1,24 @@
 import React from "react";
 import Intro from "./Intro";
-import {Colors} from "../color/Colors";
-import {IconType} from "../icon/IconType";
-import {Button} from "../components/Button";
-import {EditText} from "../components/EditText";
+import {Colors} from "../elements/color/Colors";
+import {IconType} from "../elements/icon/IconType";
+import {Button} from "../elements/components/Button";
+import {EditText} from "../elements/components/EditText";
 import {KeyboardAvoidingView, ScrollView} from "react-native";
-import {NavigationBar} from "../components/NavigationBar";
+import {NavigationBar} from "../elements/components/NavigationBar";
 import {store} from "../utils/store";
-import {SystemAction} from "./Actions";
+import {SystemAction} from "../service/SystemEpicAction";
 
 export class LoginAfterRegister extends React.Component {
+
+    __loginUnsubscribe = store.subscribe(() => {
+        const token = store.getState().systemReducer.token
+        if (token !== undefined) {
+            this.__loginUnsubscribe()
+            this.props.navigation.navigate('Reports')
+        }
+    })
+    render = () => null
 
     constructor(props) {
         super(props)
@@ -20,34 +29,12 @@ export class LoginAfterRegister extends React.Component {
         }))
     }
 
-    __loginUnsubscribe = store.subscribe(() => {
-        const token = store.getState().systemReducer.token
-        if(token !== undefined) {
-            this.__loginUnsubscribe()
-            this.props.navigation.navigate('Reports')
-        }
-    })
-
     componentWillUnmount() {
         this.__loginUnsubscribe();
     }
-
-    render = () => null
 }
 
 class RegisterForm extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            username: '',
-            password: '',
-            confirmPassword: '',
-            email: '',
-            name: '',
-            flexValue: 10
-        }
-    }
 
     __registerUnsubscribe = store.subscribe(() => {
         const currentUser = store.getState().systemReducer.currentUser
@@ -56,21 +43,6 @@ class RegisterForm extends React.Component {
             this.props.navigation.navigate('LoginAfterRegister')
         }
     })
-
-    componentWillUnmount() {
-        this.__registerUnsubscribe();
-    }
-
-    __onRegisterButtonClick() {
-        store.dispatch(SystemAction.register({
-            username: this.state.username,
-            password: this.state.password,
-            confirmPassword: this.state.confirmPassword,
-            email: this.state.email,
-            name: this.state.name
-        }))
-    }
-
     render = () =>
         <KeyboardAvoidingView behaviour={'padding'}
                               style={{flex: this.state.flexValue}}>
@@ -114,6 +86,32 @@ class RegisterForm extends React.Component {
                     text='Register'/>
             </ScrollView>
         </KeyboardAvoidingView>
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: '',
+            password: '',
+            confirmPassword: '',
+            email: '',
+            name: '',
+            flexValue: 10
+        }
+    }
+
+    componentWillUnmount() {
+        this.__registerUnsubscribe();
+    }
+
+    __onRegisterButtonClick() {
+        store.dispatch(SystemAction.register({
+            username: this.state.username,
+            password: this.state.password,
+            confirmPassword: this.state.confirmPassword,
+            email: this.state.email,
+            name: this.state.name
+        }))
+    }
 }
 
 export default class Register extends React.Component {

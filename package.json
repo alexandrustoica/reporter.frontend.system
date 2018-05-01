@@ -15,6 +15,10 @@
   "jest": {
     "preset": "jest-expo"
   },
+  "notification": {
+    "icon": "./assets/icons/notification-icon.png",
+    "color": "#000000"
+  },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
     "build": "babel src/ -d lib/",
@@ -33,6 +37,7 @@
   },
   "dependencies": {
     "expo": "^22.0.2",
+    "jest-cli": "^22.4.3",
     "moment": "^2.20.1",
     "net": "^1.0.2",
     "prop-types": "^15.6.0",

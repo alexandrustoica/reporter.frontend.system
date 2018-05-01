@@ -1,6 +1,6 @@
 import React from "react";
-import {IconType} from "../icon/IconType";
-import {SystemIcon} from "../icon/SystemIcon";
+import {IconType} from "../elements/icon/IconType";
+import {SystemIcon} from "../elements/icon/SystemIcon";
 import {Text, View} from "react-native";
 
 export default class Logout extends React.Component {
@@ -24,7 +24,7 @@ export default class Logout extends React.Component {
 
     render = () => <View>
         <Text>
-           Have a great day!
+            Have a great day!
         </Text>
     </View>
 }

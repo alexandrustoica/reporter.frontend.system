@@ -1,14 +1,14 @@
 import React from "react";
-import {AsyncStorage, FlatList, StatusBar} from "react-native";
-import {Box} from "../box/Box";
-import {IconType} from "../icon/IconType";
-import {Screen} from "../screen/Screen";
-import {ActionButton} from "../components/ActionButton";
+import {FlatList, StatusBar} from "react-native";
+import {Box} from "../elements/box/Box";
+import {IconType} from "../elements/icon/IconType";
+import {Screen} from "../elements/box/screen/Screen";
+import {ActionButton} from "../elements/components/ActionButton";
 import {ItemModelAdaptor, ItemReport} from "./ItemReport";
-import {NavigationBar} from "../components/NavigationBar";
-import {SystemIcon} from "../icon/SystemIcon";
+import {NavigationBar} from "../elements/components/NavigationBar";
+import {SystemIcon} from "../elements/icon/SystemIcon";
 import moment from "moment/moment";
-import {ReportAction} from "./Actions";
+import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
 
 export default class Reports extends React.Component {
@@ -21,16 +21,22 @@ export default class Reports extends React.Component {
     constructor(props) {
         super(props)
         const token = store.getState().systemReducer.token
-        this.state = {state: store.getState().reportsReducer}
-        store.dispatch(new ReportAction(token).getAllAtPage(0))
+        this.state = {
+            token: token,
+            state: store.getState().reportsReducer
+        }
+    }
+
+    componentWillMount = () => {
+        store.dispatch(new ReportAction(this.state.token).getAllAtPage(0))
     }
 
     __unsubscribeReportsObserver = store.subscribe(() => {
         console.log(store.getState().reportsReducer)
-        this.setState({state: store.getState().reportsReducer})})
+        this.setState({state: store.getState().reportsReducer})
+    })
 
     componentWillUnmount = () => this.__unsubscribeReportsObserver()
-
     __getNextPageOfReports = () => {
         const token = store.getState().systemReducer.token
         const currentPage = this.state.state.page
@@ -43,7 +49,6 @@ export default class Reports extends React.Component {
     __adaptToItemView = (data) =>
         new ItemModelAdaptor(data.id, data.text,
             moment(data.date).fromNow(), data.location)
-
     __showNewReportsToUserInList = (items) =>
         <FlatList
             data={items}
@@ -52,7 +57,6 @@ export default class Reports extends React.Component {
             renderItem={({item}) =>
                 <ItemReport {...this.props}
                             item={this.__adaptToItemView(item)}/>}/>
-
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar

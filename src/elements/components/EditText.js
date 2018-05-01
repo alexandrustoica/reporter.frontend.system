@@ -14,6 +14,7 @@ export const EditText = (props) =>
 			placeholder={props.text}
 			placeholderTextColor={props.textColor}
             multiline={props.multiline}
+            editable={props.editable}
 			style={{
 				flex: props.flex,
                 flexShrink: -1,
@@ -29,6 +30,7 @@ export const EditText = (props) =>
 	</HBox>
 
 EditText.defaultProps = {
+    editable: true,
 	text: 'Text',
 	fontSize: 14,
     multiline: false,

@@ -1,14 +1,14 @@
 import React from "react";
-import {View, Text} from "react-native";
+import {Text, View} from "react-native";
 import {Camera, Permissions} from 'expo';
-import {IconType} from "../icon/IconType";
-import {Colors} from "../color/Colors";
-import {Button} from "../components/Button";
-import {Screen} from "../screen/Screen";
-import {NavigationBar} from "../components/NavigationBar";
-import {Box} from "../box/Box";
+import {IconType} from "../elements/icon/IconType";
+import {Colors} from "../elements/color/Colors";
+import {Button} from "../elements/components/Button";
+import {Screen} from "../elements/box/screen/Screen";
+import {NavigationBar} from "../elements/components/NavigationBar";
+import {Box} from "../elements/box/Box";
 import {store} from "../utils/store";
-import {ReportAction} from "./Actions";
+import {ReportAction} from "../service/ReportEpicActions";
 
 export class RCamera extends React.Component {
 
@@ -28,12 +28,6 @@ export class RCamera extends React.Component {
         hasCameraPermission: null,
         type: Camera.Constants.Type.back,
     };
-
-    async componentWillMount() {
-        const {status} = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({hasCameraPermission: status === 'granted'});
-    }
-
     __renderCameraScreen = () =>
         <Screen backgroundColor={'transparent'}>
             <NavigationBar
@@ -42,7 +36,9 @@ export class RCamera extends React.Component {
                 text={""}
                 align={'left'}
                 leftAction={() => this.props.navigation.goBack()}/>
-            <Camera ref={ref => {this.camera = ref}}
+            <Camera ref={ref => {
+                this.camera = ref
+            }}
                     style={{flex: 1}}
                     type={this.state.type}>
                 <Box justifyContent={'flex-end'}>
@@ -59,6 +55,11 @@ export class RCamera extends React.Component {
                 </Box>
             </Camera>
         </Screen>
+
+    async componentWillMount() {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({hasCameraPermission: status === 'granted'});
+    }
 
     render() {
         const {hasCameraPermission} = this.state;

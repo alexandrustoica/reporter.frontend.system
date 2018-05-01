@@ -1,10 +1,10 @@
 import * as React from "react";
 import {Text, TouchableOpacity} from "react-native";
-import {Colors} from "../color/Colors";
-import {Box} from "../box/Box";
+import {Colors} from "../elements/color/Colors";
+import {Box} from "../elements/box/Box";
 import MapView from "react-native-maps";
-import {SystemIcon} from "../icon/SystemIcon";
-import {IconType} from "../icon/IconType";
+import {SystemIcon} from "../elements/icon/SystemIcon";
+import {IconType} from "../elements/icon/IconType";
 
 const CardStyle = {
     marginTop: 10,
@@ -81,12 +81,12 @@ export const ItemReport = (props) =>
         onPress={() =>
             props.navigation.navigate('Report', {item: props.item})}
         style={CardStyle}>
-            {props.item.location !== undefined ?
-                <Map {...props}/> : <Cover {...props}/>}
-            <Box flexDirection={'column'}>
-                <Text style={TitleStyle}>{props.item.primaryText}</Text>
-                <Text style={DateStyle}>{props.item.secondaryText}</Text>
-            </Box>
+        {props.item.location !== undefined ?
+            <Map {...props}/> : <Cover {...props}/>}
+        <Box flexDirection={'column'}>
+            <Text style={TitleStyle}>{props.item.primaryText}</Text>
+            <Text style={DateStyle}>{props.item.secondaryText}</Text>
+        </Box>
     </TouchableOpacity>
 
 ItemReport.defaultProps = {

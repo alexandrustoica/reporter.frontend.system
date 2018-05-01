@@ -1,14 +1,14 @@
 import React from "react";
-import {Box} from "../box/Box";
-import {IconType} from "../icon/IconType";
-import {Screen} from "../screen/Screen";
+import {Box} from "../elements/box/Box";
+import {IconType} from "../elements/icon/IconType";
+import {Screen} from "../elements/box/screen/Screen";
 import {Text} from "react-native";
 import {Bar} from "react-native-pathjs-charts";
 import * as R from "ramda";
 import moment from "moment/moment";
-import {Colors} from "../color/Colors";
-import {NavigationBar} from "../components/NavigationBar";
-import {SystemIcon} from "../icon/SystemIcon";
+import {Colors} from "../elements/color/Colors";
+import {NavigationBar} from "../elements/components/NavigationBar";
+import {SystemIcon} from "../elements/icon/SystemIcon";
 
 export default class Graph extends React.Component {
 
@@ -18,26 +18,17 @@ export default class Graph extends React.Component {
             <SystemIcon url={IconType.STATS_ICON}/>
         )
     };
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            //controller: new Controller(),
-            graphData: [[{"v": 49}]],
-        }
-    }
-
     componentDidMount = async () => {
         // this.setState({
         //     graphData: [this.__getGraphDataFromReports(
         //         await this.state.controller.getAllFromPastWeek())]
         // })
     }
-
     __getGraphDataFromReports = (reports) =>
-        R.map((reports) => {return {"v": reports.length}},
+        R.map((reports) => {
+                return {"v": reports.length}
+            },
             R.groupWith((report) => moment(report.date).format('dddd'))(reports))
-
     options = {
         width: 50,
         margin: {
@@ -94,7 +85,16 @@ export default class Graph extends React.Component {
                     {"Number of reportsReducer send this week ..."}
                 </Text>
             </Box>
-            <Bar data={this.state.graphData} options={this.options} accessorKey='v'/>
+            <Bar data={this.state.graphData} options={this.options}
+                 accessorKey='v'/>
         </Screen>
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            //controller: new Controller(),
+            graphData: [[{"v": 49}]],
+        }
+    }
 }
 

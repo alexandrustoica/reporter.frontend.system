@@ -1,20 +1,23 @@
 import {combineEpics, createEpicMiddleware} from "redux-observable";
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {ReportEpic} from "../reports/Epics";
-import {reportsReducer} from "../reports/Actions";
-import {SystemEpic} from "../system/Epics";
-import {userReducer} from "../user/Actions";
-import {UserEpic} from "../user/Epics";
-import {systemReducer} from "../system/Actions";
-import thunk from "redux-thunk";
+import {ReportEpic} from "../service/ReportEpicActions";
+import {reportsReducer} from "../service/ReportEpicActions";
+import {SystemEpic, systemReducer} from "../service/SystemEpicAction";
+import {UserEpic, userReducer} from "../service/UserEpicAction";
+import {
+    NotificationEpic,
+    notificationReducer
+} from "../service/NotificationEpicAction";
+
 
 const reducer = combineReducers({
     reportsReducer: reportsReducer,
     userReducer: userReducer,
-    systemReducer: systemReducer
+    systemReducer: systemReducer,
+    notificationReducer: notificationReducer,
 })
 
-const epic = combineEpics(ReportEpic, UserEpic, SystemEpic)
+const epic = combineEpics(ReportEpic, UserEpic, SystemEpic, NotificationEpic)
 
 const epicMiddleware = createEpicMiddleware(epic);
 

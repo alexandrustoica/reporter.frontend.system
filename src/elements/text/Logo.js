@@ -16,7 +16,7 @@ Logo.defaultProps = {
     size: 35,
     primaryColor: Colors.WHITE,
     secondaryColor: Colors.BLUE,
-    primaryText: 'item',
+    primaryText: 'report',
     secondaryText: 'er',
     backgroundColor: Colors.TRANSPARENT
 }

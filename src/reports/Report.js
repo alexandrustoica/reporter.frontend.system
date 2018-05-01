@@ -1,28 +1,19 @@
 import React from "react";
-import {Box} from "../box/Box";
-import {IconType} from "../icon/IconType";
-import {Screen} from "../screen/Screen";
-import {ActionButton} from "../components/ActionButton";
+import {Box} from "../elements/box/Box";
+import {IconType} from "../elements/icon/IconType";
+import {Screen} from "../elements/box/screen/Screen";
+import {ActionButton} from "../elements/components/ActionButton";
 import MapView from "react-native-maps";
 import {Text} from "react-native";
-import {Colors} from "../color/Colors";
-import {NavigationBar} from "../components/NavigationBar";
-import {ReportAction} from "./Actions";
+import {Colors} from "../elements/color/Colors";
+import {NavigationBar} from "../elements/components/NavigationBar";
+import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
 
 
 export default class Report extends React.Component {
 
     static navigationOptions = {header: null};
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            token: store.getState().systemReducer.token,
-            item: this.props.navigation.state.params.item
-        }
-    }
-
     __renderMapIfRequested = () =>
         <MapView
             style={{width: "100%", flex: 2}}
@@ -37,13 +28,11 @@ export default class Report extends React.Component {
                 latitude: this.state.item.location.latitude,
             }}/>
         </MapView>
-
     __onDeleteButtonClick = () => {
         store.dispatch(new ReportAction(this.state.token)
             .delete(this.state.item.id))
         this.props.navigation.navigate('Reports')
     }
-
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
@@ -59,8 +48,8 @@ export default class Report extends React.Component {
                     {this.state.item.secondaryText}
                 </Text>
             </Box>
-                {this.state.item.location !== undefined ?
-                    this.__renderMapIfRequested() : null}
+            {this.state.item.location !== undefined ?
+                this.__renderMapIfRequested() : null}
             <Box justifyContent={'flex-end'}
                  alignItems={'flex-end'}
                  pointerEvents={'box-none'}
@@ -76,5 +65,13 @@ export default class Report extends React.Component {
                     onPress={() => this.__onDeleteButtonClick()}/>
             </Box>
         </Screen>
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            token: store.getState().systemReducer.token,
+            item: this.props.navigation.state.params.item
+        }
+    }
 }
 

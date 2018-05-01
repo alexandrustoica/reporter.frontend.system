@@ -1,17 +1,16 @@
 import React from "react";
-import {IconType} from "../icon/IconType";
-import {EditText} from "../components/EditText";
+import {IconType} from "../elements/icon/IconType";
+import {EditText} from "../elements/components/EditText";
 import MapView from "react-native-maps";
-import {Button} from "../components/Button";
-import {Colors} from "../color/Colors";
+import {Button} from "../elements/components/Button";
+import {Colors} from "../elements/color/Colors";
 import * as R from "ramda";
-import {NavigationBar} from "../components/NavigationBar";
-import {Screen} from "../screen/Screen";
-import {ReportAction} from "./Actions";
+import {NavigationBar} from "../elements/components/NavigationBar";
+import {Screen} from "../elements/box/screen/Screen";
+import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
-import {ScrollView, View} from "react-native";
-import {Image} from "react-native";
-import {HBox} from "../box/HBox";
+import {Image, ScrollView, View} from "react-native";
+import {HBox} from "../elements/box/HBox";
 
 export class Location {
     constructor(latitude, longitude) {
@@ -38,22 +37,6 @@ export class Report {
 export default class AddReport extends React.Component {
 
     static navigationOptions = {header: null}
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            photos: [],
-            title: '',
-            text: '',
-            region: {
-                latitude: 0.0,
-                longitude: 0.0,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-            }
-        }
-    }
-
     __saveUserLocationToInternalState = async (location) =>
         await this.setState({
             region: {
@@ -63,39 +46,31 @@ export default class AddReport extends React.Component {
                 longitudeDelta: 0.01,
             }
         })
-
     __unsubscribePhotosObserver = store.subscribe(() =>
         this.setState({photos: store.getState().reportsReducer.photos}))
-
     __getReportFromCurrentUserData = () => new Report(
         this.state.title, this.state.text,
         new Location(this.state.region.latitude, this.state.region.longitude),
         this.state.photos.map(it => it.base64).map(it => new Photo(it)))
-
     __saveNewReport = (report) => {
         const token = store.getState().systemReducer.token;
         store.dispatch(new ReportAction(token).create(report))
     }
-
     __goToReportsScreen = () =>
         this.props.navigation.navigate('Reports')
-
     __saveReportAndGoBackToReportsScreen = (report) =>
         R.compose(this.__goToReportsScreen,
             this.__saveNewReport)(report)
-
     componentDidMount = async () => {
         await navigator.geolocation.getCurrentPosition(
             (location) => this.__saveUserLocationToInternalState(location),
             (error) => console.log(error),
             {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
     }
-
     __renderPhotoFromUser = (photo) =>
         <View style={{width: '50%'}}>
             <Image style={{height: 200}} source={{uri: photo.uri}}/>
         </View>
-
     render = () =>
         <Screen backgroundColor={'white'}>
             <ScrollView style={{flex: 1}}>
@@ -150,4 +125,19 @@ export default class AddReport extends React.Component {
                 </HBox>
             </ScrollView>
         </Screen>
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            photos: [],
+            title: '',
+            text: '',
+            region: {
+                latitude: 0.0,
+                longitude: 0.0,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+            }
+        }
+    }
 }
