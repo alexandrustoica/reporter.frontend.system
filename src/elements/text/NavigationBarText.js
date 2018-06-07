@@ -7,11 +7,8 @@ export const NavigationBarText = (props) =>
         fontSize: props.fontSize,
         flex: props.flex,
         textAlign: props.align,
-        color: props.color
-    }}>
-        {props.children}
-    </Text>
-
+        paddingLeft: 20,
+        color: props.color}}>{props.children}</Text>
 
 NavigationBarText.defaultProps = {
     align: 'center',

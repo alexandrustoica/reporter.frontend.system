@@ -18,9 +18,7 @@ const AccessButtons = (props) =>
         </HBox>
     </Box>
 
-
 export default class Welcome extends React.Component {
-
     static navigationOptions = {header: null};
     render = () => <Intro content={<AccessButtons {...this.props}/>}/>
 }

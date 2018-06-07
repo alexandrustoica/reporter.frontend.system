@@ -1,31 +1,32 @@
 import * as React from "react";
-import {SystemIcon} from "../icon/SystemIcon";
 import {NavigationBarText} from "../text/NavigationBarText";
-import {IconType} from "../icon/IconType";
 import {HBox} from "../box/HBox";
+import {Icon} from "react-native-elements";
 
 export const NavigationBar = (props) =>
     <HBox
         alignItems={'center'}
         flex={0}
         style={{paddingTop: 22, backgroundColor: props.color}}>
-        <SystemIcon
-            url={props.leftIcon}
-            onPress={props.leftAction}/>
-        <NavigationBarText
-            color={props.textColor}
-            align={props.align}>
-            {props.text}
-        </NavigationBarText>
-        <SystemIcon
-            url={props.rightIcon}
-            onPress={props.rightAction}/>
+        <HBox style={{padding: 20}}>
+            <Icon onPress={props.leftAction}
+                  name={props.leftIcon.name}
+                  color={props.leftIcon.color}/>
+            <NavigationBarText
+                color={props.textColor}
+                align={props.align}>
+                {props.text}
+            </NavigationBarText>
+            <Icon onPress={props.rightAction}
+                  name={props.rightIcon.name}
+                  color={props.rightIcon.color}/>
+        </HBox>
     </HBox>
 
 NavigationBar.defaultProps = {
-    leftIcon: IconType.EMPTY,
+    leftIcon: {name: 'vpn-key', color: 'transparent'},
     leftAction: () => console.log("Left Button Pressed"),
-    rightIcon: IconType.EMPTY,
+    rightIcon: {name: 'vpn-key', color: 'transparent'},
     rightAction: () => console.log("Right Button Pressed"),
     color: 'transparent',
     text: 'Text',

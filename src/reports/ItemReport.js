@@ -5,6 +5,8 @@ import {Box} from "../elements/box/Box";
 import MapView from "react-native-maps";
 import {SystemIcon} from "../elements/icon/SystemIcon";
 import {IconType} from "../elements/icon/IconType";
+import {HBox} from "../elements/box/HBox";
+import {Icon} from "react-native-elements";
 
 const CardStyle = {
     marginTop: 10,
@@ -43,11 +45,13 @@ const DateStyle = {
 }
 
 export class ItemModelAdaptor {
-    constructor(id, primaryText, secondaryText, location) {
+    constructor(id, title, primaryText, secondaryText, location, type) {
         this.id = id
-        this.primaryText = primaryText;
-        this.secondaryText = secondaryText;
-        this.location = location;
+        this.title = title
+        this.primaryText = primaryText
+        this.secondaryText = secondaryText
+        this.location = location
+        this.type = type
     }
 }
 
@@ -83,10 +87,15 @@ export const ItemReport = (props) =>
         style={CardStyle}>
         {props.item.location !== undefined ?
             <Map {...props}/> : <Cover {...props}/>}
-        <Box flexDirection={'column'}>
-            <Text style={TitleStyle}>{props.item.primaryText}</Text>
+        <HBox style={{paddingRight: 20}}>
+            <Box flexDirection={'column'}>
+            <Text style={TitleStyle}>{props.item.title}</Text>
             <Text style={DateStyle}>{props.item.secondaryText}</Text>
         </Box>
+        <Icon name={(props.item.type === 'PARKING') ? 'local-parking':
+            (props.item.type === 'DUMP') ? 'delete': 'palette'}
+              color={'#d93c19'}/>
+        </HBox>
     </TouchableOpacity>
 
 ItemReport.defaultProps = {

@@ -1,5 +1,4 @@
 import React from "react";
-import {Box} from "../elements/box/Box";
 import {IconType} from "../elements/icon/IconType";
 import {Screen} from "../elements/box/screen/Screen";
 import {NavigationBar} from "../elements/components/NavigationBar";
@@ -9,12 +8,15 @@ import {EditText} from "../elements/components/EditText";
 import {Colors} from "../elements/color/Colors";
 import {Button} from "../elements/components/Button";
 import * as R from "ramda";
-import {KeyboardAvoidingView} from "react-native";
+import {KeyboardAvoidingView, StatusBar} from "react-native";
+import {Box} from "../elements/box/Box";
 
 
 export default class EditProfile extends React.Component {
 
-    static navigationOptions = {header: null};
+    static navigationOptions = {
+        header: null
+    };
 
     constructor(props) {
         super(props)
@@ -25,10 +27,8 @@ export default class EditProfile extends React.Component {
         }
     }
 
-    __unsubscribeCurrentUserObserver = store.subscribe(() => {
-        console.log(store.getState().userReducer)
-        this.setState({userReducer: store.getState().userReducer})
-    })
+    __unsubscribeCurrentUserObserver = store.subscribe(() =>
+        this.setState({userReducer: store.getState().userReducer}))
 
     componentWillMount = () =>
         store.dispatch(new UserAction(this.state.token).getCurrentUser())
@@ -38,27 +38,33 @@ export default class EditProfile extends React.Component {
             <NavigationBar
                 text={"Edit Profile"}
                 align={'left'}
-                leftIcon={IconType.BACK_DARK}
+                leftIcon={{name: 'arrow-back', color:'black'}}
                 leftAction={() => this.props.navigation.goBack()}/>
-            <KeyboardAvoidingView
-                behavior={'padding'} style={{flex: 1}}>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="dark-content"/>
+            <Box flex={1}/>
+            <KeyboardAvoidingView style={{flex: 2}}>
                 <EditText
                     text={`${this.state.userReducer.currentUser.name}`}
                     onChangeText={(text) => this.setState({
                         userReducer: R.set(R.lensPath(['currentUser', 'name']),
                             text, this.state.userReducer)
                     })}
-                    icon={IconType.PROFILE_DARK}/>
+                    iconName={'perm-identity'}
+                    iconColor={'black'}/>
                 <EditText
                     text={`${this.state.userReducer.currentUser.username}`}
                     onChangeText={(text) => this.setState({
                         userReducer: R.set(R.lensPath(['currentUser', 'username']),
                             text, this.state.userReducer)
                     })}
-                    icon={IconType.PROFILE_DARK}/>
+                    iconName={'fingerprint'}
+                    iconColor={'black'}/>
                 <EditText
                     text={`${this.state.userReducer.currentUser.email}`}
-                    icon={IconType.TIME_DARK}
+                    iconName={'email'}
+                    iconColor={'black'}
                     onChangeText={(text) => this.setState({
                         userReducer: R.set(R.lensPath(['currentUser', 'email']),
                             text, this.state.userReducer)

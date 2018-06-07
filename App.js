@@ -5,60 +5,47 @@ import Login from "./src/system/Login";
 import Logout from "./src/system/Logout";
 import AddReport from "./src/reports/AddReport";
 import Report from "./src/reports/Report";
-import Graph from "./src/reports/Graph";
 import {DrawerNavigator, StackNavigator} from "react-navigation";
-import Reports from "./src/reports/Reports";
 import {RCamera} from "./src/reports/RCamera";
-import PropTypes from 'prop-types';
-import {store} from "./src/utils/store";
 import MyNotifications from "./src/notifications/MyNotifications";
 import MyProfile from "./src/user/MyProfile";
 import EditProfile from "./src/user/EditProfile";
+import Map from "./src/reports/Map";
+import MyReports from "./src/reports/MyReports";
+import NearReports from "./src/reports/NearReports";
+import Loading from "./src/system/Loading";
 
 const ReportsWithDrawer = DrawerNavigator({
-    Reports: {screen: Reports},
+    MyReports: {screen: MyReports},
+    NearReports: {screen: NearReports},
     MyNotifications: {screen: MyNotifications},
     MyProfile: {screen: MyProfile},
-    Stats: {screen: Graph},
+    Map: {screen: Map},
     Logout: {screen: Logout},
 });
 
 const Nav = StackNavigator({
-        Welcome: {screen: Welcome},
-        Login: {screen: Login},
-        Register: {screen: Register},
-        LoginAfterRegister: {screen: LoginAfterRegister},
-        Reports: {
-            screen: ReportsWithDrawer,
-            navigationOptions: {
-                header: false
-            }
-        },
-        AddReport: {screen: AddReport},
-        RCamera: {screen: RCamera},
-        Report: {screen: Report},
-        Graph: {screen: Graph},
-        EditProfile: {screen: EditProfile}
+    Loading: {screen: Loading},
+    Welcome: {screen: Welcome},
+    Login: {screen: Login},
+    Register: {screen: Register},
+    LoginAfterRegister: {screen: LoginAfterRegister},
+    MyReports: {
+        screen: ReportsWithDrawer,
+        navigationOptions: {
+            header: false
+        }
     },
-    {
-        headerMode: 'screen'
-    });
-
-class Provider extends React.Component {
-    getChildContext = () => ({store: this.props.store})
-    render = () => {
-        return this.props.children;
-    }
-}
-
-Provider.childContextTypes = {
-    store: PropTypes.object
-}
+    AddReport: {screen: AddReport},
+    RCamera: {screen: RCamera},
+    Report: {screen: Report},
+    EditProfile: {screen: EditProfile}
+}, {
+    headerMode: 'screen'
+});
 
 export default class App extends React.Component {
     render = () =>
-        <Provider store={store}>
-            <Nav/>
-        </Provider>
+        <Nav/>
 }
 

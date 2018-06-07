@@ -9,11 +9,30 @@ import {Colors} from "../elements/color/Colors";
 import {NavigationBar} from "../elements/components/NavigationBar";
 import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
+import {UserAction} from "../service/UserEpicAction";
 
 
 export default class Report extends React.Component {
 
     static navigationOptions = {header: null};
+
+    constructor(props) {
+        super(props)
+        console.log(store.getState().userReducer.currentUser)
+        this.state = {
+            token: store.getState().systemReducer.token,
+            userReducer: store.getState().userReducer,
+            item: this.props.navigation.state.params.item
+        }
+    }
+
+    componentWillMount = () =>
+        store.dispatch(new UserAction(this.state.token).getCurrentUser())
+
+    __unsubscribeCurrentUserObserver = store.subscribe(() => {
+        this.setState({userReducer: store.getState().userReducer})
+    })
+
     __renderMapIfRequested = () =>
         <MapView
             style={{width: "100%", flex: 2}}
@@ -28,16 +47,26 @@ export default class Report extends React.Component {
                 latitude: this.state.item.location.latitude,
             }}/>
         </MapView>
+
     __onDeleteButtonClick = () => {
         store.dispatch(new ReportAction(this.state.token)
             .delete(this.state.item.id))
         this.props.navigation.navigate('Reports')
     }
+
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
-                text={"My Report"}
+                text={"Report"}
                 align={'left'}
+                rightIcon={this.state.userReducer.currentUser.role === 'POLICE' ?
+                    IconType.DONE_DARK : IconType.EMPTY}
+                rightAction={this.state.userReducer.currentUser.role === 'POLICE' ?
+                    () => {
+                        store.dispatch(new ReportAction(this.state.token)
+                            .markReportAsSolved(this.state.item.id))
+                        this.props.navigation.goBack()
+                }: () => {}}
                 leftIcon={IconType.BACK_DARK}
                 leftAction={() => this.props.navigation.goBack()}/>
             <Box flexDirection={'column'} style={{margin: 20}}>
@@ -46,6 +75,9 @@ export default class Report extends React.Component {
                 </Text>
                 <Text style={{marginTop: 10, fontSize: 18}}>
                     {this.state.item.secondaryText}
+                </Text>
+                <Text style={{marginTop: 10, fontSize: 18}}>
+                    {this.state.item.type}
                 </Text>
             </Box>
             {this.state.item.location !== undefined ?
@@ -65,13 +97,5 @@ export default class Report extends React.Component {
                     onPress={() => this.__onDeleteButtonClick()}/>
             </Box>
         </Screen>
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            token: store.getState().systemReducer.token,
-            item: this.props.navigation.state.params.item
-        }
-    }
 }
 

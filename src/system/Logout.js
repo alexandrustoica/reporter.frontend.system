@@ -1,30 +1,24 @@
 import React from "react";
-import {IconType} from "../elements/icon/IconType";
-import {SystemIcon} from "../elements/icon/SystemIcon";
-import {Text, View} from "react-native";
+import {AsyncStorage, Text, View} from "react-native";
+import {webSocketConnection} from "../utils/WebSocketConnection";
+import {Icon} from "react-native-elements";
+
 
 export default class Logout extends React.Component {
 
     // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         header: null,
-        drawerIcon: () => (
-            <SystemIcon url={IconType.LOGOUT_ICON}/>
-        )
+        drawerIcon: () => <Icon name={'exit-to-app'} color={'black'}/>
     };
 
-    componentWillMount = () => {
-        this.__logoutUserFromCurrentSession()
-    }
+    componentWillMount = () => this.__logoutUserFromCurrentSession()
 
     __logoutUserFromCurrentSession = () => {
-        // TODO Logout
+        webSocketConnection.close()
+        AsyncStorage.removeItem('token')
         this.props.navigation.navigate('Welcome')
     }
 
-    render = () => <View>
-        <Text>
-            Have a great day!
-        </Text>
-    </View>
+    render = () => <View><Text>Have a great day!</Text></View>
 }

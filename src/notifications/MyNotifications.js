@@ -1,19 +1,20 @@
 import {IconType} from "../elements/icon/IconType";
 import React from "react";
-import {SystemIcon} from "../../lib/icon/SystemIcon";
 import {store} from "../utils/store";
 import {FlatList, StatusBar} from "react-native";
 import {Screen} from "../../lib/screen/Screen";
-import {NavigationBar} from "../../lib/components/NavigationBar";
+import {NavigationBar} from "../elements/components/NavigationBar";
 import {NotificationAction} from "../service/NotificationEpicAction";
 import {ItemNotification, Notification} from "./ItemNotification";
+import {Icon} from "react-native-elements";
 
 
 export default class MyNotifications extends React.Component {
 
     static navigationOptions = {
         header: null,
-        drawerIcon: () => <SystemIcon url={IconType.REPORTS_ICON}/>
+        title: 'My Notifications',
+        drawerIcon: () => <Icon name={'notifications-none'} color={'black'}/>
     };
 
     constructor(props) {
@@ -60,7 +61,7 @@ export default class MyNotifications extends React.Component {
         <Screen backgroundColor={'white'}>
             <NavigationBar
                 text={"My Notifications"}
-                leftIcon={IconType.MENU_ICON}
+                leftIcon={{name: "menu", color: "black"}}
                 leftAction={() => this.props.navigation.navigate('DrawerOpen')}>
             </NavigationBar>
             <StatusBar

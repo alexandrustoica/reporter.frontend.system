@@ -1,6 +1,7 @@
 {
   "name": "taskly.application",
-  "author": null,
+  "author": "Alexandru Stoica",
+  "description": "Report application for illegal activities",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -45,9 +46,11 @@
     "react": "^16.0.0-beta.5",
     "react-native": "^0.49.5",
     "react-native-button-component": "^0.1.25",
+    "react-native-elements": "^0.19.1",
     "react-native-elevated-view": "0.0.5",
     "react-native-maps": "^0.19.0",
     "react-native-pathjs-charts": "0.0.33",
+    "react-native-picker-select": "^3.1.1",
     "react-native-shadow": "^1.2.1",
     "react-native-shadow-view": "0.0.1",
     "react-native-svg": "^5.4.1",

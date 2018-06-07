@@ -1,21 +1,21 @@
 import React from "react";
 import {FlatList, StatusBar} from "react-native";
 import {Box} from "../elements/box/Box";
-import {IconType} from "../elements/icon/IconType";
 import {Screen} from "../elements/box/screen/Screen";
 import {ActionButton} from "../elements/components/ActionButton";
 import {ItemModelAdaptor, ItemReport} from "./ItemReport";
 import {NavigationBar} from "../elements/components/NavigationBar";
-import {SystemIcon} from "../elements/icon/SystemIcon";
 import moment from "moment/moment";
 import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
+import {Icon} from "react-native-elements";
 
-export default class Reports extends React.Component {
+export default class MyReports extends React.Component {
 
     static navigationOptions = {
         header: null,
-        drawerIcon: () => <SystemIcon url={IconType.REPORTS_ICON}/>
+        title: 'My Reports',
+        drawerIcon: () => <Icon name={'filter-none'} color={'black'}/>
     };
 
     constructor(props) {
@@ -23,7 +23,7 @@ export default class Reports extends React.Component {
         const token = store.getState().systemReducer.token
         this.state = {
             token: token,
-            state: store.getState().reportsReducer
+            state: store.getState().reportsReducer,
         }
     }
 
@@ -32,7 +32,7 @@ export default class Reports extends React.Component {
     }
 
     __unsubscribeReportsObserver = store.subscribe(() => {
-        console.log(store.getState().reportsReducer)
+        //console.log(store.getState().reportsReducer)
         this.setState({state: store.getState().reportsReducer})
     })
 
@@ -47,8 +47,9 @@ export default class Reports extends React.Component {
     }
 
     __adaptToItemView = (data) =>
-        new ItemModelAdaptor(data.id, data.text,
-            moment(data.date).fromNow(), data.location)
+        new ItemModelAdaptor(data.id, data.title, data.text,
+            moment(data.date).fromNow(), data.location, data.type)
+
     __showNewReportsToUserInList = (items) =>
         <FlatList
             data={items}
@@ -57,12 +58,12 @@ export default class Reports extends React.Component {
             renderItem={({item}) =>
                 <ItemReport {...this.props}
                             item={this.__adaptToItemView(item)}/>}/>
+
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
-                text={"Reports"}
-                rightIcon={IconType.SEARCH_DARK}
-                leftIcon={IconType.MENU_ICON}
+                text={"My Reports"}
+                leftIcon={{name: "menu", color: "black"}}
                 leftAction={() => this.props.navigation.navigate('DrawerOpen')}/>
             <StatusBar
                 backgroundColor="transparent"

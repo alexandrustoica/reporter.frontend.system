@@ -5,13 +5,19 @@ import {combineEpics} from 'redux-observable'
 import * as Rx from "rxjs";
 import * as R from "ramda";
 
-const ReportEpicFollowUpAction = {
+export const ReportEpicFollowUpAction = {
     takePhoto: photo => ({type: 'TAKE_PHOTO_DONE', payload: photo}),
     create: report => ({type: 'CREATE_REPORT_DONE', payload: report}),
     delete: report => ({type: 'DELETE_REPORT_DONE', payload: report}),
     update: report => ({type: 'UPDATE_REPORT_DONE', payload: report}),
     getById: report => ({type: 'GET_REPORT_BY_ID_DONE', payload: report}),
+    addToNearReports: report => ({type: 'ADD_NEAR_REPORT_DONE', payload: report}),
     getAll: reports => ({type: 'GET_REPORTS_DONE', payload: reports}),
+    getAllNear: reports => ({type: 'GET_REPORTS_NEAR_LOCATION_DONE', payload: reports}),
+    getCriticalSectionsNear: criticalSections =>
+        ({type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION_DONE', payload: criticalSections}),
+    markReportAsSolved: report => ({type: 'MARK_REPORT_AS_SOLVED_DONE', payload: report}),
+    markReportAsSpam: report => ({type: 'MARK_REPORT_AS_SPAM_DONE', payload: report})
 }
 
 const TakePhotoEpic = action$ =>
@@ -46,6 +52,22 @@ const DeleteReportEpic = createEpic()
         .withToken(action.token).withNothing())
     .map(ReportEpicFollowUpAction.delete)
 
+const MarkReportAsSolvedEpic = createEpic()
+    .forActionType('MARK_REPORT_AS_SOLVED')
+    .withPromiseToJson(action => getDataFromServer()
+        .fromEndpoint(Endpoint.REPORTS + `/${action.payload}/solved`)
+        .withMethod('PUT')
+        .withToken(action.token).withNothing())
+    .map(ReportEpicFollowUpAction.markReportAsSolved)
+
+const MarkReportAsSpamEpic = createEpic()
+    .forActionType('MARK_REPORT_AS_SPAM')
+    .withPromiseToJson(action => getDataFromServer()
+        .fromEndpoint(Endpoint.REPORTS + `/${action.payload}/spam`)
+        .withMethod('PUT')
+        .withToken(action.token).withNothing())
+    .map(ReportEpicFollowUpAction.markReportAsSpam)
+
 const GetReportByIdEpic = createEpic()
     .forActionType('GET_REPORT_BY_ID')
     .withPromiseToJson(action => getDataFromServer()
@@ -62,18 +84,38 @@ const GetAllReportsEpic = createEpic()
         .withToken(action.token).withNothing())
     .map(ReportEpicFollowUpAction.getAll)
 
+const GetAllReportsNearLocationEpic = createEpic()
+    .forActionType('GET_REPORTS_NEAR_LOCATION')
+    .withPromiseToJson(action => getDataFromServer()
+        .fromEndpoint(Endpoint.REPORTS + `/near`)
+        .withMethod('PUT')
+        .withToken(action.token)
+        .with(action.payload))
+    .map(ReportEpicFollowUpAction.getAllNear)
+
+const GetCriticalSectionsNearLocationEpic = createEpic()
+    .forActionType('GET_CRITICAL_SECTIONS_NEAR_LOCATION')
+    .withPromiseToJson(action => getDataFromServer()
+        .fromEndpoint(Endpoint.CRITICAL_SECTIONS)
+        .withMethod('POST')
+        .withToken(action.token)
+        .with(action.payload))
+    .map(ReportEpicFollowUpAction.getCriticalSectionsNear)
+
 export const ReportEpic = combineEpics(
     CreateReportEpic,
     UpdateReportEpic,
     DeleteReportEpic,
     GetReportByIdEpic,
     GetAllReportsEpic,
+    MarkReportAsSolvedEpic,
+    MarkReportAsSpamEpic,
+    GetCriticalSectionsNearLocationEpic,
+    GetAllReportsNearLocationEpic,
     TakePhotoEpic
 )
 
 export class ReportAction {
-
-    takePhoto = camera => ({type: 'TAKE_PHOTO', payload: camera})
     delete = id => ({type: 'DELETE_REPORT', token: this.token, payload: id})
     getById = id => ({type: 'GET_REPORT_BY_ID', token: this.token, payload: id})
     create = report =>
@@ -82,19 +124,47 @@ export class ReportAction {
         ({type: 'UPDATE_REPORT', token: this.token, payload: report})
     getAllAtPage = page =>
         ({type: 'GET_REPORTS', token: this.token, payload: page})
-
+    takePhoto = camera => ({type: 'TAKE_PHOTO', payload: camera})
+    getAllReportsNear = (araa) =>
+        ({type: 'GET_REPORTS_NEAR_LOCATION', token: this.token, payload: araa})
+    getAllCriticalSectionsNear = (araa) =>
+        ({type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION', token: this.token, payload: araa})
+    markReportAsSpam = (id) =>
+        ({type: 'MARK_REPORT_AS_SPAM', token: this.token, payload: id})
+    markReportAsSolved = (id) =>
+        ({type: 'MARK_REPORT_AS_SOLVED', token: this.token, payload: id})
     constructor(token) {
         this.token = token;
     }
 }
 
-export const reportsReducer = (state = {reports: [], photos: []}, action) => {
+const initialState = {
+    reports: [],
+    photos: [],
+    reportsNearUserLocation: [],
+    criticalSectionsNearUserLocation: []
+}
+
+export const reportsReducer = (state = initialState, action) => {
     const handlers = ({
         ['GET_REPORTS_DONE']: (state, action) => ({
             ...state,
             reports: R.uniqBy((it) => it.id, R.concat(state.reports, action.payload.content)),
             page: action.payload.number,
             isLast: action.payload.last
+        }),
+        ['GET_CRITICAL_SECTIONS_NEAR_LOCATION_DONE']: (state, action) => ({
+            ...state,
+            criticalSectionsNearUserLocation: action.payload
+        }),
+        ['GET_REPORTS_NEAR_LOCATION_DONE']: (state, action) => ({
+            ...state,
+            reportsNearUserLocation: action.payload,
+        }),
+        ['ADD_NEAR_REPORT_DONE']: (state, action) => ({
+            ...state,
+            reportsNearUserLocation: R.uniqBy((it) => it.id,
+                R.concat(state.reportsNearUserLocation, [action.payload])),
         }),
         ['GET_REPORT_BY_ID_DONE']: (state, action) =>
             ({...state, wantedReport: action.payload}),
@@ -107,7 +177,15 @@ export const reportsReducer = (state = {reports: [], photos: []}, action) => {
         ['UPDATE_REPORT_DONE']: (state, action) =>
             ({...state, report: action.payload}),
         ['TAKE_PHOTO_DONE']: (state, action) =>
-            ({...state, photos: [...state.photos, action.payload]})
+            ({...state, photos: [...state.photos, action.payload]}),
+        ['MARK_REPORT_AS_SOLVED_DONE']: (state, action) =>
+            ({...state,
+                reports: R.filter(it => it.id !== action.payload.id),
+                reportsNearUserLocation: R.filter(it => it.id !== action.payload.id)}),
+        ['MARK_REPORT_AS_SPAM_DONE']: (state, action) =>
+            ({...state,
+                reports: R.filter(it => it.id !== action.payload.id),
+                reportsNearUserLocation: R.filter(it => it.id !== action.payload.id)})
     })
 
     return handlers[action.type] ?

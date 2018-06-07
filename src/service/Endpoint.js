@@ -7,5 +7,6 @@ export const Endpoint = {
     PHOTOS: (id) => `http://${base}:8080/reports/${id}/photos`,
     USERS: `http://${base}:8080/users`,
     NOTIFICATIONS: `http://${base}:8080/notifications`,
-    WS: `http://${base}:8080/ws`
+    CRITICAL_SECTIONS: `http://${base}:8080/sections`,
+    WS: `ws://${base}:8080/ws_reports`
 }

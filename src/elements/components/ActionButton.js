@@ -1,8 +1,7 @@
-import {SystemIcon} from "../icon/SystemIcon";
 import * as React from "react";
 import {Circle} from "../icon/Circle";
 import {Colors} from "../color/Colors";
-import {IconType} from "../icon/IconType";
+import {Icon} from "react-native-elements";
 
 export const ActionButton = (props) =>
     <Circle radius={props.radius} color={props.color}
@@ -15,13 +14,16 @@ export const ActionButton = (props) =>
                 shadowRadius: 30,
                 shadowOpacity: 0.5,
             }}>
-        <SystemIcon url={props.icon} onPress={props.onPress}/>
+        <Icon name={props.icon.name}
+              color={props.icon.color}
+
+              onPess={props.onPress}/>
     </Circle>
 
 ActionButton.defaultProps = {
     color: Colors.BLUE,
     radius: 30,
-    onPress: null,
-    icon: IconType.PLUS_LIGHT
+    onPress: () => {},
+    icon: {name:'add', color:'white'}
 }
 

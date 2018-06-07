@@ -6,6 +6,7 @@ import {SystemIcon} from "../elements/icon/SystemIcon";
 import {IconType} from "../elements/icon/IconType";
 import moment from "moment/moment";
 import {HBox} from "../elements/box/HBox";
+import {Icon} from "react-native-elements";
 
 const CardStyle = {
     marginTop: 10,
@@ -29,26 +30,27 @@ const IconStyle = {
     marginLeft: 10,
     marginRight: 10,
     width: 80,
-    height: 80,
+    height: '80%',
     borderRadius: 10,
 }
 
 const TitleStyle = {
     marginTop: 10,
-    marginLeft: 20,
+    marginLeft: 10,
     fontSize: 24,
     fontWeight: 'bold'
 }
 
 const TextStyle = {
-    marginLeft: 20,
+    marginLeft: 10,
+    marginTop: 10,
     fontSize: 14,
     fontWeight: 'bold'
 }
 
 const DateStyle = {
-    marginTop: 5,
-    marginLeft: 20,
+    marginTop: 10,
+    marginLeft: 10,
     marginBottom: 20,
 }
 
@@ -66,7 +68,7 @@ const CoverIcon = (props) =>
     <Box alignItems={'center'}
          justifyContent={'center'}
          style={[IconStyle, {backgroundColor: props.color}]}>
-        <SystemIcon url={props.icon}/>
+        <Icon name={'notifications-active'} color={'white'}/>
     </Box>
 
 export const ItemNotification = (props) =>

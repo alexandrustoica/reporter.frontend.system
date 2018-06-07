@@ -2,45 +2,53 @@ import React from "react";
 import {Box} from "../elements/box/Box";
 import {IconType} from "../elements/icon/IconType";
 import {Screen} from "../elements/box/screen/Screen";
-import {Text, View} from "react-native";
+import {StatusBar, Text, View} from "react-native";
 import {NavigationBar} from "../elements/components/NavigationBar";
 import {store} from "../utils/store";
 import {UserAction} from "../service/UserEpicAction";
 import moment from "moment/moment";
 import {EditText} from "../elements/components/EditText";
 import {Colors} from "../elements/color/Colors";
-
+import {Icon} from "react-native-elements";
 
 export default class Profile extends React.Component {
 
-    static navigationOptions = {header: null};
+    static navigationOptions = {
+        header: null,
+        title: 'My Profile',
+        drawerIcon: () => <Icon name={'face'} color={'black'}/>
+    };
 
     constructor(props) {
         super(props)
         const {token} = store.getState().systemReducer
+        const {userReducer} = store.getState()
         this.state = {
             token: token,
-            userReducer: store.getState().userReducer
+            userReducer: userReducer
         }
     }
 
     __unsubscribeCurrentUserObserver = store.subscribe(() => {
-        console.log(store.getState().userReducer)
         this.setState({userReducer: store.getState().userReducer})
     })
 
     componentWillMount = () =>
         store.dispatch(new UserAction(this.state.token).getCurrentUser())
 
+    componentWillUnmount = () => this.__unsubscribeCurrentUserObserver()
+
     render = () =>
         <Screen backgroundColor={'white'}>
             <NavigationBar
-                text={"My Profile"}
-                align={'left'}
-                leftIcon={IconType.BACK_DARK}
-                rightIcon={IconType.TIME_DARK}
-                leftAction={() => this.props.navigation.goBack()}
+                text={"My Profile"} align={'left'}
+                leftIcon={{name: "menu", color: "black"}}
+                leftAction={() => this.props.navigation.navigate('DrawerOpen')}
+                rightIcon={{name: "edit", color: "black"}}
                 rightAction={() => this.props.navigation.navigate('EditProfile')}/>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="dark-content"/>
             <Box flex={3} alignItems={'center'} flexDirection={'column'}
                  style={{margin: 20}}>
                 <Text style={{
@@ -62,15 +70,18 @@ export default class Profile extends React.Component {
             <EditText
                 text={`Username ${this.state.userReducer.currentUser.username}`}
                 editable={false}
-                icon={IconType.PROFILE_DARK}/>
+                iconName={'fingerprint'}
+                iconColor={'black'}/>
             <EditText
                 text={`Email ${this.state.userReducer.currentUser.email}`}
                 editable={false}
-                icon={IconType.PROFILE_DARK}/>
+                iconName={'email'}
+                iconColor={'black'}/>
             <EditText
                 text={`Account created ${moment(this.state.userReducer.currentUser.date).fromNow()}`}
                 editable={false}
-                icon={IconType.TIME_DARK}/>
+                iconName={'access-time'}
+                iconColor={'black'}/>
         </Screen>
 
 

@@ -28,6 +28,7 @@ export class RCamera extends React.Component {
         hasCameraPermission: null,
         type: Camera.Constants.Type.back,
     };
+
     __renderCameraScreen = () =>
         <Screen backgroundColor={'transparent'}>
             <NavigationBar
@@ -36,9 +37,7 @@ export class RCamera extends React.Component {
                 text={""}
                 align={'left'}
                 leftAction={() => this.props.navigation.goBack()}/>
-            <Camera ref={ref => {
-                this.camera = ref
-            }}
+            <Camera ref={ref => {this.camera = ref}}
                     style={{flex: 1}}
                     type={this.state.type}>
                 <Box justifyContent={'flex-end'}>

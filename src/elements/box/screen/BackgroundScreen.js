@@ -4,6 +4,6 @@ import {Screen} from "./Screen";
 
 export const BackgroundScreen = () =>
     <Screen>
-        <Image source={require("../../../../images/login_background.png")}/>
+        <Image source={require("../../../../images/background.jpg")}/>
     </Screen>
 

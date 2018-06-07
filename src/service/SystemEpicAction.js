@@ -12,7 +12,7 @@ const SystemEpicFollowUpAction = {
 
 const GetLocalTokenEpic = createEpic()
     .forActionType('UPDATE_TOKEN')
-    .withPromise(action => AsyncStorage.getItem('token'))
+    .withPromise(() => AsyncStorage.getItem('token'))
     .map(SystemEpicFollowUpAction.updateToken)
 
 const LoginEpic = createEpic()
