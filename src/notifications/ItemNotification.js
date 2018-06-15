@@ -2,8 +2,6 @@ import * as React from "react";
 import {Text, TouchableOpacity} from "react-native";
 import {Colors} from "../elements/color/Colors";
 import {Box} from "../elements/box/Box";
-import {SystemIcon} from "../elements/icon/SystemIcon";
-import {IconType} from "../elements/icon/IconType";
 import moment from "moment/moment";
 import {HBox} from "../elements/box/HBox";
 import {Icon} from "react-native-elements";
@@ -43,7 +41,8 @@ const TitleStyle = {
 
 const TextStyle = {
     marginLeft: 10,
-    marginTop: 10,
+    marginRight: 10,
+    marginTop: 20,
     fontSize: 14,
     fontWeight: 'bold'
 }
@@ -71,35 +70,46 @@ const CoverIcon = (props) =>
         <Icon name={'notifications-active'} color={'white'}/>
     </Box>
 
-export const ItemNotification = (props) =>
-    <TouchableOpacity
-        activeOpacity={1.0}
-        onPress={() =>
-            props.markNotificationAsRead(props.item.id)}
-        style={CardStyle}>
+export class ItemNotification extends React.Component {
 
-        <HBox alignItems={"center"}>
-            <CoverIcon
-                color={props.item.isRead ? Colors.GREY : Colors.SUMMER_BLUE}
-                icon={IconType.PLUS_DARK}/>
-            <Box flex={3} flexDirection={'column'}>
-                <Text style={TitleStyle}>{props.item.title}</Text>
-                <Text style={TextStyle}>{props.item.message}</Text>
-                <Text
-                    style={DateStyle}>{moment(props.item.date).fromNow()}</Text>
-            </Box>
-        </HBox>
-    </TouchableOpacity>
+    constructor(props) {
+        super(props)
+        this.state = {
+            isRead : this.props.item.isRead
+        }
+    }
 
-ItemNotification.defaultProps = {
-    item: new Notification({
-        id: "0",
-        title: "notification",
-        message: "message",
-        date: Date.now(),
-        isRead: false
-    }),
-    markNotificationAsRead: (id) => {},
-    icon: IconType.REPORTS_ICON,
-    coverColor: Colors.LIGHT_BLUE
+    render = () =>
+        <TouchableOpacity
+            activeOpacity={1.0}
+            onPress={() => {
+                this.props.markNotificationAsRead(this.props.item.id)
+                this.setState({isRead: true})
+            }}
+            style={CardStyle}>
+
+            <HBox alignItems={"center"}>
+                <CoverIcon
+                    color={this.state.isRead ? Colors.GREY : Colors.SUMMER_BLUE}/>
+                <Box flex={3} flexDirection={'column'}>
+                    <Text style={TextStyle}>{this.props.item.message}</Text>
+                    <Text
+                        style={DateStyle}>{moment(this.props.item.date).fromNow()}</Text>
+                </Box>
+            </HBox>
+        </TouchableOpacity>
 }
+
+// ItemNotification.defaultProps = {
+//     item: new Notification({
+//         id: "0",
+//         title: "notification",
+//         message: "message",
+//         date: Date.now(),
+//         isRead: false
+//     }),
+//     markNotificationAsRead: (id) => {
+//     },
+//     icon: IconType.REPORTS_ICON,
+//     coverColor: Colors.LIGHT_BLUE
+// }

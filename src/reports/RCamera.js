@@ -1,7 +1,6 @@
 import React from "react";
-import {Text, View} from "react-native";
+import {StatusBar, Text, View} from "react-native";
 import {Camera, Permissions} from 'expo';
-import {IconType} from "../elements/icon/IconType";
 import {Colors} from "../elements/color/Colors";
 import {Button} from "../elements/components/Button";
 import {Screen} from "../elements/box/screen/Screen";
@@ -31,8 +30,11 @@ export class RCamera extends React.Component {
 
     __renderCameraScreen = () =>
         <Screen backgroundColor={'transparent'}>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="light-content"/>
             <NavigationBar
-                leftIcon={IconType.BACK_LIGHT}
+                leftIcon={{name: 'arrow-back', color: 'white'}}
                 color={'black'}
                 text={""}
                 align={'left'}
@@ -41,7 +43,7 @@ export class RCamera extends React.Component {
                     style={{flex: 1}}
                     type={this.state.type}>
                 <Box justifyContent={'flex-end'}>
-                    <Button icon={IconType.PLUS_LIGHT}
+                    <Button icon={{name: 'camera', color: 'white'}}
                             backgroundColor={Colors.BLUE}
                             text={""}
                             height={70}

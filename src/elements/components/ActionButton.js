@@ -16,8 +16,7 @@ export const ActionButton = (props) =>
             }}>
         <Icon name={props.icon.name}
               color={props.icon.color}
-
-              onPess={props.onPress}/>
+              onPress={props.onPress}/>
     </Circle>
 
 ActionButton.defaultProps = {

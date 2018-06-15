@@ -53,6 +53,7 @@
     "react-native-picker-select": "^3.1.1",
     "react-native-shadow": "^1.2.1",
     "react-native-shadow-view": "0.0.1",
+    "react-native-statusbar-alert": "^0.4.0",
     "react-native-svg": "^5.4.1",
     "react-native-video": "^2.0.0",
     "react-navigation": "^1.0.0-beta.19",

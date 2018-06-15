@@ -9,6 +9,7 @@ import moment from "moment/moment";
 import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
 import {Icon} from "react-native-elements";
+import StatusBarAlert from "react-native-statusbar-alert";
 
 export default class MyReports extends React.Component {
 
@@ -32,7 +33,6 @@ export default class MyReports extends React.Component {
     }
 
     __unsubscribeReportsObserver = store.subscribe(() => {
-        //console.log(store.getState().reportsReducer)
         this.setState({state: store.getState().reportsReducer})
     })
 
@@ -48,7 +48,8 @@ export default class MyReports extends React.Component {
 
     __adaptToItemView = (data) =>
         new ItemModelAdaptor(data.id, data.title, data.text,
-            moment(data.date).fromNow(), data.location, data.type)
+            moment(data.date).fromNow(), data.location, data.type,
+            data.photos, data.spam, data.solved)
 
     __showNewReportsToUserInList = (items) =>
         <FlatList
@@ -61,13 +62,21 @@ export default class MyReports extends React.Component {
 
     render = () =>
         <Screen backgroundColor={'white'}>
+            <StatusBar
+                backgroundColor="transparent"
+                barStyle="dark-content"/>
+
+            <StatusBarAlert
+                visible={true}
+                height={30}
+                message="Silent Switch ON"
+                backgroundColor="#3CC29E"
+                color="white"/>
+
             <NavigationBar
                 text={"My Reports"}
                 leftIcon={{name: "menu", color: "black"}}
                 leftAction={() => this.props.navigation.navigate('DrawerOpen')}/>
-            <StatusBar
-                backgroundColor="transparent"
-                barStyle="dark-content"/>
             {this.__showNewReportsToUserInList(this.state.state.reports)}
             <Box justifyContent={'flex-end'}
                  alignItems={'flex-end'}

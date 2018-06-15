@@ -11,13 +11,32 @@ export const ReportEpicFollowUpAction = {
     delete: report => ({type: 'DELETE_REPORT_DONE', payload: report}),
     update: report => ({type: 'UPDATE_REPORT_DONE', payload: report}),
     getById: report => ({type: 'GET_REPORT_BY_ID_DONE', payload: report}),
-    addToNearReports: report => ({type: 'ADD_NEAR_REPORT_DONE', payload: report}),
+    addCreatedSection: section => ({type: "SECTION_CREATED", payload: section}),
+    deleteSection: section => ({type: "SECTION_DELETED", payload: section}),
+    addToNearReports: report => ({
+        type: 'ADD_NEAR_REPORT_DONE',
+        payload: report
+    }),
     getAll: reports => ({type: 'GET_REPORTS_DONE', payload: reports}),
-    getAllNear: reports => ({type: 'GET_REPORTS_NEAR_LOCATION_DONE', payload: reports}),
+    getAllNear: reports => ({
+        type: 'GET_REPORTS_NEAR_LOCATION_DONE',
+        payload: reports
+    }),
+    getReportOwnerUsername: reportWithOwner =>
+        ({type: 'GET_REPORT_OWNER_USERNAME_DONE', payload: reportWithOwner}),
     getCriticalSectionsNear: criticalSections =>
-        ({type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION_DONE', payload: criticalSections}),
-    markReportAsSolved: report => ({type: 'MARK_REPORT_AS_SOLVED_DONE', payload: report}),
-    markReportAsSpam: report => ({type: 'MARK_REPORT_AS_SPAM_DONE', payload: report})
+        ({
+            type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION_DONE',
+            payload: criticalSections
+        }),
+    markReportAsSolved: report => ({
+        type: 'MARK_REPORT_AS_SOLVED_DONE',
+        payload: report
+    }),
+    markReportAsSpam: report => ({
+        type: 'MARK_REPORT_AS_SPAM_DONE',
+        payload: report
+    })
 }
 
 const TakePhotoEpic = action$ =>
@@ -102,6 +121,14 @@ const GetCriticalSectionsNearLocationEpic = createEpic()
         .with(action.payload))
     .map(ReportEpicFollowUpAction.getCriticalSectionsNear)
 
+const GetReportOwnerUsernameEpic = createEpic()
+    .forActionType('GET_REPORT_OWNER_USERNAME')
+    .withPromiseToJson(action => getDataFromServer()
+        .fromEndpoint(Endpoint.REPORTS + `/${action.payload}/owner`)
+        .withMethod('GET')
+        .withToken(action.token).withNothing())
+    .map(ReportEpicFollowUpAction.getReportOwnerUsername)
+
 export const ReportEpic = combineEpics(
     CreateReportEpic,
     UpdateReportEpic,
@@ -110,6 +137,7 @@ export const ReportEpic = combineEpics(
     GetAllReportsEpic,
     MarkReportAsSolvedEpic,
     MarkReportAsSpamEpic,
+    GetReportOwnerUsernameEpic,
     GetCriticalSectionsNearLocationEpic,
     GetAllReportsNearLocationEpic,
     TakePhotoEpic
@@ -127,8 +155,13 @@ export class ReportAction {
     takePhoto = camera => ({type: 'TAKE_PHOTO', payload: camera})
     getAllReportsNear = (araa) =>
         ({type: 'GET_REPORTS_NEAR_LOCATION', token: this.token, payload: araa})
-    getAllCriticalSectionsNear = (araa) =>
-        ({type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION', token: this.token, payload: araa})
+    getAllCriticalSectionsNear = (araa) => ({
+            type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION',
+            token: this.token,
+            payload: araa
+    })
+    getReportOwnerUsername = (id) =>
+        ({type: 'GET_REPORT_OWNER_USERNAME', token: this.token, payload: id})
     markReportAsSpam = (id) =>
         ({type: 'MARK_REPORT_AS_SPAM', token: this.token, payload: id})
     markReportAsSolved = (id) =>
@@ -141,11 +174,14 @@ export class ReportAction {
 const initialState = {
     reports: [],
     photos: [],
+    wantedOwnerUsername: {ownerUsername: 'none'},
     reportsNearUserLocation: [],
     criticalSectionsNearUserLocation: []
 }
 
 export const reportsReducer = (state = initialState, action) => {
+    console.log(state)
+    console.log(action)
     const handlers = ({
         ['GET_REPORTS_DONE']: (state, action) => ({
             ...state,
@@ -157,6 +193,10 @@ export const reportsReducer = (state = initialState, action) => {
             ...state,
             criticalSectionsNearUserLocation: action.payload
         }),
+        ['GET_REPORT_OWNER_USERNAME_DONE']: (state, action) => ({
+            ...state,
+            wantedOwnerUsername: action.payload
+        }),
         ['GET_REPORTS_NEAR_LOCATION_DONE']: (state, action) => ({
             ...state,
             reportsNearUserLocation: action.payload,
@@ -164,14 +204,25 @@ export const reportsReducer = (state = initialState, action) => {
         ['ADD_NEAR_REPORT_DONE']: (state, action) => ({
             ...state,
             reportsNearUserLocation: R.uniqBy((it) => it.id,
-                R.concat(state.reportsNearUserLocation, [action.payload])),
+                R.concat([action.payload], state.reportsNearUserLocation)),
         }),
         ['GET_REPORT_BY_ID_DONE']: (state, action) =>
             ({...state, wantedReport: action.payload}),
         ['DELETE_REPORT_DONE']: (state, action) => ({
             ...state,
-            reports: [...R.filter(it => it.id === action.id, state.reports)]
+            reports: R.filter(it => it.id !== action.payload.id, state.reports),
+            reportsNearUserLocation: R.filter(it => it.id !== action.payload.id,
+                state.reportsNearUserLocation)
         }),
+        ['SECTION_CREATED']: (state, action) =>
+            ({...state,
+                criticalSectionsNearUserLocation: R.uniqBy((it) => it.id,
+                    R.concat([action.payload], state.criticalSectionsNearUserLocation))}),
+        ['SECTION_DELETED']: (state, action) =>
+            ({...state,
+                criticalSectionsNearUserLocation:
+                    R.filter(it => it.id !== action.payload.id,
+                        state.criticalSectionsNearUserLocation)}),
         ['CREATE_REPORT_DONE']: (state, action) =>
             ({...state, reports: [action.payload, ...state.reports]}),
         ['UPDATE_REPORT_DONE']: (state, action) =>
@@ -179,13 +230,19 @@ export const reportsReducer = (state = initialState, action) => {
         ['TAKE_PHOTO_DONE']: (state, action) =>
             ({...state, photos: [...state.photos, action.payload]}),
         ['MARK_REPORT_AS_SOLVED_DONE']: (state, action) =>
-            ({...state,
-                reports: R.filter(it => it.id !== action.payload.id),
-                reportsNearUserLocation: R.filter(it => it.id !== action.payload.id)}),
+            ({
+                ...state,
+                reports: R.filter(it => it.id !== action.payload.id, state.reports),
+                reportsNearUserLocation: R.filter(it => it.id !== action.payload.id,
+                    state.reportsNearUserLocation)
+            }),
         ['MARK_REPORT_AS_SPAM_DONE']: (state, action) =>
-            ({...state,
-                reports: R.filter(it => it.id !== action.payload.id),
-                reportsNearUserLocation: R.filter(it => it.id !== action.payload.id)})
+            ({
+                ...state,
+                reports: R.filter(it => it.id !== action.payload.id, state.reports),
+                reportsNearUserLocation: R.filter(it => it.id !== action.payload.id,
+                    state.reportsNearUserLocation)
+            }),
     })
 
     return handlers[action.type] ?

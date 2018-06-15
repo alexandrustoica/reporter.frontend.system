@@ -14,6 +14,7 @@ import Map from "./src/reports/Map";
 import MyReports from "./src/reports/MyReports";
 import NearReports from "./src/reports/NearReports";
 import Loading from "./src/system/Loading";
+import ReportGallery from "./src/reports/ReportGallery";
 
 const ReportsWithDrawer = DrawerNavigator({
     MyReports: {screen: MyReports},
@@ -25,11 +26,10 @@ const ReportsWithDrawer = DrawerNavigator({
 });
 
 const Nav = StackNavigator({
-    Loading: {screen: Loading},
+    //Loading: {screen: Loading},
     Welcome: {screen: Welcome},
     Login: {screen: Login},
     Register: {screen: Register},
-    LoginAfterRegister: {screen: LoginAfterRegister},
     MyReports: {
         screen: ReportsWithDrawer,
         navigationOptions: {
@@ -39,6 +39,7 @@ const Nav = StackNavigator({
     AddReport: {screen: AddReport},
     RCamera: {screen: RCamera},
     Report: {screen: Report},
+    ReportGallery: {screen: ReportGallery},
     EditProfile: {screen: EditProfile}
 }, {
     headerMode: 'screen'

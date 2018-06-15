@@ -3,11 +3,12 @@ import {Endpoint} from "./Endpoint";
 import {createEpic} from "../utils/createEpic";
 import {getDataFromServer} from "../utils/getDataFromServer";
 import {AsyncStorage} from "react-native";
+import * as Rx from "rxjs/Rx";
 
 const SystemEpicFollowUpAction = {
     updateToken: token => ({type: 'UPDATE_TOKEN_DONE', payload: token}),
     register: user => ({type: 'REGISTER_DONE', payload: user}),
-    login: token => ({type: 'LOGIN_DONE', payload: token}),
+    login: token => ({type: 'LOGIN_DONE', payload: token})
 }
 
 const GetLocalTokenEpic = createEpic()
@@ -22,7 +23,12 @@ const LoginEpic = createEpic()
         .withMethod('POST')
         .withToken()
         .with(action.payload))
-        .then(response => response.headers.get("authorization")))
+        .then(response => {
+            if (response.headers.get("authorization") === null) {
+                throw new TypeError("Wrong username or password!")
+            }
+            return response.headers.get("authorization")
+        }))
     .map(SystemEpicFollowUpAction.login)
 
 const RegisterEpic = createEpic()
@@ -58,8 +64,15 @@ export const SystemAction = {
     })
 }
 
-export const systemReducer = (state = {}, action) => {
+const initialState = {
+    token: null,
+    error: {
+        visible: false,
+        message: "",
+    }
+}
 
+export const systemReducer = (state = initialState, action) => {
     const handlers = ({
         ['SAVE_TO_LOCAL_STORAGE_DONE']: (state, action) => ({
             ...state
@@ -78,6 +91,13 @@ export const systemReducer = (state = {}, action) => {
         ['REGISTER_DONE']: (state, action) => ({
             ...state,
             currentUser: action.payload
+        }),
+        ['DEFAULT_ERROR']: (state, action) => ({
+            ...state,
+            error: {
+                visible: true,
+                message: action.payload.message,
+            }
         })
     })
 

@@ -46,16 +46,15 @@ export default class NearReports extends React.Component {
             {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
     }
 
-    __unsubscribeReportObserver = store.subscribe(() => {
-        console.log(store.getState().reportsReducer.reportsNearUserLocation)
-        this.setState({reportsReducer: store.getState().reportsReducer})
-    })
+    __unsubscribeReportObserver = store.subscribe(() =>
+        this.setState({reportsReducer: store.getState().reportsReducer}))
 
     componentWillUnmount = () => this.__unsubscribeReportObserver()
 
     __adaptToItemView = (data) =>
         new ItemModelAdaptor(data.id, data.title, data.text,
-            moment(data.date).fromNow(), data.location, data.type)
+            moment(data.date).fromNow(), data.location, data.type,
+            data.photos, data.spam, data.solved)
 
     __showNewReportsToUserInList = (items) =>
         <FlatList

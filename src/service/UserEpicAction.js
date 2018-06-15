@@ -49,7 +49,7 @@ const initialStateValue = {
         name: 'Loading',
         password: 'Loading',
         email: 'Loading',
-        role: 'user',
+        role: 'USER',
         date: Date.now(),
     }
 }

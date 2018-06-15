@@ -64,6 +64,7 @@ export default class Map extends React.Component {
     componentDidMount = async () => {
         await navigator.geolocation.getCurrentPosition(
             (location) => this.__saveUserLocationToInternalState(location),
+            // TODO: Error To User
             (error) => console.log(error),
             {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
     }

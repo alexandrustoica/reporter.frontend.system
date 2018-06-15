@@ -1,4 +1,3 @@
-import {IconType} from "../elements/icon/IconType";
 import React from "react";
 import {store} from "../utils/store";
 import {FlatList, StatusBar} from "react-native";
@@ -19,25 +18,23 @@ export default class MyNotifications extends React.Component {
 
     constructor(props) {
         super(props)
-        const token = store.getState().systemReducer.token
         this.state = {
-            token: token,
-            state: store.getState().notificationReducer
+            token: store.getState().systemReducer.token,
+            notificationReducer: store.getState().notificationReducer
         }
     }
 
     __unsubscribeReportsObserver = store.subscribe(() =>
-        this.setState({state: store.getState().notificationReducer}))
+        this.setState({notificationReducer: store.getState().notificationReducer}))
 
     componentWillMount = () =>
-        store.dispatch(new NotificationAction(this.state.token)
-            .getAllAtPage(0))
+        store.dispatch(new NotificationAction(this.state.token).getAllAtPage(0))
 
     componentWillUnmount = () => this.__unsubscribeReportsObserver()
 
     __getNextPageOfReports = () => {
-        const currentPage = this.state.state.page
-        if (!this.state.state.isLast && isFinite(currentPage)) {
+        const currentPage = this.state.notificationReducer.page
+        if (!this.state.notificationReducer.isLast && isFinite(currentPage)) {
             store.dispatch(new NotificationAction(this.state.token)
                 .getAllAtPage(currentPage + 1))
         }
@@ -48,14 +45,11 @@ export default class MyNotifications extends React.Component {
             data={items}
             onEndReached={() => this.__getNextPageOfReports()}
             keyExtractor={(item, id) => id}
-            renderItem={({item}) =>
-                <ItemNotification
-                    markNotificationAsRead={(id) => {
-                        const {token} = store.getState().systemReducer
-                        store.dispatch(new NotificationAction(token)
-                            .markNotificationAsRead(id))
-                    }}
-                    item={new Notification(item)}/>}/>
+            renderItem={({item}) => <ItemNotification
+                markNotificationAsRead={(id) =>
+                    store.dispatch(new NotificationAction(store.getState().systemReducer.token)
+                        .markNotificationAsRead(id))}
+                item={new Notification(item)}/>}/>
 
     render = () =>
         <Screen backgroundColor={'white'}>
@@ -67,6 +61,6 @@ export default class MyNotifications extends React.Component {
             <StatusBar
                 backgroundColor="transparent"
                 barStyle="dark-content"/>
-            {this.__showNewReportsToUserInList(this.state.state.notifications)}
+            {this.__showNewReportsToUserInList(this.state.notificationReducer.notifications)}
         </Screen>
 }

@@ -45,13 +45,17 @@ const DateStyle = {
 }
 
 export class ItemModelAdaptor {
-    constructor(id, title, primaryText, secondaryText, location, type) {
+    constructor(id, title, primaryText, secondaryText, location,
+                type, photos, isSpam, isSolved) {
         this.id = id
         this.title = title
         this.primaryText = primaryText
         this.secondaryText = secondaryText
         this.location = location
         this.type = type
+        this.photos = photos
+        this.isSpam = isSpam
+        this.isSolved = isSolved
     }
 }
 

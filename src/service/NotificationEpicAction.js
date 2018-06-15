@@ -4,7 +4,7 @@ import {createEpic} from "../utils/createEpic";
 import {getDataFromServer} from "../utils/getDataFromServer";
 import {Endpoint} from "./Endpoint";
 
-const NotificationEpicFollowUpAction = {
+export const NotificationEpicFollowUpAction = {
     markNotificationAsRead: notification => ({
         type: 'MARK_NOTIFICATION_AS_READ_DONE',
         payload: notification,
@@ -53,7 +53,6 @@ export const notificationReducer = (state = {
     page: 0,
     isLast: false
 }, action) => {
-    console.log(state)
     const handlers = ({
         ['GET_NOTIFICATIONS_DONE']: (state, action) => ({
             ...state,

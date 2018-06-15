@@ -11,6 +11,7 @@ import {store} from "../utils/store";
 import {Image, ScrollView, StatusBar, StyleSheet, View} from "react-native";
 import {HBox} from "../elements/box/HBox";
 import RNPickerSelect from "react-native-picker-select";
+import {ImagePicker} from 'expo';
 
 export class Location {
     constructor(latitude, longitude) {
@@ -38,6 +39,21 @@ export class Report {
 export default class AddReport extends React.Component {
 
     static navigationOptions = {header: null}
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            photos: [],
+            title: '',
+            text: '',
+            region: {
+                latitude: 0.0,
+                longitude: 0.0,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+            }
+        }
+    }
 
     __saveUserLocationToInternalState = async (location) =>
         await this.setState({
@@ -74,15 +90,19 @@ export default class AddReport extends React.Component {
     componentDidMount = async () => {
         await navigator.geolocation.getCurrentPosition(
             (location) => this.__saveUserLocationToInternalState(location),
+            // TODO: Error To User
             (error) => console.log(error),
             {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
     }
 
-    __renderPhotoFromUser = (photo) =>
+    __renderPhotoFromUser = (photo) => {
+        console.log(photo)
+        return (
+
         <View style={{width: '50%'}}>
             <Image style={{height: 200}} source={{uri: photo.uri}}/>
         </View>
-
+    )}
     render = () =>
         <Screen backgroundColor={'white'}>
             <StatusBar
@@ -90,9 +110,9 @@ export default class AddReport extends React.Component {
                 barStyle="dark-content"/>
             <ScrollView style={{flex: 1}}>
                 <NavigationBar
-                    leftIcon={{name: 'arrow-back', color: 'black'}}
                     text={"Add Report"}
                     align={'left'}
+                    leftIcon={{name: 'arrow-back', color: 'black'}}
                     leftAction={() => this.props.navigation.goBack()}/>
                 <EditText
                     flex={1}
@@ -100,24 +120,19 @@ export default class AddReport extends React.Component {
                     text={"Write a title for your report..."}
                     onChangeText={(text) => this.setState({title: text})}/>
                 <RNPickerSelect
-                    placeholder={{
-                        label: 'Parking',
-                        value: "PARKING",
-                    }}
+                    placeholder={{label: 'Parking', value: "PARKING",}}
                     style={{...pickerSelectStyles}}
-                    items={[{label: 'Parking', value: 'PARKING'},
-                        {label: 'Dumps', value: 'DUMP'},
+                    items={[{label: 'Dumps', value: 'DUMP'},
                         {label: 'Graffiti', value: 'GRAFFITI'}]}
                     onValueChange={(value) => this.setState({type: value})}
-                    value={this.state.type}
-                />
+                    value={this.state.type}/>
                 <EditText
                     flex={1}
                     fontSize={14}
                     text={"Write a short description for your report ..."}
                     onChangeText={(text) => this.setState({text: text})}/>
                 <MapView
-                    style={{width: "100%", height: 250}}
+                    style={{width: "100%", height: 252}}
                     showsUserLocation={true}
                     scrollEnabled={false}
                     region={this.state.region}
@@ -127,17 +142,15 @@ export default class AddReport extends React.Component {
                         latitude: this.state.region.latitude,
                     }}/>
                 </MapView>
-
                 <HBox width={'100%'} style={{flexWrap: 'wrap'}}>
                     {this.state.photos.map(this.__renderPhotoFromUser)}
                 </HBox>
-
                 <HBox height={70} flex={0}>
                     <Button
                         backgroundColor={Colors.BLUE}
                         text={"SEND REPORT"}
                         height={70}
-                        width={'80%'}
+                        width={'60%'}
                         flex={null}
                         onPress={() => this.__saveReportAndGoBackToReportsScreen(
                             this.__getReportFromCurrentUserData())}/>
@@ -149,24 +162,19 @@ export default class AddReport extends React.Component {
                         width={'20%'}
                         flex={null}
                         onPress={() => this.props.navigation.navigate('RCamera')}/>
+                    <Button
+                        icon={{name: 'photo-library', color: 'white'}}
+                        backgroundColor={Colors.BLACK}
+                        text={""}
+                        height={70}
+                        width={'20%'}
+                        flex={null}
+                        onPress={() => ImagePicker.launchImageLibraryAsync({base64: true})
+                            .then(it => this.setState({photos: R.concat(this.state.photos, [it])}))}
+                    />
                 </HBox>
             </ScrollView>
         </Screen>
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            photos: [],
-            title: '',
-            text: '',
-            region: {
-                latitude: 0.0,
-                longitude: 0.0,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-            }
-        }
-    }
 }
 
 const pickerSelectStyles = StyleSheet.create({
