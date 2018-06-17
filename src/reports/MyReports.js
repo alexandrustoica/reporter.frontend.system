@@ -67,7 +67,7 @@ export default class MyReports extends React.Component {
                 barStyle="dark-content"/>
 
             <StatusBarAlert
-                visible={true}
+                visible={false}
                 height={30}
                 message="Silent Switch ON"
                 backgroundColor="#3CC29E"

@@ -30,6 +30,8 @@ export default class EditProfile extends React.Component {
     __unsubscribeCurrentUserObserver = store.subscribe(() =>
         this.setState({userReducer: store.getState().userReducer}))
 
+    componentWillUnmount = () => this.__unsubscribeCurrentUserObserver()
+
     componentWillMount = () =>
         store.dispatch(new UserAction(this.state.token).getCurrentUser())
 

@@ -1,12 +1,8 @@
 import React from "react";
 import {FlatList, StatusBar} from "react-native";
-import {Box} from "../elements/box/Box";
-import {IconType} from "../elements/icon/IconType";
 import {Screen} from "../elements/box/screen/Screen";
-import {ActionButton} from "../elements/components/ActionButton";
 import {ItemModelAdaptor, ItemReport} from "./ItemReport";
 import {NavigationBar} from "../elements/components/NavigationBar";
-import {SystemIcon} from "../elements/icon/SystemIcon";
 import moment from "moment/moment";
 import {ReportAction} from "../service/ReportEpicActions";
 import {store} from "../utils/store";

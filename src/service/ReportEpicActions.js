@@ -7,6 +7,8 @@ import * as R from "ramda";
 
 export const ReportEpicFollowUpAction = {
     takePhoto: photo => ({type: 'TAKE_PHOTO_DONE', payload: photo}),
+    cleanPhotos: () => ({type: 'CLEAN_PHOTOS_DONE'}),
+    removePhoto: photo => ({type: 'REMOVE_PHOTO_DONE', payload: photo}),
     create: report => ({type: 'CREATE_REPORT_DONE', payload: report}),
     delete: report => ({type: 'DELETE_REPORT_DONE', payload: report}),
     update: report => ({type: 'UPDATE_REPORT_DONE', payload: report}),
@@ -156,9 +158,9 @@ export class ReportAction {
     getAllReportsNear = (araa) =>
         ({type: 'GET_REPORTS_NEAR_LOCATION', token: this.token, payload: araa})
     getAllCriticalSectionsNear = (araa) => ({
-            type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION',
-            token: this.token,
-            payload: araa
+        type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION',
+        token: this.token,
+        payload: araa
     })
     getReportOwnerUsername = (id) =>
         ({type: 'GET_REPORT_OWNER_USERNAME', token: this.token, payload: id})
@@ -166,6 +168,7 @@ export class ReportAction {
         ({type: 'MARK_REPORT_AS_SPAM', token: this.token, payload: id})
     markReportAsSolved = (id) =>
         ({type: 'MARK_REPORT_AS_SOLVED', token: this.token, payload: id})
+
     constructor(token) {
         this.token = token;
     }
@@ -180,8 +183,6 @@ const initialState = {
 }
 
 export const reportsReducer = (state = initialState, action) => {
-    console.log(state)
-    console.log(action)
     const handlers = ({
         ['GET_REPORTS_DONE']: (state, action) => ({
             ...state,
@@ -215,31 +216,44 @@ export const reportsReducer = (state = initialState, action) => {
                 state.reportsNearUserLocation)
         }),
         ['SECTION_CREATED']: (state, action) =>
-            ({...state,
+            ({
+                ...state,
                 criticalSectionsNearUserLocation: R.uniqBy((it) => it.id,
-                    R.concat([action.payload], state.criticalSectionsNearUserLocation))}),
+                    R.concat([action.payload], state.criticalSectionsNearUserLocation))
+            }),
         ['SECTION_DELETED']: (state, action) =>
-            ({...state,
+            ({
+                ...state,
                 criticalSectionsNearUserLocation:
                     R.filter(it => it.id !== action.payload.id,
-                        state.criticalSectionsNearUserLocation)}),
+                        state.criticalSectionsNearUserLocation)
+            }),
         ['CREATE_REPORT_DONE']: (state, action) =>
             ({...state, reports: [action.payload, ...state.reports]}),
         ['UPDATE_REPORT_DONE']: (state, action) =>
             ({...state, report: action.payload}),
         ['TAKE_PHOTO_DONE']: (state, action) =>
             ({...state, photos: [...state.photos, action.payload]}),
+        ['CLEAN_PHOTOS_DONE']: (state, action) =>
+            ({...state, photos: []}),
+        ['REMOVE_PHOTO_DONE']: (state, action) =>
+            ({
+                ...state, photos: R.filter(it =>
+                    it.uri !== action.payload.uri, state.photos)
+            }),
         ['MARK_REPORT_AS_SOLVED_DONE']: (state, action) =>
             ({
                 ...state,
-                reports: R.filter(it => it.id !== action.payload.id, state.reports),
+                reports: R.map(it => it.id === action.payload.id ?
+                    action.payload : it, state.reports),
                 reportsNearUserLocation: R.filter(it => it.id !== action.payload.id,
                     state.reportsNearUserLocation)
             }),
         ['MARK_REPORT_AS_SPAM_DONE']: (state, action) =>
             ({
                 ...state,
-                reports: R.filter(it => it.id !== action.payload.id, state.reports),
+                reports: R.map(it => it.id === action.payload.id ?
+                    action.payload : it, state.reports),
                 reportsNearUserLocation: R.filter(it => it.id !== action.payload.id,
                     state.reportsNearUserLocation)
             }),

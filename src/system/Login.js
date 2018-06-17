@@ -47,7 +47,8 @@ class LoginForm extends React.Component {
         const {token, error} = store.getState().systemReducer
         this.setState({error: error})
         if (token !== null) {
-            AsyncStorage.setItem('token', token)
+            AsyncStorage.setItem('username', this.state.username)
+            AsyncStorage.setItem('password', this.state.password)
             this.__unsubscribe()
             webSocketConnection.open()
             this.props.navigation.navigate('MyReports')

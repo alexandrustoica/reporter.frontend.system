@@ -26,7 +26,7 @@ const ReportsWithDrawer = DrawerNavigator({
 });
 
 const Nav = StackNavigator({
-    //Loading: {screen: Loading},
+    Loading: {screen: Loading},
     Welcome: {screen: Welcome},
     Login: {screen: Login},
     Register: {screen: Register},
@@ -42,7 +42,12 @@ const Nav = StackNavigator({
     ReportGallery: {screen: ReportGallery},
     EditProfile: {screen: EditProfile}
 }, {
-    headerMode: 'screen'
+    index: 0,
+    initialRouteName: 'Loading',
+    headerMode: 'screen',
+    navigationOptions: {
+        gesturesEnabled: false
+    }
 });
 
 export default class App extends React.Component {

@@ -86,7 +86,7 @@ export const systemReducer = (state = initialState, action) => {
         ['LOGIN_DONE']: (state, action) => ({
             ...state,
             lastUpdated: Date.now(),
-            token: action.payload
+            token: action.payload,
         }),
         ['REGISTER_DONE']: (state, action) => ({
             ...state,

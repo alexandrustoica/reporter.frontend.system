@@ -17,7 +17,7 @@ export default class ReportGallery extends React.Component {
     }
 
     __renderPhotoFromUser = (photo) =>
-        <View style={{width: '100%'}}>
+        <View key={photo.bytes} style={{width: '100%'}}>
             <Image style={{height: 300}}
                    source={{uri: `data:image/png;base64, ${photo.bytes}`}}/>
         </View>

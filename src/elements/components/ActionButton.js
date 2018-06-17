@@ -14,15 +14,18 @@ export const ActionButton = (props) =>
                 shadowRadius: 30,
                 shadowOpacity: 0.5,
             }}>
-        <Icon name={props.icon.name}
-              color={props.icon.color}
-              onPress={props.onPress}/>
+        <Icon
+            containerStyle={{width: 40, height: 40}}
+            name={props.icon.name}
+            color={props.icon.color}
+            onPress={props.onPress}/>
     </Circle>
 
 ActionButton.defaultProps = {
     color: Colors.BLUE,
     radius: 30,
-    onPress: () => {},
-    icon: {name:'add', color:'white'}
+    onPress: () => {
+    },
+    icon: {name: 'add', color: 'white'}
 }
 

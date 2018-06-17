@@ -83,6 +83,13 @@ const Cover = (props) =>
         <SystemIcon url={props.icon}/>
     </Box>
 
+export const __getStatusColorAndIcon = (report) => ({
+    color: report.isSpam ? 'red' :
+        report.isSolved ? 'green' : 'blue',
+    icon: report.type === 'PARKING' ? 'local-parking' :
+        report.type === 'DUMP' ? 'delete' : 'palette'
+})
+
 export const ItemReport = (props) =>
     <TouchableOpacity
         activeOpacity={1.0}
@@ -93,12 +100,11 @@ export const ItemReport = (props) =>
             <Map {...props}/> : <Cover {...props}/>}
         <HBox style={{paddingRight: 20}}>
             <Box flexDirection={'column'}>
-            <Text style={TitleStyle}>{props.item.title}</Text>
-            <Text style={DateStyle}>{props.item.secondaryText}</Text>
-        </Box>
-        <Icon name={(props.item.type === 'PARKING') ? 'local-parking':
-            (props.item.type === 'DUMP') ? 'delete': 'palette'}
-              color={'#d93c19'}/>
+                <Text style={TitleStyle}>{props.item.title}</Text>
+                <Text style={DateStyle}>{props.item.secondaryText}</Text>
+            </Box>
+            <Icon name={__getStatusColorAndIcon(props.item).icon}
+                  color={__getStatusColorAndIcon(props.item).color}/>
         </HBox>
     </TouchableOpacity>
 

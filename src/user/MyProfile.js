@@ -52,6 +52,7 @@ export default class Profile extends React.Component {
             <Box flex={3} alignItems={'center'} flexDirection={'column'}
                  style={{margin: 20}}>
                 <Text style={{
+                    textAlign: 'center',
                     fontSize: 30,
                     fontWeight: 'bold',
                     padding: 30

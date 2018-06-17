@@ -5,10 +5,7 @@ import {combineEpics} from 'redux-observable'
 
 const UserEpicFollowUpAction = {
     currentUser: user => ({type: 'CURRENT_USER_DONE', payload: user}),
-    updateUser: user => {
-        console.log(user)
-        return ({type: 'CURRENT_USER_DONE', payload: user})
-    }
+    updateUser: user => ({type: 'CURRENT_USER_DONE', payload: user})
 }
 
 const GetCurrentUserEpic = createEpic()

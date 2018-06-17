@@ -16,7 +16,9 @@ import {Button} from "../elements/components/Button";
 
 export default class Report extends React.Component {
 
-    static navigationOptions = {header: null};
+    static navigationOptions = {
+        header: null,
+    };
 
     constructor(props) {
         super(props)
@@ -28,7 +30,6 @@ export default class Report extends React.Component {
             reportsReducer: reportsReducer,
             item: this.props.navigation.state.params.item
         }
-        console.log(this.props.navigation.state.params.item)
     }
 
     componentWillMount = () => {
@@ -41,6 +42,8 @@ export default class Report extends React.Component {
         userReducer: store.getState().userReducer,
         reportsReducer: store.getState().reportsReducer
     }))
+
+    componentWillUnmount = () => this.__unsubscribeCurrentUserObserver()
 
     __renderMapIfRequested = () =>
         <MapView style={{width: "100%", flex: 1}}
@@ -104,11 +107,22 @@ export default class Report extends React.Component {
                     onPress={this.__markReportAsDone}/>
             </HBox> : null
 
+    __getStatusColorAndMessage = () => ({
+        color: this.state.item.isSpam ? 'red' :
+            this.state.item.isSolved ? 'green' : 'blue',
+        message: this.state.item.isSpam ? 'Report marked as spam!' :
+            this.state.item.isSolved ? 'Report marked as solved!' :
+                'The report needs be verified by a police officer.'
+    })
+
     __showIfReportMarked = () => <Text
-        style={{color: 'red', marginVertical: 10, fontSize: 18}}>
-            {this.state.item.isSpam ? "Report marked as spam!" :
-                this.state.item.isSolved ? "Report marked as solved!" : ""}
-        </Text>
+        style={{
+            color: this.__getStatusColorAndMessage().color,
+            marginVertical: 10,
+            fontSize: 18
+        }}>
+        {this.__getStatusColorAndMessage().message}
+    </Text>
 
     render = () =>
         <Screen backgroundColor={'white'}>
@@ -124,7 +138,7 @@ export default class Report extends React.Component {
                 leftIcon={{name: 'arrow-back', color: 'black'}}
                 leftAction={() => this.props.navigation.goBack()}/>
             <Box flexDirection={'column'} style={{margin: 20}}>
-                <Text style={{fontSize: 45, fontWeight: 'bold'}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>
                     {this.state.item.title}
                 </Text>
                 <Text style={{marginTop: 10, fontSize: 18}}>

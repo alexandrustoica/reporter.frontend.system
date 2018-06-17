@@ -18,7 +18,6 @@ class WebSocketConnection {
 
         this.websocket.onmessage = (event) => {
             const broadcastEvent = JSON.parse(event.data)
-            console.log(broadcastEvent)
             const handlers = ({
                 ['REPORT_CREATED']: (report) => (!report.isSpam) ?
                     store.dispatch(ReportEpicFollowUpAction.addToNearReports(report)) : {},

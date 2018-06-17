@@ -16,7 +16,8 @@ export default class Logout extends React.Component {
 
     __logoutUserFromCurrentSession = () => {
         webSocketConnection.close()
-        AsyncStorage.removeItem('token')
+        AsyncStorage.removeItem('username')
+        AsyncStorage.removeItem('password')
         this.props.navigation.navigate('Welcome')
     }
 

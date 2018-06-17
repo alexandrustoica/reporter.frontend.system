@@ -6,12 +6,22 @@ import {Colors} from "../elements/color/Colors";
 import * as R from "ramda";
 import {NavigationBar} from "../elements/components/NavigationBar";
 import {Screen} from "../elements/box/screen/Screen";
-import {ReportAction} from "../service/ReportEpicActions";
+import {
+    ReportAction,
+    ReportEpicFollowUpAction
+} from "../service/ReportEpicActions";
 import {store} from "../utils/store";
-import {Image, ScrollView, StatusBar, StyleSheet, View} from "react-native";
+import {
+    Alert, Image, ScrollView, StatusBar, StyleSheet,
+    TouchableOpacity
+} from "react-native";
 import {HBox} from "../elements/box/HBox";
 import RNPickerSelect from "react-native-picker-select";
 import {ImagePicker} from 'expo';
+import {Circle} from "../elements/icon/Circle";
+import {Icon} from "react-native-elements";
+import {CenterBox} from "../elements/box/CenterBox";
+
 
 export class Location {
     constructor(latitude, longitude) {
@@ -33,6 +43,8 @@ export class Report {
         this.photos = photos;
         this.location = location;
         this.type = type;
+        this.spam = false;
+        this.solved = false;
     }
 }
 
@@ -69,6 +81,11 @@ export default class AddReport extends React.Component {
     __unsubscribePhotosObserver = store.subscribe(() =>
         this.setState({photos: store.getState().reportsReducer.photos}))
 
+    componentWillUnmount = () => {
+        store.dispatch(ReportEpicFollowUpAction.cleanPhotos())
+        this.__unsubscribePhotosObserver()
+    }
+
     __getReportFromCurrentUserData = () => new Report(
         this.state.title, this.state.text,
         new Location(this.state.region.latitude, this.state.region.longitude),
@@ -95,20 +112,48 @@ export default class AddReport extends React.Component {
             {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
     }
 
-    __renderPhotoFromUser = (photo) => {
-        console.log(photo)
-        return (
+    __removePhotoFromSystem = (photo) => {
+        Alert.alert(
+            'Remove Photo',
+            'Are you sure that you want to remove the photo?',
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'OK',
+                    onPress: () => store.dispatch(ReportEpicFollowUpAction.removePhoto(photo))
+                },
+            ],
+            {cancelable: false}
+        )
+    }
 
-        <View style={{width: '50%'}}>
-            <Image style={{height: 200}} source={{uri: photo.uri}}/>
-        </View>
-    )}
+    __renderPhotoFromUser = (photo) =>
+        <TouchableOpacity
+            onPress={() => this.__removePhotoFromSystem(photo)}
+            key={photo.uri} style={{width: '50%'}}>
+            <Image style={{height: 200}} source={{uri: photo.uri}}>
+                <CenterBox>
+                    <Circle radius={20} color={'#f13f24'}
+                            style={{
+                                shadowColor: '#f13f24',
+                                shadowOffset: {width: 0, height: 10},
+                                shadowRadius: 10,
+                                shadowOpacity: 0.4
+                            }}>
+                        <Icon containerStyle={{width: 40, height: 40}}
+                              name={'close'}
+                              color={'white'}/>
+                    </Circle>
+                </CenterBox>
+            </Image>
+        </TouchableOpacity>
+
     render = () =>
         <Screen backgroundColor={'white'}>
             <StatusBar
                 backgroundColor="transparent"
                 barStyle="dark-content"/>
-            <ScrollView style={{flex: 1}}>
+            <ScrollView style={{flex: 1}} bounces={false}>
                 <NavigationBar
                     text={"Add Report"}
                     align={'left'}
@@ -132,7 +177,7 @@ export default class AddReport extends React.Component {
                     text={"Write a short description for your report ..."}
                     onChangeText={(text) => this.setState({text: text})}/>
                 <MapView
-                    style={{width: "100%", height: 252}}
+                    style={{width: "100%", height: 248}}
                     showsUserLocation={true}
                     scrollEnabled={false}
                     region={this.state.region}
@@ -170,7 +215,7 @@ export default class AddReport extends React.Component {
                         width={'20%'}
                         flex={null}
                         onPress={() => ImagePicker.launchImageLibraryAsync({base64: true})
-                            .then(it => this.setState({photos: R.concat(this.state.photos, [it])}))}
+                            .then(it => store.dispatch(ReportEpicFollowUpAction.takePhoto(it)))}
                     />
                 </HBox>
             </ScrollView>

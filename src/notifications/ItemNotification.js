@@ -81,6 +81,7 @@ export class ItemNotification extends React.Component {
 
     render = () =>
         <TouchableOpacity
+            key={this.props.item.id}
             activeOpacity={1.0}
             onPress={() => {
                 this.props.markNotificationAsRead(this.props.item.id)

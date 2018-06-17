@@ -9,17 +9,19 @@ export const NavigationBar = (props) =>
         flex={0}
         style={{paddingTop: 22, backgroundColor: props.color}}>
         <HBox style={{padding: 20}}>
-            <Icon onPress={props.leftAction}
-                  name={props.leftIcon.name}
-                  color={props.leftIcon.color}/>
+            <Icon containerStyle={{width: 30, height: 30}}
+                onPress={props.leftAction}
+                name={props.leftIcon.name}
+                color={props.leftIcon.color}/>
             <NavigationBarText
                 color={props.textColor}
                 align={props.align}>
                 {props.text}
             </NavigationBarText>
-            <Icon onPress={props.rightAction}
-                  name={props.rightIcon.name}
-                  color={props.rightIcon.color}/>
+            <Icon containerStyle={{width: 30, height: 30}}
+                onPress={props.rightAction}
+                name={props.rightIcon.name}
+                color={props.rightIcon.color}/>
         </HBox>
     </HBox>
 

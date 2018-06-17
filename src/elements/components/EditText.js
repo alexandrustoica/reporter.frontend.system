@@ -41,7 +41,7 @@ EditText.defaultProps = {
     backgroundColor: Colors.WHITE,
     password: false,
     icon: IconType.EMPTY,
-    iconName: 'perm_identity',
+    iconName: 'perm-identity',
     iconColor: 'white',
     height: 60,
     flex: 1,
