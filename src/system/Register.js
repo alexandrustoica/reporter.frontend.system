@@ -34,9 +34,11 @@ class RegisterForm extends React.Component {
         }
     }
 
-    componentWillMount = async () => await this.__getExpoNotificationToken()
+    componentWillMount = async () =>
+        await this.__getExpoNotificationToken()
 
-    componentWillUnmount = () => this.__registerUnsubscribe();
+    componentWillUnmount = () =>
+        this.__registerUnsubscribe();
 
     __onRegisterButtonClick = () => store.dispatch(SystemAction.register({
         username: this.state.username,
@@ -65,7 +67,8 @@ class RegisterForm extends React.Component {
     __loginUnsubscribe = store.subscribe(() => {
         const token = store.getState().systemReducer.token
         if (token !== null) {
-            AsyncStorage.setItem('token', token)
+            AsyncStorage.setItem('username', this.state.username)
+            AsyncStorage.setItem('password', this.state.password)
             this.__loginUnsubscribe()
             webSocketConnection.open()
             this.props.navigation.navigate('MyReports')
@@ -80,12 +83,9 @@ class RegisterForm extends React.Component {
         return await Notifications.getExpoPushTokenAsync()
     }
 
-    __getExpoNotificationToken = async () =>
-        this.setState({
-            expoToken:
-                await this.__registerForPushNotifications()
-        })
-
+    __getExpoNotificationToken = async () => this.setState({
+        expoToken: await this.__registerForPushNotifications()
+    })
 
     render = () => <KeyboardAvoidingView
         behaviour={'padding'}

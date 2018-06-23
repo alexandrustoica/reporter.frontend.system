@@ -9,6 +9,7 @@ export const NotificationEpicFollowUpAction = {
         type: 'MARK_NOTIFICATION_AS_READ_DONE',
         payload: notification,
     }),
+    add: notification => ({type:'ADD_NOTIFICATION', payload: notification}),
     getAll: notifications => ({
         type: 'GET_NOTIFICATIONS_DONE',
         payload: notifications
@@ -54,6 +55,10 @@ export const notificationReducer = (state = {
     isLast: false
 }, action) => {
     const handlers = ({
+        ['ADD_NOTIFICATION']: (state, action) => ({
+            ...state,
+            notifications: R.concat([action.payload], state.notifications)
+        }),
         ['GET_NOTIFICATIONS_DONE']: (state, action) => ({
             ...state,
             notifications: R.uniqBy((it) => it.id,

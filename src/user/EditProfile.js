@@ -1,5 +1,4 @@
 import React from "react";
-import {IconType} from "../elements/icon/IconType";
 import {Screen} from "../elements/box/screen/Screen";
 import {NavigationBar} from "../elements/components/NavigationBar";
 import {store} from "../utils/store";

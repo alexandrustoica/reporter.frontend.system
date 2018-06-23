@@ -1,6 +1,7 @@
 import React from "react";
 import {Screen} from "../elements/box/screen/Screen";
-import MapView, {Circle} from "react-native-maps";
+import MapView from "react-native-maps";
+import {Circle} from "react-native-maps";
 import {NavigationBar} from "../elements/components/NavigationBar";
 import {store} from "../utils/store";
 import {ReportAction} from "../service/ReportEpicActions";

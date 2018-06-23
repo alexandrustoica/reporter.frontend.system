@@ -5,7 +5,6 @@ import {Box} from "../elements/box/Box";
 import moment from "moment/moment";
 import {HBox} from "../elements/box/HBox";
 import {Icon} from "react-native-elements";
-import {NotificationAction} from "../service/NotificationEpicAction";
 
 const CardStyle = {
     marginTop: 10,
@@ -31,13 +30,6 @@ const IconStyle = {
     width: 80,
     height: '80%',
     borderRadius: 10,
-}
-
-const TitleStyle = {
-    marginTop: 10,
-    marginLeft: 10,
-    fontSize: 24,
-    fontWeight: 'bold'
 }
 
 const TextStyle = {

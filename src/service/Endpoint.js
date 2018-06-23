@@ -5,7 +5,7 @@ export const Endpoint = {
     LOGIN: `http://${base}:8080/login`,
     REGISTER: `http://${base}:8080/users/register`,
     REPORTS: `http://${base}:8080/reports`,
-    PHOTOS: (id) => `http://${base}:8080/reports/${id}/photos`,
+    // PHOTOS: (id) => `http://${base}:8080/reports/${id}/photos`,
     USERS: `http://${base}:8080/users`,
     NOTIFICATIONS: `http://${base}:8080/notifications`,
     CRITICAL_SECTIONS: `http://${base}:8080/sections`,

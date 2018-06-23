@@ -3,7 +3,6 @@ import {Endpoint} from "./Endpoint";
 import {createEpic} from "../utils/createEpic";
 import {getDataFromServer} from "../utils/getDataFromServer";
 import {AsyncStorage} from "react-native";
-import * as Rx from "rxjs/Rx";
 
 const SystemEpicFollowUpAction = {
     updateToken: token => ({type: 'UPDATE_TOKEN_DONE', payload: token}),

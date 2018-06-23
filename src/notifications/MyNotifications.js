@@ -61,6 +61,7 @@ export default class MyNotifications extends React.Component {
             <StatusBar
                 backgroundColor="transparent"
                 barStyle="dark-content"/>
-            {this.__showNewReportsToUserInList(this.state.notificationReducer.notifications)}
+            {this.__showNewReportsToUserInList(
+                this.state.notificationReducer.notifications)}
         </Screen>
 }

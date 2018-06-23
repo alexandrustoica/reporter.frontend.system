@@ -1,6 +1,5 @@
 import React from "react";
 import {Box} from "../elements/box/Box";
-import {IconType} from "../elements/icon/IconType";
 import {Screen} from "../elements/box/screen/Screen";
 import {StatusBar, Text, View} from "react-native";
 import {NavigationBar} from "../elements/components/NavigationBar";

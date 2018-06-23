@@ -1,4 +1,4 @@
-import {Image, ImageBackground} from "react-native";
+import {Image} from "react-native";
 import * as React from "react";
 import {Screen} from "./Screen";
 

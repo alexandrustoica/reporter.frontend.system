@@ -172,12 +172,12 @@ export class ReportAction {
     getAllAtPage = page =>
         ({type: 'GET_REPORTS', token: this.token, payload: page})
     takePhoto = camera => ({type: 'TAKE_PHOTO', payload: camera})
-    getAllReportsNear = (araa) =>
-        ({type: 'GET_REPORTS_NEAR_LOCATION', token: this.token, payload: araa})
-    getAllCriticalSectionsNear = (araa) => ({
+    getAllReportsNear = (area) =>
+        ({type: 'GET_REPORTS_NEAR_LOCATION', token: this.token, payload: area})
+    getAllCriticalSectionsNear = (area) => ({
         type: 'GET_CRITICAL_SECTIONS_NEAR_LOCATION',
         token: this.token,
-        payload: araa
+        payload: area
     })
     getReportOwnerUsername = (id) =>
         ({type: 'GET_REPORT_OWNER_USERNAME', token: this.token, payload: id})

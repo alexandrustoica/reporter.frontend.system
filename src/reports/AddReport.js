@@ -110,7 +110,6 @@ export default class AddReport extends React.Component {
     componentDidMount = async () => {
         await navigator.geolocation.getCurrentPosition(
             (location) => this.__saveUserLocationToInternalState(location),
-            // TODO: Error To User
             (error) => console.log(error),
             {enableHighAccuracy: true, timeout: 10000, maximumAge: 1000})
     }
@@ -118,13 +117,10 @@ export default class AddReport extends React.Component {
     __removePhotoFromSystem = (photo) => {
         Alert.alert(
             'Remove Photo',
-            'Are you sure that you want to remove the photo?',
-            [
+            'Are you sure that you want to remove the photo?', [
                 {text: 'Cancel', style: 'cancel'},
-                {
-                    text: 'OK',
-                    onPress: () => store.dispatch(ReportEpicFollowUpAction.removePhoto(photo))
-                },
+                {text: 'OK', onPress: () => store.dispatch(
+                        ReportEpicFollowUpAction.removePhoto(photo))},
             ],
             {cancelable: false}
         )
