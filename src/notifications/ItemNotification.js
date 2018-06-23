@@ -5,6 +5,7 @@ import {Box} from "../elements/box/Box";
 import moment from "moment/moment";
 import {HBox} from "../elements/box/HBox";
 import {Icon} from "react-native-elements";
+import {NotificationAction} from "../service/NotificationEpicAction";
 
 const CardStyle = {
     marginTop: 10,
@@ -88,7 +89,6 @@ export class ItemNotification extends React.Component {
                 this.setState({isRead: true})
             }}
             style={CardStyle}>
-
             <HBox alignItems={"center"}>
                 <CoverIcon
                     color={this.state.isRead ? Colors.GREY : Colors.SUMMER_BLUE}/>
@@ -100,17 +100,3 @@ export class ItemNotification extends React.Component {
             </HBox>
         </TouchableOpacity>
 }
-
-// ItemNotification.defaultProps = {
-//     item: new Notification({
-//         id: "0",
-//         title: "notification",
-//         message: "message",
-//         date: Date.now(),
-//         isRead: false
-//     }),
-//     markNotificationAsRead: (id) => {
-//     },
-//     icon: IconType.REPORTS_ICON,
-//     coverColor: Colors.LIGHT_BLUE
-// }

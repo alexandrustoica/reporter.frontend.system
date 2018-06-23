@@ -113,8 +113,7 @@ class RegisterForm extends React.Component {
                     value: "USER",
                 }}
                 style={{...pickerSelectStyles}}
-                items={[{label: 'Normal Account', value: 'USER'},
-                    {label: 'Police Account', value: 'POLICE'}]}
+                items={[{label: 'Police Account', value: 'POLICE'}]}
                 onValueChange={(value) => this.setState({role: value})}
                 value={this.state.role}>
             </RNPickerSelect>

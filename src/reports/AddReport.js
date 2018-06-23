@@ -81,6 +81,9 @@ export default class AddReport extends React.Component {
     __unsubscribePhotosObserver = store.subscribe(() =>
         this.setState({photos: store.getState().reportsReducer.photos}))
 
+    componentWillMount = () =>
+        store.dispatch(ReportEpicFollowUpAction.cleanPhotos())
+
     componentWillUnmount = () => {
         store.dispatch(ReportEpicFollowUpAction.cleanPhotos())
         this.__unsubscribePhotosObserver()

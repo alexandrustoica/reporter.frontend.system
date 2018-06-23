@@ -8,7 +8,7 @@ export const NavigationBar = (props) =>
         alignItems={'center'}
         flex={0}
         style={{paddingTop: 22, backgroundColor: props.color}}>
-        <HBox style={{padding: 20}}>
+        <HBox alignItems={'center'} style={{padding: 20}}>
             <Icon containerStyle={{width: 30, height: 30}}
                 onPress={props.leftAction}
                 name={props.leftIcon.name}

@@ -1,6 +1,6 @@
 import React from "react";
 import Welcome from "./src/system/Welcome";
-import Register, {LoginAfterRegister} from "./src/system/Register";
+import Register from "./src/system/Register";
 import Login from "./src/system/Login";
 import Logout from "./src/system/Logout";
 import AddReport from "./src/reports/AddReport";
@@ -15,6 +15,7 @@ import MyReports from "./src/reports/MyReports";
 import NearReports from "./src/reports/NearReports";
 import Loading from "./src/system/Loading";
 import ReportGallery from "./src/reports/ReportGallery";
+import SearchMyReports from "./src/reports/SearchMyReports";
 
 const ReportsWithDrawer = DrawerNavigator({
     MyReports: {screen: MyReports},
@@ -40,6 +41,7 @@ const Nav = StackNavigator({
     RCamera: {screen: RCamera},
     Report: {screen: Report},
     ReportGallery: {screen: ReportGallery},
+    SearchMyReports: {screen: SearchMyReports},
     EditProfile: {screen: EditProfile}
 }, {
     index: 0,

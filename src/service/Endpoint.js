@@ -1,5 +1,5 @@
 const base = '192.168.0.26'
-// const base = '172.20.10.2'
+//const base = '172.30.114.16'
 
 export const Endpoint = {
     LOGIN: `http://${base}:8080/login`,

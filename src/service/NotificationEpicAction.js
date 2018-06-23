@@ -62,7 +62,10 @@ export const notificationReducer = (state = {
             isLast: action.payload.last
         }),
         ['MARK_NOTIFICATION_AS_READ_DONE']: (state, action) =>
-            ({...state, lastNotificationMarkedAsRead: action.payload}),
+            ({...state,
+                notifications: R.uniqBy((it) => it.id,
+                    R.concat(state.notifications, [action.payload])),
+                lastNotificationMarkedAsRead: action.payload}),
     })
     return handlers[action.type] ?
         handlers[action.type](state, action) : state

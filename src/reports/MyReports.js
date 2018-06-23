@@ -65,17 +65,17 @@ export default class MyReports extends React.Component {
             <StatusBar
                 backgroundColor="transparent"
                 barStyle="dark-content"/>
-
             <StatusBarAlert
                 visible={false}
                 height={30}
                 message="Silent Switch ON"
                 backgroundColor="#3CC29E"
                 color="white"/>
-
             <NavigationBar
                 text={"My Reports"}
                 leftIcon={{name: "menu", color: "black"}}
+                rightIcon={{name: "search", color: "black"}}
+                rightAction={()=> this.props.navigation.navigate('SearchMyReports')}
                 leftAction={() => this.props.navigation.navigate('DrawerOpen')}/>
             {this.__showNewReportsToUserInList(this.state.state.reports)}
             <Box justifyContent={'flex-end'}

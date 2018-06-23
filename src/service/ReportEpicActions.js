@@ -15,6 +15,9 @@ export const ReportEpicFollowUpAction = {
     getById: report => ({type: 'GET_REPORT_BY_ID_DONE', payload: report}),
     addCreatedSection: section => ({type: "SECTION_CREATED", payload: section}),
     deleteSection: section => ({type: "SECTION_DELETED", payload: section}),
+    search: resultReports =>
+        ({type: 'SEARCH_REPORTS_DONE', payload: resultReports}),
+    clearSearch: () => ({type: 'CLEAR_SEARCH_DONE'}),
     addToNearReports: report => ({
         type: 'ADD_NEAR_REPORT_DONE',
         payload: report
@@ -105,6 +108,15 @@ const GetAllReportsEpic = createEpic()
         .withToken(action.token).withNothing())
     .map(ReportEpicFollowUpAction.getAll)
 
+const SearchReportsEpic = createEpic()
+    .forActionType('SEARCH_REPORTS')
+    .withPromiseToJson(action => getDataFromServer()
+        .fromEndpoint(Endpoint.REPORTS +
+            `/search/${action.payload.term}/${action.payload.page}/10`)
+        .withMethod('GET')
+        .withToken(action.token).withNothing())
+    .map(ReportEpicFollowUpAction.search)
+
 const GetAllReportsNearLocationEpic = createEpic()
     .forActionType('GET_REPORTS_NEAR_LOCATION')
     .withPromiseToJson(action => getDataFromServer()
@@ -135,6 +147,7 @@ export const ReportEpic = combineEpics(
     CreateReportEpic,
     UpdateReportEpic,
     DeleteReportEpic,
+    SearchReportsEpic,
     GetReportByIdEpic,
     GetAllReportsEpic,
     MarkReportAsSolvedEpic,
@@ -148,6 +161,10 @@ export const ReportEpic = combineEpics(
 export class ReportAction {
     delete = id => ({type: 'DELETE_REPORT', token: this.token, payload: id})
     getById = id => ({type: 'GET_REPORT_BY_ID', token: this.token, payload: id})
+    search = (term, page) => ({
+        type: 'SEARCH_REPORTS', token: this.token,
+        payload: {term: term, page: page}
+    })
     create = report =>
         ({type: 'CREATE_REPORT', token: this.token, payload: report})
     update = report =>
@@ -177,6 +194,11 @@ export class ReportAction {
 const initialState = {
     reports: [],
     photos: [],
+    searchResults: {
+        page: 0,
+        isLast: true,
+        reports: []
+    },
     wantedOwnerUsername: {ownerUsername: 'none'},
     reportsNearUserLocation: [],
     criticalSectionsNearUserLocation: []
@@ -204,9 +226,19 @@ export const reportsReducer = (state = initialState, action) => {
         }),
         ['ADD_NEAR_REPORT_DONE']: (state, action) => ({
             ...state,
-            reportsNearUserLocation: R.uniqBy((it) => it.id,
-                R.concat([action.payload], state.reportsNearUserLocation)),
+            reportsNearUserLocation:
+                R.uniqBy((it) => it.id,
+                    R.filter(it => !it.spam,
+                    R.concat([action.payload], state.reportsNearUserLocation))),
         }),
+        ['SEARCH_REPORTS_DONE']: (state, action) => ({...state, searchResults: {
+                    reports: R.uniqBy((it) => it.id,
+                        R.concat(state.searchResults.reports, action.payload.content)),
+                    page: action.payload.number,
+                    isLast: action.payload.last
+            }}),
+        ['CLEAR_SEARCH_DONE']: (state) => ({...state,
+            searchResults: initialState.searchResults}),
         ['GET_REPORT_BY_ID_DONE']: (state, action) =>
             ({...state, wantedReport: action.payload}),
         ['DELETE_REPORT_DONE']: (state, action) => ({

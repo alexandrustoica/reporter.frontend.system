@@ -16,8 +16,8 @@ export default class Loading extends React.Component {
     componentWillMount = async () => {
         const username = await AsyncStorage.getItem("username")
         const password = await AsyncStorage.getItem("password")
-        console.log(username)
-        console.log(password)
+        // console.log(username)
+        // console.log(password)
         if (username === null && password === null) {
             this.__unsubscribe()
             this.props.navigation.navigate('Welcome')

@@ -11,8 +11,10 @@ export const EditText = (props) =>
           style={{backgroundColor: props.backgroundColor}}>
         <HBox style={{padding: props.padding,}}>
             <TextInput
+                clearTextOnFocus={props.clearTextOnFocus}
                 autoCapitalize={props.autoCapitalize}
                 placeholder={props.text}
+                onEndEditing={props.onEndEditing}
                 placeholderTextColor={props.textColor}
                 multiline={props.multiline}
                 editable={props.editable}
@@ -20,7 +22,6 @@ export const EditText = (props) =>
                     flex: props.flex,
                     flexShrink: -1,
                     height: props.height,
-                    //padding: props.padding,
                     backgroundColor: Colors.TRANSPARENT,
                     fontSize: props.fontSize,
                 }}
@@ -29,7 +30,6 @@ export const EditText = (props) =>
                 onChangeText={props.onChangeText}/>
             <Icon name={props.iconName} color={props.iconColor}/>
         </HBox>
-        {/*<SystemIcon url={props.icon}/>*/}
     </HBox>
 
 EditText.defaultProps = {
@@ -49,4 +49,6 @@ EditText.defaultProps = {
     padding: 20,
     onChangeText: null,
     autoCapitalize: 'none',
+    onEndEditing: () => {},
+    clearTextOnFocus: false
 }
