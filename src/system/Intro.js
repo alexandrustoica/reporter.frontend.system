@@ -4,7 +4,7 @@ import {Box} from "../elements/box/Box";
 import {StatusBar} from "react-native";
 import {Screen} from "../elements/box/screen/Screen";
 import {LinearGradient} from "expo";
-import {CenterBox} from "../../lib/box/CenterBox";
+import {CenterBox} from "../elements/box/CenterBox";
 
 export default class Intro extends React.Component {
 

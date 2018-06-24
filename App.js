@@ -27,7 +27,7 @@ const ReportsWithDrawer = DrawerNavigator({
 });
 
 const Nav = StackNavigator({
-    Loading: {screen: Loading},
+   // Loading: {screen: Loading},
     Welcome: {screen: Welcome},
     Login: {screen: Login},
     Register: {screen: Register},
@@ -45,7 +45,6 @@ const Nav = StackNavigator({
     EditProfile: {screen: EditProfile}
 }, {
     index: 0,
-    initialRouteName: 'Loading',
     headerMode: 'screen',
     navigationOptions: {
         gesturesEnabled: false

@@ -1,11 +1,11 @@
 import React from "react";
 import {store} from "../utils/store";
 import {FlatList, StatusBar} from "react-native";
-import {Screen} from "../../lib/screen/Screen";
 import {NavigationBar} from "../elements/components/NavigationBar";
 import {NotificationAction} from "../service/NotificationEpicAction";
 import {ItemNotification, Notification} from "./ItemNotification";
 import {Icon} from "react-native-elements";
+import {Screen} from "../elements/box/screen/Screen";
 
 
 export default class MyNotifications extends React.Component {

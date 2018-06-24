@@ -2,12 +2,12 @@ import {AsyncStorage, StatusBar} from "react-native";
 import {Box} from "../elements/box/Box";
 import {Logo} from "../elements/text/Logo";
 import * as React from "react";
-import {Screen} from "../../lib/screen/Screen";
 import {LinearGradient} from "expo";
 import {CenterBox} from "../elements/box/CenterBox";
 import {webSocketConnection} from "../utils/WebSocketConnection";
 import {store} from "../utils/store";
 import {SystemAction} from "../service/SystemEpicAction";
+import {Screen} from "../elements/box/screen/Screen";
 
 export default class Loading extends React.Component {
 
